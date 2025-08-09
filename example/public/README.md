@@ -31,8 +31,8 @@ From simple delegation patterns to full SPAs running on just 9 event listeners, 
 
 ## 🚀 **See It In Action**
 
-**[🏠 Interactive Examples Hub](https://eypsilon.github.io/YpsilonEventHandler/example/public/)**
+**[🏠 Interactive Examples Hub](https://eypsilon.github.io/YpsilonEventHandler-Examples/example/public/)**
 Beautiful landing page with all examples organized by category
 
-**[👉 Feature Demonstrations](https://eypsilon.github.io/YpsilonEventHandler/example/public/features/)**
+**[👉 Feature Demonstrations](https://eypsilon.github.io/YpsilonEventHandler-Examples/example/public/features/)**
 Interactive examples showcasing specific YpsilonEventHandler features
