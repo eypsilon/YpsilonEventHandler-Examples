@@ -39,10 +39,9 @@
             .scroll-to-top:hover {
                 transform: translateY(0);
             }
-
         }
 
-        .scroll-to-top-container.y-scrolled .scroll-to-top {
+        body.y-scrolled .scroll-to-top {
             bottom: 4px;
             right: 4px;
             opacity: 1;
@@ -405,6 +404,10 @@
                     box-shadow: 0 0 8px 0px #c1b3b3;
                     bottom: 180px;
                     opacity: .85;
+
+                    .log {
+                        max-height: 128px;
+                    }
                 }
             }
         }
@@ -1010,13 +1013,19 @@
 
         /**
          * Convention Protocol
-         * Gets applied, when types are missing a handler
+         * Gets applied, when event.types are missing a handler
          *
+         * ## body handler
          * click         handleClick(event, target)
          * keydown       handleKeydown(event, target)
          * testdispatch  handleTestdispatch(event, target)
          * change        handleChange(event, target)
          * input         handleInput(event, target)
+         *
+         * ## window handler
+         * resize        handleResize(event, target)
+         * scroll        handleScroll(event, target)
+         * beforeunload  handleBeforeunload(event, target)
          */
         const customEventMap = {
             'body': [
@@ -1027,10 +1036,10 @@
                 { type: 'change', debounce: config.debounceChange, options: { passive: true } },
             ],
             'window': [
-                { type: 'load',         handler: 'handleWindowLoad', options: { once: true } },
+                { type: 'load',         handler:  'handleWindowLoad', options: { once: true } },
                 { type: 'resize',       throttle: config.throttleResize },
                 { type: 'scroll',       throttle: config.throttle },
-                { type: 'beforeunload', capture: true },
+                { type: 'beforeunload', capture:  true },
             ],
             '#scroll-area': [
                 { type: 'scroll', handler: 'handleAreaScroll', throttle: config.throttleScrollArea }

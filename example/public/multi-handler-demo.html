@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎯 Multi-Handler System Demo - Revolutionary Event Delegation</title>
+    <title>Multi-Handler System Demo - Revolutionary Event Delegation</title>
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <link rel="stylesheet" type="text/css" href="./assets/main.css">
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding: 40px 40px 250px;
+            padding: 40px 40px 200px;
             background: white;
             border: 3px solid #4CAF50;
             position: relative;
@@ -99,12 +101,13 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
-            width: 300px;
+            width: 90%;
+            max-width: 540px;
             height: 250px;
             background: #1a1a1a;
             color: #00ff00;
             font-family: 'Courier New', monospace;
-            font-size: 11px;
+            font-size: 14px;
             padding: 10px;
             border-radius: 8px;
             overflow-y: scroll;
@@ -201,6 +204,8 @@
 
         <div id="main">
             <button data-action="mainButtonAction">Main Level Button</button>
+            <button data-action="mainButtonActionTwo">Main Level 2</button>
+            <button data-action="mainButtonActionThree">Main Level 3</button>
             <input type="text" id="mainInput" placeholder="Main level input..." style="margin-left: 10px; padding: 8px; border: 1px solid #FF9800; border-radius: 4px;">
 
             <div id="section">
@@ -227,23 +232,30 @@
         class AdvancedHandler extends YpsilonEventHandler {
             constructor() {
                 super({
-                    'body': [{ type: 'click', handler: 'bodyClick' }],
-                    '#app': [{ type: 'click', handler: 'appClick' }],
-                    '#main': [{ type: 'click', handler: 'mainClick' }],
-                    '#section': [{ type: 'click', handler: 'sectionClick' }],
-                    '#searchInput': [{ type: 'input', handler: 'handleDebouncedSearch', debounce: 300 }],
-                    '#bodyInput': [{ type: 'input', handler: 'handleBodyInput', debounce: 300 }],
-                    '#appInput': [{ type: 'input', handler: 'handleAppInput', debounce: 300 }],
-                    '#mainInput': [{ type: 'input', handler: 'handleMainInput', debounce: 300 }],
-                    '#sectionInput': [{ type: 'input', handler: 'handleSectionInput', debounce: 300 }],
-                    '.scroll-zone': [{ type: 'scroll', handler: 'handleThrottledScroll', throttle: 100 }]
+                    'window':        [{ type: 'load',   debounce: 1000, options: { once: true } }], // auto routed to `handleLoad()`
+                    'body':          [{ type: 'click',  handler: 'bodyClick' }],
+                    '#app':          [{ type: 'click',  handler: 'appClick' }],
+                    '#main':         [{ type: 'click',  handler: 'mainClick' }],
+                    '#section':      [{ type: 'click',  handler: 'sectionClick' }],
+                    '#searchInput':  [{ type: 'input',  handler: 'handleDebouncedSearch', debounce: 300 }],
+                    '#bodyInput':    [{ type: 'input',  handler: 'handleBodyInput', debounce: 300 }],
+                    '#appInput':     [{ type: 'input',  handler: 'handleAppInput', debounce: 300 }],
+                    '#mainInput':    [{ type: 'input',  handler: 'handleMainInput', debounce: 300 }],
+                    '#sectionInput': [{ type: 'input',  handler: 'handleSectionInput', debounce: 300 }],
+                    '.scroll-zone':  [{ type: 'scroll', handler: 'handleThrottledScroll', throttle: 100 }],
                 }, {
-                    // NEW: Configurable actionable target patterns
-                    actionableAttributes: ['data-action', 'data-cmd'], // Support both data-action and data-cmd
-                    actionableClasses: ['actionable', 'clickable'],    // Support .actionable and .clickable classes
-                    actionableTags: ['BUTTON', 'A', 'INPUT'],          // Support buttons, links, and inputs
-                    enableActionableTargets: true                      // Enable actionable target resolution
+                    // Configurable actionable target patterns
+                    actionableAttributes:    ['data-action', 'data-cmd'], // Support both data-action and data-cmd
+                    actionableClasses:       ['actionable', 'clickable'], // Support .actionable and .clickable classes
+                    actionableTags:          ['BUTTON', 'A', 'INPUT'],    // Support buttons, links, and inputs
+                    enableActionableTargets: true                         // Enable actionable target resolution
                 });
+            }
+
+            // Add debounced initial welcome message
+            handleLoad(event) {
+                this.logEvent('System', 'Multi-Handler Demo Ready!', document.body, '#00ff00');
+                this.logEvent('Info', 'Click anywhere to see closest-match resolution', document.body, '#888');
             }
 
             // Handler methods
@@ -279,7 +291,7 @@
 
             sectionClick(event, target) {
                 // If it's a button, handle it directly without logging parent handler
-                if (target.dataset.action) {
+                if (target.dataset.action || target.dataset.cmd) {
                     this.executeButtonAction(event, target);
                     return;
                 }
@@ -300,11 +312,19 @@
                 this.logEvent('Button Action', 'mainButtonAction', target, '#FF5722');
             }
 
+            mainButtonActionTwo(target, event) {
+                this.logEvent('Button Action 2', 'mainButtonActionTwo', target, '#ff001f');
+            }
+
+            mainButtonActionThree(target, event) {
+                this.logEvent('Button Action 3', 'mainButtonActionThree', target, '#f5f60b');
+            }
+
             sectionButtonAction(target, event) {
                 this.logEvent('Button Action', 'sectionButtonAction', target, '#FF5722');
             }
 
-            // NEW: Custom data-cmd handler to demonstrate configurable actionable patterns
+            // Custom data-cmd handler to demonstrate configurable actionable patterns
             newCustomAction(target, event) {
                 this.logEvent('🚀 CUSTOM CMD', 'newCustomAction', target, '#FF1744');
             }
@@ -397,14 +417,6 @@
                 </div>
             `;
         }
-
-        // Add initial welcome message
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                handler.logEvent('System', 'Multi-Handler Demo Ready!', document.body, '#00ff00');
-                handler.logEvent('Info', 'Click anywhere to see closest-match resolution', document.body, '#888');
-            }, 500);
-        });
     </script>
 
     <div id="flexing" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 30px; margin: 30px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
@@ -443,7 +455,7 @@
 
         <div style="text-align: center; margin: 25px 0; padding: 20px; background: rgba(255,255,255,0.1); border-radius: 10px;">
             <h3 style="color: #ffeb3b; margin-bottom: 15px;">⚡ The Revolutionary Code</h3>
-            <pre style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; font-family: 'Courier New', monospace; text-align: left; font-size: 1rem;">
+            <pre class="auto-height" style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; font-family: 'Courier New', monospace; text-align: left; font-size: 1rem;">
 <span style="color: #4CAF50;">// Only 4 listeners for infinite elements!</span>
 constructor() {
     super({
@@ -467,6 +479,14 @@ constructor() {
                 <em style="display: block;margin-top: 15px;color: #ffeb3b;">DeepSeek rated it 11/10 - "mathematically better than perfect"</em>
             </p>
         </div>
+    </div>
+
+    <div class="flex-center-center src-nav" style="padding: 1rem 0">
+        <small>© Engin Ypsilon &amp; Claude Van DOM</small> |
+        <a href="./index.html">Examples</a> |
+        <a href="https://github.com/eypsilon/YpsilonEventHandler">github</a> |
+        <a href="https://www.npmjs.com/package/ypsilon-event-handler">npm</a> |
+        <a href="./multi-handler-demo.html">reload</a>
     </div>
 
 </body>
