@@ -101,8 +101,7 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
-            width: 90%;
-            max-width: 540px;
+            width: 540px;
             height: 250px;
             background: #1a1a1a;
             color: #00ff00;
@@ -110,7 +109,8 @@
             font-size: 14px;
             padding: 10px;
             border-radius: 8px;
-            overflow-y: scroll;
+            overflow: scroll;
+            white-space: nowrap;
             border: 2px solid #00ff00;
             z-index: 9999;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
@@ -165,7 +165,7 @@
         <h3>🚀 How it works:</h3>
         <ul>
             <li><strong>4 click handlers</strong> on different DOM levels with closest-match resolution</li>
-            <li><strong>Throttled scroll</strong> handler (100ms) for smooth performance</li>
+            <li><strong>Throttled scroll</strong> handler (350ms) for smooth performance</li>
             <li><strong>Debounced input</strong> handler (300ms) for search-as-you-type</li>
             <li><strong>Buttons</strong> have individual <code>data-action</code> functions</li>
             <li><strong>Click anywhere</strong> - only the CLOSEST handler executes!</li>
@@ -188,11 +188,11 @@
         </div>
 
         <div class="scroll-zone" style="background: white; border: 1px solid #1976d2; height: 150px; overflow-y: auto; padding: 10px; border-radius: 4px;">
-            <div style="font-weight: bold; color: #1976d2; margin-bottom: 10px;">📊 Throttled Scroll Zone (100ms throttle):</div>
-            <div style="height: 400px; background: linear-gradient(to bottom, #e3f2fd, #bbdefb, #90caf9, #64b5f6, #42a5f5);">
+            <div style="font-weight: bold; color: #1976d2; margin-bottom: 10px;">📊 Throttled Scroll Zone (350ms throttle):</div>
+            <div style="height: 800px; background: linear-gradient(to bottom, #e3f2fd, #bbdefb, #90caf9, #64b5f6, #42a5f5);">
                 <p style="padding: 20px; color: #1976d2;">Scroll this area to see throttled scroll events!</p>
                 <p style="padding: 20px;">Traditional approach: 60+ scroll events per second = performance killer</p>
-                <p style="padding: 20px;">YpsilonEventHandler: Throttled to 10 events per second = smooth performance!</p>
+                <p style="padding: 20px;">YpsilonEventHandler: Throttled to <b>X</b> events per second = smooth performance!</p>
                 <p style="padding: 20px;">Keep scrolling to see the difference in the event log...</p>
             </div>
         </div>
@@ -216,52 +216,49 @@
         </div>
     </div>
 
-    <div class="log" id="eventLog">
-        <div style="color: #00ff00; font-weight: bold; margin-bottom: 10px;">
-            🌌 QUANTUM EVENT LOG 🌌
-        </div>
-        <div style="color: #888; font-size: 10px; margin-bottom: 15px;">
-            Watch the magic: Only closest handler executes!
-        </div>
-    </div>
+    <div class="log" id="eventLog"></div>
 
     <button class="clear-log" onclick="clearLog()">Clear Log</button>
 
-    <script src="https://cdn.jsdelivr.net/npm/ypsilon-event-handler@1.6.6/ypsilon-event-handler.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ypsilon-event-handler@1.7.0/ypsilon-event-handler.min.js"></script>
     <script>
         class AdvancedHandler extends YpsilonEventHandler {
             constructor() {
                 super({
-                    'window':        [{ type: 'load',   debounce: 1000, options: { once: true } }], // auto routed to `handleLoad()`
+                    'window':        [{ type: 'load',   options: { once: true, passive: true } }], // auto routed to `handleLoad()`
                     'body':          [{ type: 'click',  handler: 'bodyClick' }],
                     '#app':          [{ type: 'click',  handler: 'appClick' }],
                     '#main':         [{ type: 'click',  handler: 'mainClick' }],
                     '#section':      [{ type: 'click',  handler: 'sectionClick' }],
                     '#searchInput':  [{ type: 'input',  handler: 'handleDebouncedSearch', debounce: 300 }],
-                    '#bodyInput':    [{ type: 'input',  handler: 'handleBodyInput', debounce: 300 }],
-                    '#appInput':     [{ type: 'input',  handler: 'handleAppInput', debounce: 300 }],
-                    '#mainInput':    [{ type: 'input',  handler: 'handleMainInput', debounce: 300 }],
-                    '#sectionInput': [{ type: 'input',  handler: 'handleSectionInput', debounce: 300 }],
-                    '.scroll-zone':  [{ type: 'scroll', handler: 'handleThrottledScroll', throttle: 100 }],
+                    '#bodyInput':    [{ type: 'input',  handler: 'handleBodyInput',       debounce: 300 }],
+                    '#appInput':     [{ type: 'input',  handler: 'handleAppInput',        debounce: 300 }],
+                    '#mainInput':    [{ type: 'input',  handler: 'handleMainInput',       debounce: 300 }],
+                    '#sectionInput': [{ type: 'input',  handler: 'handleSectionInput',    debounce: 300 }],
+                    '.scroll-zone':  [{ type: 'scroll', handler: 'handleThrottledScroll', throttle: 350 }],
                 }, {
                     // Configurable actionable target patterns
                     actionableAttributes:    ['data-action', 'data-cmd'], // Support both data-action and data-cmd
                     actionableClasses:       ['actionable', 'clickable'], // Support .actionable and .clickable classes
                     actionableTags:          ['BUTTON', 'A', 'INPUT'],    // Support buttons, links, and inputs
-                    enableActionableTargets: true                         // Enable actionable target resolution
+                    enableActionableTargets: true,                        // Enable actionable target resolution
+                    /**
+                     * If you only support actionableAttributes, set the remaining options to empty arrays */
+                    // actionableClasses: [],
+                    // actionableTags:    [],
                 });
             }
 
             // Add debounced initial welcome message
             handleLoad(event) {
-                this.logEvent('System', 'Multi-Handler Demo Ready!', document.body, '#00ff00');
-                this.logEvent('Info', 'Click anywhere to see closest-match resolution', document.body, '#888');
+                clearLog();
+                this.logEvent('System', 'Multi-Handler Demo Ready!', document.body, '#ddf730');
             }
 
             // Handler methods
             bodyClick(event, target) {
                 // If it's a button, handle it directly without logging parent handler
-                if (target.dataset.action) {
+                if (target.dataset.action || target.dataset.cmd) {
                     this.executeButtonAction(event, target);
                     return;
                 }
@@ -271,7 +268,7 @@
 
             appClick(event, target) {
                 // If it's a button, handle it directly without logging parent handler
-                if (target.dataset.action) {
+                if (target.dataset.action || target.dataset.cmd) {
                     this.executeButtonAction(event, target);
                     return;
                 }
@@ -281,7 +278,7 @@
 
             mainClick(event, target) {
                 // If it's a button, handle it directly without logging parent handler
-                if (target.dataset.action) {
+                if (target.dataset.action || target.dataset.cmd) {
                     this.executeButtonAction(event, target);
                     return;
                 }
@@ -309,7 +306,7 @@
             }
 
             mainButtonAction(target, event) {
-                this.logEvent('Button Action', 'mainButtonAction', target, '#FF5722');
+                this.logEvent('Button Action 1', 'mainButtonAction', target, '#FF5722');
             }
 
             mainButtonActionTwo(target, event) {
@@ -409,11 +406,9 @@
         function clearLog() {
             const log = document.getElementById('eventLog');
             log.innerHTML = `
-                <div style="color: #00ff00; font-weight: bold; margin-bottom: 10px;">
-                    🌌 QUANTUM EVENT LOG 🌌
-                </div>
-                <div style="color: #888; font-size: 10px; margin-bottom: 15px;">
-                    Watch the magic: Only closest handler executes!
+                <div style="color: #00ff00; font-weight: bold; margin-bottom: 10px;">🌌 QUANTUM EVENT LOG 🌌</div>
+                <div title="Watch the magic: Only closest handler executes!" style="color: #f1e9e9; font-size: 13px; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid #443f3f; line-height: 1.2;">
+                    Click anywhere to see closest-match resolution!
                 </div>
             `;
         }
@@ -464,7 +459,7 @@ constructor() {
         <span style="color: #FF9800;">'#main'</span>:    [{ type: <span style="color: #ffeb3b;">'click'</span>, handler: <span style="color: #ffeb3b;">'mainClick'</span> }],   <span style="color: #888;">// Main scope</span>
         <span style="color: #f665e3;">'#section'</span>: [{ type: <span style="color: #ffeb3b;">'click'</span>, handler: <span style="color: #ffeb3b;">'sectionClick'</span> }] <span style="color: #888;">// Section scope</span>
     }, {
-        <span style="color: #4CAF50;">// NEW: Configurable actionable patterns</span>
+        <span style="color: #4CAF50;">// Configurable actionable patterns</span>
         actionableAttributes: [<span style="color: #ffeb3b;">'data-action'</span>, <span style="color: #ffeb3b;">'data-cmd'</span>],
         actionableClasses:    [<span style="color: #ffeb3b;">'actionable'</span>, <span style="color: #ffeb3b;">'clickable'</span>],
         actionableTags:       [<span style="color: #ffeb3b;">'BUTTON'</span>, <span style="color: #ffeb3b;">'A'</span>, <span style="color: #ffeb3b;">'INPUT'</span>]
@@ -484,9 +479,9 @@ constructor() {
     <div class="flex-center-center src-nav" style="padding: 1rem 0">
         <small>© Engin Ypsilon &amp; Claude Van DOM</small> |
         <a href="./index.html">Examples</a> |
+        <a href="./features/index.html">Features</a> |
         <a href="https://github.com/eypsilon/YpsilonEventHandler">github</a> |
-        <a href="https://www.npmjs.com/package/ypsilon-event-handler">npm</a> |
-        <a href="./multi-handler-demo.html">reload</a>
+        <a href="https://www.npmjs.com/package/ypsilon-event-handler">npm</a>
     </div>
 
 </body>

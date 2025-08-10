@@ -128,8 +128,8 @@
 
             <div style="font-size: 12px; color: #666; margin: 10px 0 15px;">
                 🎯 <strong>Custom Handlers:</strong> Each button uses a different click handler function<br>
-                💡 Input is debounced (300ms) - handler only fires after you stop typing<br>
-                💡 Scroll events are throttled (100ms div, 250ms window) - smooth performance<br>
+                💡 Input is debounced (500ms) - handler only fires after you stop typing<br>
+                💡 Scroll events are throttled (350ms div, 250ms window) - smooth performance<br>
                 💡 All scroll events automatically use passive listeners<br>
                 🧪 <strong>Test destroy:</strong> Click "Destroy Handler" then try clicking/typing/scrolling!
             </div>
@@ -221,7 +221,7 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/ypsilon-event-handler@1.6.6/ypsilon-event-handler.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ypsilon-event-handler@1.7.0/ypsilon-event-handler.min.js"></script>
     <script>
         // Extend YpsilonEventHandler with custom handlers
         class MyEventHandler extends YpsilonEventHandler {
@@ -237,10 +237,10 @@
                         { type: 'click', handler: 'handleSuccessClick', debounce: 300 }
                     ],
                     '#test-input': [
-                        { type: 'input', handler: 'handleInputChange', debounce: 300 }
+                        { type: 'input', handler: 'handleInputChange', debounce: 500 }
                     ],
                     '#scroll-area': [
-                        { type: 'scroll', handler: 'handleAreaScroll', throttle: 100 }
+                        { type: 'scroll', handler: 'handleAreaScroll', throttle: 350 }
                     ],
                     '#scroll-area-2': [
                         { type: 'scroll', handler: 'handleAreaScroll2' }
@@ -264,13 +264,13 @@
             }
 
             handleInputChange(event, target) {
-                this.log(`📝 INPUT changed: "${target.value}" (debounced 300ms)`);
+                this.log(`📝 INPUT changed: "${target.value}" (debounced 500ms)`);
             }
 
             handleAreaScroll(event, target) {
                 const scrollTop = target.scrollTop || 0;
                 document.getElementById('div-scroll').textContent = Math.round(scrollTop);
-                this.log(`📜 DIV scroll: ${Math.round(scrollTop)}px (throttled 100ms)`);
+                this.log(`📜 DIV scroll: ${Math.round(scrollTop)}px (throttled 350ms)`);
             }
 
             handleAreaScroll2(event, target) {
