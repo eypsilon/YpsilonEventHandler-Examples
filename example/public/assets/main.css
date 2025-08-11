@@ -82,6 +82,16 @@ pre {
     pointer-events: none;
 }
 
+.mirror-emoji {
+    display: inline-block;
+    transform: scaleX(-1);
+}
+
+.flip-emoji {
+    display: inline-block;
+    transform: scaleY(-1);
+}
+
 /* Responsive Navigation */
 @media (max-width: 768px) {
     nav.main-nav div {

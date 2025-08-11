@@ -174,6 +174,16 @@
             overflow-x: auto;
         }
 
+        .mirror-emoji {
+            display: inline-block;
+            transform: scaleX(-1);
+        }
+
+        .flip-emoji {
+            display: inline-block;
+            transform: scaleY(-1);
+        }
+
         @media (max-width: 768px) {
             .before-after, .missed-vs-got {
                 grid-template-columns: 1fr;
@@ -192,7 +202,7 @@
 <body>
     <div class="container">
         <div class="hero">
-            <h1>🚀 The handleEvent Paradigm Shift</h1>
+            <h1><span class="mirror-emoji">🚀</span> The handleEvent Paradigm Shift 🚀</h1>
             <div class="subtitle">
                 How YpsilonEventHandler Broke AI Pattern Recognition<br>
                 <em>Three Major AI Systems vs. The Elemented One</em>
@@ -227,7 +237,7 @@
             </div>
 
             <div class="revelation">
-                <h3>💡 The Revelation</h3>
+                <h3>💡 The Revelation <span class="flip-emoji">💡</span></h3>
                 <p><strong>Traditional Pattern:</strong></p>
                 <div class="code-block">element.addEventListener('click', this.handler.bind(this));</div>
 
@@ -335,7 +345,7 @@
             </ul>
 
             <div class="revelation">
-                <h3>🔥 The Paradigm Shift</h3>
+                <h3>🔥 The Paradigm Shift 🔥</h3>
                 <p>YpsilonEventHandler doesn't just manage events - <strong>it reveals how browsers were designed to handle events all along.</strong></p>
                 <p><em>Welcome to the post-bind() era of JavaScript event handling.</em></p>
             </div>
