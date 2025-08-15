@@ -1,0 +1,2537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StressMacher S-800, Serial event killer ~ YpsilonEventHandler</title>
+    <link rel="stylesheet" type="text/css" href="./assets/main.css">
+    <style>
+        :root {
+            --primary: #4a6fa5;
+            --primary-hover: #7ea6e2;
+            --secondary: #166088;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --success: #28a745;
+            --danger: #dc3545;
+            --gap-size: 10px 14px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.5;
+            color: #333;
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 20px 20px 0;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            position: relative;
+        }
+
+        .mode-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 0;
+            padding: 10px;
+            background: linear-gradient(135deg, #a7c0e494 0%, #5f10ac87 100%);
+        }
+
+        .mode-selector button {
+            flex: 1;
+        }
+
+        .control-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 2fr));
+            gap: 30px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            position: relative;
+
+            &.extra-configs {
+                padding: 15px;
+                min-width: 280px;
+                position: absolute;
+                top: 40px;
+                right: 0;
+                z-index: 1;
+                gap: 12px;
+                background: #fff;
+                box-shadow: 0 0 10px 6px rgba(163, 180, 255, .6);
+
+                select {
+                    margin-top: 8px;
+                    padding: 0;
+
+                    option {
+                        padding: 12px;
+                    }
+                }
+                .input-checkbox {
+                    position: relative;
+
+                    label {
+                        padding: 5px 10px;
+                        border: 1px solid #ddd;
+                        cursor: pointer;
+                    }
+                    input {
+                        width: auto;
+                        position: absolute;
+                        right: 10px;
+                        cursor: pointer;
+                    }
+                }
+                .timeout-range {
+                    .form-el-group {
+                        margin-top: 8px;
+                    }
+                }
+            }
+        }
+
+        h1, h2, h3, h4, h5 {
+            margin-top: 0;
+            line-height: 1;
+        }
+        h1 {
+            font-size: 1.2rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        label,
+        .label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        select, input, button {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9rem;
+
+            &[disabled] {
+                opacity: .4;
+                pointer-events: none;
+            }
+        }
+
+        select {
+            width: 100%;
+        }
+
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        button.active,
+        button:hover {
+            background-color: var(--secondary);
+        }
+
+        button.danger {
+            background-color: var(--danger);
+        }
+
+        button.success {
+            background-color: var(--success);
+        }
+
+        button.active {
+            background-color: var(--secondary);
+            box-shadow: inset 0 0 0 2px white;
+        }
+
+        ::placeholder {
+            color: rgb(177, 161, 161);
+            opacity: 0.5;
+        }
+
+        .test-area,
+        .test-area h3 {
+            transition: all .5s ease-in-out;
+        }
+
+        .test-area h3 {
+            margin-bottom: 8px;
+        }
+
+        .info-container,
+        .verify-listeners,
+        .test-area {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            min-height: 200px;
+
+            &.finished {
+                box-shadow: 0 2px 10px 2px rgba(88, 237, 8, .7);
+
+                h3 {
+                    color: var(--success);
+                    text-shadow: 2px 2px #f4433663, -2px -2px #364cf463;
+                }
+            }
+            &.running {
+                box-shadow: 0 2px 10px 2px rgba(226, 35, 9, 0.5);
+            }
+        }
+
+        .elements-container {
+            border: 1px dashed #eee;
+            padding: 5px;
+            border-radius: 4px;
+            min-height: 100px;
+            max-height: 50vh;
+            overflow: auto;
+            overflow-y: scroll;
+        }
+
+        .verify-listeners {
+            h3 {
+                margin-bottom: 10px;
+            }
+        }
+
+        .info-container {
+            h3, h4 {
+                margin-bottom: 10px;
+            }
+            > p {
+                margin-bottom: 10px;
+            }
+            .main-info {
+                padding: 15px;
+                line-height: 1.5;
+                font-size: 14px;
+                background: #f1f1f1;
+                box-shadow: 0 0px 4px 2px #cfe5eef7;
+
+                &:not(:last-of-type) {
+                    margin-bottom: 16px;
+                }
+                p:not(:last-of-type) {
+                    margin-bottom: 10px;
+                }
+            }
+        }
+
+        pre {
+            font-size: 14px;
+        }
+
+        .clear-log {
+            position: fixed;
+            bottom: 115px;
+            right: 20px;
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .log {
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            width: 100%;
+            max-width: 400px;
+            height: 90px;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 15px;
+            padding: 5px 10px;
+            overflow-y: scroll;
+            border: 2px solid #00ff00;
+            z-index: 9999;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            background: #1d1c1cd5;
+            transition: all .15s 1s ease-in-out;
+
+            &:focus,
+            &:hover {
+                max-width: 80%;
+                height: 440px;
+                background: #1d1c1cf7;
+                overscroll-behavior: contain;
+
+                span.method-note,
+                span.log-data-last-col {
+                    max-width: unset;
+                }
+            }
+        }
+
+        .log-entry {
+            margin-bottom: 5px;
+            padding: 2px 0;
+            display: flex;
+            align-items: center;
+            min-height: 20px;
+            line-height: 1.4;
+
+            &:not(:last-of-type) {
+                border-bottom: 1px solid rgba(0, 255, 170, 0.1);
+            }
+        }
+
+        .log-entry span {
+            padding: 0 6px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .log-date {
+            padding: 0;
+            min-width: 92px;
+            font-weight: bold;
+        }
+
+        .stats-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 50%;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        /* Performance Indicators */
+        .performance-indicator {
+            height: 12px;
+            background: linear-gradient(90deg, #28a745 0%, #ffc107 50%, #dc3545 100%);
+            border-radius: 6px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .performance-bar {
+            height: 100%;
+            width: 0%;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 6px;
+            transition: width 0.3s ease;
+            position: relative;
+        }
+
+        .performance-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 2px;
+            height: 100%;
+            background: #333;
+            border-radius: 1px;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7); }
+            50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(220, 53, 69, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+        }
+
+        .elements-container {
+            border: 1px dashed #eee;
+            padding: 5px;
+            border-radius: 4px;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            flex-flow: wrap;
+            align-items: center;
+            gap: var(--gap-size);
+            scroll-behavior: smooth;
+            line-height: 1;
+
+            > div {
+                flex: 1 10%;
+                min-width: fit-content;
+                white-space: nowrap;
+                line-height: 1;
+
+                label {
+                    padding: 0px 14px;
+                    height: 36px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    position: relative;
+                    cursor: pointer;
+                    box-shadow: 0 0 6px 1px rgba(48, 80, 61, 0.3);
+                    line-height: 1;
+                    overflow: hidden;
+
+                    input {
+                        margin: 0 8px 0 0;
+                    }
+                }
+            }
+        }
+
+        .form-el-group {
+            display: flex;
+            align-items: center;
+
+            label {
+                width: 100%;
+                align-items: center;
+            }
+            input {
+                width: 100%;
+            }
+        }
+
+        .test-checkbox-wrap {
+            background: #efe7ddbd;
+        }
+
+        .test-checkbox-radio {
+            background: #e6f4f4ed;
+
+            input[type="radio"]:checked {
+                + span {
+                    color: #f90707;
+                }
+            }
+        }
+
+        .control-group > label,
+        .control-group > .label,
+        .elements-container label,
+        .elements-container .label,
+        .test-button,
+        .test-input,
+        .test-checkbox,
+        .test-select {
+            padding: 0px 0;
+            max-height: 36px;
+        }
+
+        .test-button,
+        .test-input,
+        .test-checkbox {
+            white-space: nowrap;
+            outline: 0;
+        }
+        .test-button,
+        .test-input,
+        .test-select {
+            padding-left: 8px;
+            padding-right: 8px;
+            flex: 1 10%;
+        }
+        .test-button {
+            height: 38px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .test-button:focus,
+        .test-button:hover,
+        .test-button:active {
+            color: rgb(250, 49, 49);
+            background: var(--primary-hover);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .test-select,
+        .test-input {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            height: 38px;
+
+            &:focus { border-color: var(--danger) }
+        }
+
+        .test-checkbox {
+            accent-color: var(--danger);
+
+            &:checked {
+                + span {
+                    color: var(--danger);
+                    background: rgb(200 244 218 / 80%);
+                    box-shadow: 0 0 50px 26px rgb(208 248 224 / 90%);
+                }
+            }
+        }
+
+        .stat-card[data-better="manual"] {
+            box-shadow: 0 0 0 2px #dc3545;
+            background: rgba(220, 53, 69, 0.1);
+        }
+
+        .stat-card[data-better="ypsilon"] {
+            box-shadow: 0 0 0 2px #28a745;
+            background: rgba(40, 167, 69, 0.1);
+        }
+
+        .src-nav {
+            margin: 3rem 0;
+
+            hr {
+                margin: 8px 0;
+            }
+        }
+
+        .nav-container {
+            margin: 0;
+        }
+
+        .extras-area {
+            display: flex;
+            gap: 10px;
+
+            .stats-panel {
+                width: 100%;
+            }
+            .config-panel {
+                background: white;
+                padding: 0px;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                width: 100%;
+                max-width: 50%;
+
+                pre {
+                    margin: 0;
+                    min-height: 100%;
+                    max-height: 200px;
+                }
+            }
+        }
+
+        /* S-800 Avatar */
+        .serminator {
+            margin-left: -25px;
+            width: 50px;
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            font-size: 38px;
+            text-align: center;
+            user-select: none;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>
+                <span>StressMacher S-800</span>
+                <span class="serminator">🤖</span>
+                <span><a href="./index.html" title="Back to index" style="text-decoration: none;">«</a> YpsilonEventHandler</span>
+            </h1>
+            <div class="mode-selector">
+                <button data-action="setMode" data-mode="manual" class="active">Manual Listeners</button>
+                <button data-action="setMode" data-mode="ypsilon">Ypsilon Listeners</button>
+            </div>
+
+            <div class="control-panel">
+                <!-- Elements to create -->
+                <div class="control-group">
+                    <span class="label">Element Type</span>
+                    <div class="form-el-group">
+                        <label for="createTotalButton">Button</label>
+                        <input type="number"
+                            data-action="setTestConfig"
+                            data-key="createTotalButton"
+                            id="createTotalButton" min="1" max="10000" value="250">
+                    </div>
+                    <div class="form-el-group">
+                        <label for="createTotalText">Text</label>
+                        <input type="number"
+                            data-action="setTestConfig"
+                            data-key="createTotalText"
+                            id="createTotalText" min="1" max="10000" value="250">
+                    </div>
+                </div>
+                <!-- Checkbox/Radios to create -->
+                <div class="control-group">
+                    <span class="label">~</span>
+                    <div class="form-el-group">
+                        <label for="createTotalCheckbox">Checkbox</label>
+                        <input type="number"
+                            data-action="setTestConfig"
+                            data-key="createTotalCheckbox"
+                            id="createTotalCheckbox" min="1" max="10000" value="250">
+                    </div>
+                    <div class="form-el-group">
+                        <label for="createTotalRadiobox">Radiobox</label>
+                        <input type="number"
+                            data-action="setTestConfig"
+                            data-key="createTotalRadiobox"
+                            id="createTotalRadiobox" min="1" max="10000" value="250">
+                    </div>
+                </div>
+                <!-- Select to create -->
+                <div class="control-group">
+                    <span class="label">~</span>
+                    <div class="form-el-group">
+                        <label for="createTotalSelect">Select</label>
+                        <input type="number"
+                            data-action="setTestConfig"
+                            data-key="createTotalSelect"
+                            id="createTotalSelect" min="1" max="10000" value="250">
+                    </div>
+                </div>
+                <!-- More options -->
+                <div class="control-group">
+                    <button data-action="toggleConfig" data-text="⚙️ Less" style="background: darkcyan">⚙️ More</button>
+                    <div class="form-el-group">
+                        <label for="logLevel">Log Level</label>
+                        <select data-action="setLogLevel" id="logLevel">
+                            <option value="minimal" selected>⚡ Minimal (Fast)</option>
+                            <option value="summary">📊 Summary (Performance)</option>
+                            <option value="verbose">🔍 Verbose (Detailed)</option>
+                        </select>
+                    </div>
+                    <div class="form-el-group">
+                        <button data-action="resetStats" style="width: 100%;background: #6c757d; color: white; padding: 6px 12px; border: none; border-radius: 4px; font-size: 0.8em; cursor: pointer;">📊 Reset Stats</button>
+                    </div>
+
+                    <div class="control-group extra-configs hidden">
+                        <!-- Depth -->
+                        <div class="form-el-group" title="Nesting Depth (0 = flat)">
+                            <label for="nestingDepth">Depth</label>
+                            <input type="number"
+                                data-action="setTestConfig"
+                                data-key="nestingDepth"
+                                id="nestingDepth" min="0" max="1000" value="0">
+                        </div>
+                        <!-- Auto focus -->
+                        <div class="form-el-group input-checkbox"
+                            title="Enable, that elements get additionally focused while stress tests. Focus forces the browser to jump to the focused element.">
+                            <label for="formElFocus">Auto focus</label>
+                            <input type="checkbox"
+                                data-action="setTestConfig"
+                                data-key="formElFocus" id="formElFocus">
+                        </div>
+                        <!-- Once Only -->
+                        <div class="form-el-group input-checkbox"
+                            title="This option makes sure, that elements are used once by removing the data-action attribute.">
+                            <label for="onceOnly">Once Only</label>
+                            <input type="checkbox"
+                                data-action="setTestConfig"
+                                data-key="onceOnly"
+                                id="onceOnly"
+                                title="Remove data-action after first trigger to ensure each element is touched only once">
+                        </div>
+                        <!-- Event Burst -->
+                        <div class="form-el-group" title="Number of rapid-fire events in bursts during stress tests">
+                            <label for="eventBurstCount">Event Bursts</label>
+                            <input type="number"
+                                data-action="setTestConfig"
+                                data-key="eventBurstCount"
+                                id="eventBurstCount" min="1" max="20" value="5">
+                        </div>
+                        <!-- Timing Control - DISABLED FOR FORMULA CALIBRATION -->
+                        <div class="form-el-group" title="Timing control disabled - formula being calibrated in script" style="opacity: 0.5;">
+                            <label for="timingDivisor2000">Slow @2000 (disabled)</label>
+                            <input type="number"
+                                disabled
+                                id="timingDivisor2000" min="1" max="20" value="2.2" step="0.1">
+                        </div>
+                        <div class="form-el-group" title="Timing control disabled - formula being calibrated in script" style="opacity: 0.5;">
+                            <label for="timingDivisor3000">Slow @3000 (disabled)</label>
+                            <input type="number"
+                                disabled
+                                id="timingDivisor3000" min="1" max="20" value="8" step="0.1">
+                        </div>
+                        <!-- Timeout range -->
+                        <div class="form-not-group timeout-range" title="A number between the given range for artificial breaks">
+                            <span class="label">Timeout range</span>
+                            <div class="form-el-group input-number">
+                                <label for="actionTimeRangeMin">Min</label>
+                                <input type="number"
+                                    data-action="updateTimerConfig"
+                                    id="actionTimeRangeMin" min="0" max="10000" value="150">
+                            </div>
+                            <div class="form-el-group input-number">
+                                <label for="actionTimeRangeMax">Max</label>
+                                <input type="number"
+                                    data-action="updateTimerConfig"
+                                    id="actionTimeRangeMax" min="0" max="10000" value="250">
+                            </div>
+                        </div>
+                        <!-- Event Types -->
+                        <!--
+                            Actuall not useful, maybe later...
+                        -->
+                        <!--
+                            <div class="form-non-group input-select">
+                            <label for="eventTypes">Event Types</label>
+                            <select multiple
+                                data-action="setTestConfig"
+                                data-key="eventTypes"
+                                id="eventTypes"
+                                title="Select which event types YpsilonEventHandler should listen for"
+                                size="4"
+                                data-style="height: 60px;">
+                                <option value="click" selected>click</option>
+                                <option value="input" selected>input</option>
+                                <option value="change" selected>change</option>
+                                <option value="focus">focus</option>
+                                <option value="blur">blur</option>
+                                <option value="submit">submit</option>
+                                <option value="keydown">keydown</option>
+                                <option value="keyup">keyup</option>
+                                <option value="mouseover">mouseover</option>
+                                <option value="mouseout">mouseout</option>
+                            </select>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-panel" style="margin-top: .5rem; display: flex; flex-flow: wrap; gap: 2rem;">
+                <div class="control-group-wrapper">
+                    <div class="control-group">
+                        <span class="label">Actions</span>
+                        <button data-action="generateElements" class="stress-test-btn">Create elements</button>
+                        <button data-action="clearElements" class="stress-test-btn" disabled
+                            style="background: #dc3545; font-weight: bold;">Remove elements</button>
+                        <div class="element-counter" style="margin-top: 2px; padding: 4px 8px; background: #f5f5f5; border-radius: 4px; font-size: 0.9em; color: #666;">
+                            Elements: <span id="elementCount">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-group-wrapper">
+                    <div class="control-group stress-test-group">
+                        <span class="label">Stress Test</span>
+                        <button data-action="stressTest" class="stress-test-btn" disabled style="background: #ffeb3b; color:#666; font-weight: bold;">🔥 STRESSTEST 🔥</button>
+                        <button id="abortTestButton" data-action="abortTest" style="background: #f44336; font-weight: bold; display: none;">ABORT TEST</button>
+                    </div>
+                </div>
+
+                <div class="control-group-wrapper" style="flex: 1;">
+                    <div class="control-group" style="height: 100%; display: flex; flex-direction: column;">
+                        <span class="label">Crossing the Lines</span>
+                        <p style="margin: 0; flex: 1;">Experience the ultimate difference between instant fresh and instant death. Once Manual listeners are bound, new HTML content dies on sight. YpsilonEventHandler's magic on the other hand doesn't care, it just works!</p>
+                        <button data-action="infinityTest" class="stress-test-btn" disabled
+                        title="This button duplicates all existing elements in the test area."
+                        style="background: #e91e63; font-weight: bold;">∞ INFINITY TEST ∞</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="test-area">
+            <div id="manualTest" class="test-section">
+                <h3>Manual Event Listeners</h3>
+                <div id="manualElements" class="elements-container">Stress pending...</div>
+            </div>
+            <div id="ypsilonTest" class="test-section hidden">
+                <h3>YpsilonEventHandlers</h3>
+                <div id="ypsilonElements" class="elements-container"></div>
+            </div>
+        </div>
+
+        <div class="extras-area">
+            <div class="stats-panel">
+                <h2>🤖 Performance Metrics</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="eventCount">0</div>
+                        <div class="stat-label">Total Events</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="eventsPerSecond">0</div>
+                        <div class="stat-label">Events/Second</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="peakEventsPerSecond">0</div>
+                        <div class="stat-label">Peak Events/Sec</div>
+                    </div>
+                </div>
+
+                <!-- Real-time Performance Indicator -->
+                <div style="margin-top: 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                        <span style="font-size: 0.9rem; font-weight: 600;">Event Throughput</span>
+                        <span style="font-size: 0.8rem; color: #666;" id="throughputStatus">Ready</span>
+                    </div>
+                    <div class="performance-indicator">
+                        <div class="performance-bar" id="performanceBar"></div>
+                    </div>
+                </div>
+
+                <!-- Benchmark Progress -->
+                <div style="margin-top: 15px; padding: 10px 10px 0; background: #f8f9fa; border-radius: 6px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                        <span style="font-size: 0.9rem; font-weight: 600;">🎯 Benchmark Progress</span>
+                        <span style="font-size: 0.8rem;" id="benchmarkProgress">0 / 3116</span>
+                    </div>
+                    <div style="height: 8px; background: #e9ecef; border-radius: 4px; overflow: hidden;">
+                        <div style="height: 100%; width: 0%; background: linear-gradient(90deg, #28a745, #17a2b8); transition: width 0.3s ease;" id="benchmarkBar"></div>
+                    </div>
+                    <div style="font-size: 0.75rem; color: #666; margin-top: 5px; text-align: center;">
+                        Target: 1250 elements = 3116 events (Browser stress at 2500+)
+                    </div>
+                </div>
+            </div>
+            <div class="config-panel">
+                <pre id="currentConfiguration"></pre>
+            </div>
+        </div>
+
+        <div class="verify-listeners">
+            <h3>🔍 Verify Assigned Listeners (Dev Console)</h3>
+            <p><em>Run this snippet to confirm the configured listeners.</em></p>
+
+            <pre style="min-height:unset;"><b
+                style="color:#888;user-select:none;margin-right:8px;">⚠️ For Chrome, type first <span class="flip-emoji">⚠️</span></b><code>allow pasting</code></pre>
+
+<pre class="auto-height" contenteditable="true">[
+window, ...document.querySelectorAll('*')
+].filter(el => {
+    const listeners = getEventListeners(el);
+    return listeners && Object.keys(listeners).length > 0;
+}).forEach((el, i) => {
+    const elementName = el === window
+        ? 'window'
+        : el === document ? 'document' : el.tagName.toLowerCase() + (el.id ? '#' + el.id : '') + (el.className ? '.' + el.className.split(' ').join('.') : '');
+    const listeners = getEventListeners(el);
+    console.log(`${i}. ${elementName}:\n`, listeners);
+})</pre>
+        </div>
+
+        <div class="info-container">
+            <h3>🍥 What in the hell is a "StressMacher"?</h3>
+            <p>Well, we're glad that you ask!</p>
+
+            <section class="main-info manual-listener-info">
+                <p>The StressMacher lives up to its name and reputation. Just create form elements and let it run wild. It simulates realistic form interactions to see how the system reacts to a flood of events triggered by user interactions. You can use the <code>⚙️ More</code> menu to configure the behavior further. It's not groundbreaking - no MemoryMonitoring bells and whistles - it's purely about flooding input elements with realistic interactions to see what works and what doesn't.</p>
+                <p><b>The Infinity Option:</b> It copies the form elements as raw HTML, basically the way such elements usually get injected into websites. When Manual listeners are active, Infinity becomes the Extinction Entity - no newly added elements will work, nada, dead on arrival. But then try YpsilonEventHandler, the Resurrector of Event Delegation, the <b>Super Delegator</b> - the only real one with wings!</p>
+            </section>
+
+            <section class="main-info manual-listener-info">
+                <h4>Manual Event Listeners (Traditional Approach)</h4>
+                <p>In this mode, every interactive element gets its own dedicated event listener. Each new button, input, and checkbox adds another listener to memory - the classical O(n) performance trap. Watch how your browser staggers under the weight of thousands of individual listeners. The <b>Infinity Option</b> becomes your digital nemesis here: click it and witness the spectacular collapse as newly injected elements land dead on arrival, completely unresponsive.</p>
+            </section>
+
+            <section class="main-info ypsilon-listener-info">
+                <h4>YpsilonEventHandler (Revolutionary O(1) Approach)</h4>
+                <p>The revolutionary DOM Event Scoping System uses only 3 universal listeners regardless of element count. Through mathematical DOM distance caching and closest-match resolution, it maintains constant O(1) performance even with infinite elements. The <b>Infinity Option</b> transforms from destroyer to creator: watch as dynamically injected elements spring to life instantly, fully interactive. This is the <b>Super Delegator</b> with wings - the Resurrector of Event Delegation!</p>
+            </section>
+        </div>
+
+
+        <div class="nav-container">
+            <!-- Navigation to other examples -->
+            <nav class="main-nav">
+                <div>
+                    <a href="./index.html" class="btn-primary">Start</a>
+                    <a href="./basic-example.html" class="btn-secondary">Basic Example</a>
+                    <a href="./reactive-y.html" class="btn-danger">Reactive Demo</a>
+                    <a href="./single-listener-multiple-actions.html" class="btn-purple">Single Listener</a>
+                    <a href="./spa.html" class="btn-success">SPA Demo</a>
+                    <a href="./stressmacher.deepseek.html" class="btn-teal btn-disabled">StressMacher</a>
+                    <a href="./multi-handler-demo.html" class="btn-warning">Multi-Handler</a>
+                    <a href="https://github.com/eypsilon/YpsilonEventHandler" class="btn-dark">GitHub</a>
+                </div>
+            </nav>
+        </div>
+
+    </div>
+
+    <button class="clear-log" data-action="clearLog">Clear Log</button>
+    <div class="log" id="eventLog"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/ypsilon-event-handler@latest/ypsilon-event-handler.min.js"></script>
+
+    <script>
+        // Write and use methods from anywhere, implement later, if
+        // you want, or not, IDK, your APP, your choice.
+        const benchmarkHandler = {
+            setLogLevel: (target, event) => {
+                loggingSystem.setLogLevel(target.value);
+            },
+
+            // updateTimingThreshold: DISABLED - Formula being calibrated in script
+            // Once perfect formula is found, this will become a simple min/max range control
+
+            toggleConfig: (target, event) => {
+                const configPanel = document.querySelector('.control-group.extra-configs');
+                if (configPanel) {
+                    const currentLabel = target.textContent;
+                    const newLabel = target.dataset.text;
+                    configPanel.classList.toggle('hidden');
+                    target.classList.toggle('active');
+                    if (currentLabel && newLabel) {
+                        target.dataset.text = currentLabel;
+                        target.textContent = newLabel;
+                    }
+                }
+            },
+        };
+
+        // Config BenchMarkHandler (the whole example needs event handler to trigger stuff, too)
+        const benchmarkSetup = {
+            eventMapping: {
+                'header': ['click', 'input', 'change'],
+                '.clear-log': ['click'],
+            },
+            config: {
+                methods: benchmarkHandler,
+                methodsFirst: false,
+                enableGlobalFallback: true,
+                enableConfigValidation: false,
+                autoTargetResolution: true,
+            },
+        }
+
+        // Config the StressMacher
+        const benchmarkConfig = {
+            simulateUsage: {
+                enabled: true,
+                timeout: null,
+            },
+            test: {
+                formElFocus: false,
+                onceOnly: false,
+                eventTypes: ['click', 'input', 'change'],
+                nestingDepth: 0,
+                createTotalButton: 0,
+                createTotalText: 0,
+                createTotalCheckbox: 0,
+                createTotalRadiobox: 0,
+                createTotalSelect: 0,
+                eventBurstCount: 5, // Number of rapid-fire events in bursts
+                maxEventsPerSecond: 1000, // Throttle if needed
+                interactionPattern: 'random' // 'random' or 'sequential'
+            }
+        };
+
+        // Initial mode
+        let currentMode = 'manual';
+
+        // Test state management
+        let testState = {
+            isRunning: false,
+            currentTest: null,
+            abortController: null
+        };
+
+        // 🎯 MAGIC FORMULA - Calibrated for perfect 1667→4 events/sec curve
+        // Formula: timeout * (index / divisor) where divisor changes by event count
+        const timingThresholds = {
+            0: 1.3,
+            2000: 2.2,
+            2500: 8.2,
+            3000: 10,
+            4000: 12,
+        };
+
+        // 📊 Current performance profile this creates:
+        // - Peak: ~1667 events/sec (blazing fast start)
+        // - Finish: ~4 events/sec (dramatic conclusion)
+        // - Perfect "gaming" tension curve
+
+        // Get current timing divisor based on event count
+        function getTimingDivisor(eventCount) {
+            let divisor = 1;
+            for (const threshold of Object.keys(timingThresholds).sort((a, b) => b - a)) {
+                if (eventCount >= parseInt(threshold)) {
+                    divisor = timingThresholds[threshold];
+                    break;
+                }
+            }
+            return divisor;
+        }
+
+        // Enhanced Performance tracking
+        const stats = {
+            eventCount: 0,
+            lastEventTime: 0,
+            eventsPerSecond: 0,
+            eventTimings: [],
+            peakEventsPerSecond: 0,
+            testStartTime: 0,
+
+            // Calculate real-time events per second
+            updateEventsPerSecond() {
+                const now = performance.now();
+                this.eventTimings.push(now);
+
+                // Keep only last 10 events for moving average
+                if (this.eventTimings.length > 10) {
+                    this.eventTimings.shift();
+                }
+
+                // Calculate events per second over the last window
+                if (this.eventTimings.length >= 2) {
+                    const timeWindow = this.eventTimings[this.eventTimings.length - 1] - this.eventTimings[0];
+                    this.eventsPerSecond = Math.round((this.eventTimings.length / timeWindow) * 1000);
+
+                    // Track peak performance
+                    if (this.eventsPerSecond > this.peakEventsPerSecond) {
+                        this.peakEventsPerSecond = this.eventsPerSecond;
+                    }
+
+                    // Update UI
+                    const epsElement = document.getElementById('eventsPerSecond');
+                    const peakElement = document.getElementById('peakEventsPerSecond');
+                    if (epsElement) epsElement.textContent = this.eventsPerSecond;
+                    if (peakElement) peakElement.textContent = this.peakEventsPerSecond;
+
+                    // Update performance bar (0-1000 events/sec scale)
+                    const performanceBar = document.getElementById('performanceBar');
+                    const statusElement = document.getElementById('throughputStatus');
+                    if (performanceBar) {
+                        const percentage = Math.min((this.eventsPerSecond / 1000) * 100, 100);
+                        performanceBar.style.width = percentage + '%';
+
+                        // Update status text with benchmark zones
+                        if (statusElement) {
+                            if (this.eventsPerSecond === 0) {
+                                statusElement.textContent = 'Ready';
+                                statusElement.style.color = '#666';
+                            } else if (this.eventsPerSecond < 100) {
+                                statusElement.textContent = 'Light Load';
+                                statusElement.style.color = '#28a745';
+                            } else if (this.eventsPerSecond < 500) {
+                                statusElement.textContent = 'Moderate Load';
+                                statusElement.style.color = '#ffc107';
+                            } else if (this.eventsPerSecond < 800) {
+                                statusElement.textContent = 'Heavy Load';
+                                statusElement.style.color = '#dc3545';
+                            } else {
+                                statusElement.textContent = 'BROWSER LIMIT!';
+                                statusElement.style.color = '#8b0000';
+                                statusElement.style.fontWeight = 'bold';
+                            }
+
+                            // Show approaching benchmark zone
+                            if (this.eventCount > 2500) {
+                                statusElement.textContent += ' ⚠️ Browser Stress Zone';
+                            } else if (this.eventCount > 3000) {
+                                statusElement.textContent += ' 🔥 Critical Zone';
+                            }
+                        }
+                    }
+                }
+            },
+
+            resetMetrics() {
+                this.eventCount = 0;
+                this.eventsPerSecond = 0;
+                this.eventTimings = [];
+                this.peakEventsPerSecond = 0;
+                this.testStartTime = performance.now();
+            }
+        };
+
+        const ypsilonHandler = {
+            instance: null
+        };
+
+        const states = {
+            elementsCreated: null
+        };
+
+        // Manual event listener management
+        const manualListeners = new Map();
+        const eventLog = document.getElementById('eventLog');
+
+        /**
+         * BenchMarkHandler setup, UI interaction handler
+         */
+        class BenchMarkHandler extends YpsilonEventHandler {
+            constructor(eventMapping, aliases, config) {
+                super(eventMapping, aliases, config);
+
+                this.cache = new Map();
+                this.activeModeEl = null; // active manual/ypsilon mode switch el
+            }
+
+            // super handler
+            handleClick(e, t)  { this.proxyHandle(e, t) }
+            handleInput(e, t)  { this.proxyHandle(e, t) }
+            handleChange(e, t) { this.proxyHandle(e, t) }
+
+            // DRY Proxy for Super handler
+            proxyHandle(event, target) {
+                const action = target.dataset.action;
+                if (!action) return;
+
+                if (typeof this[action] === 'function') {
+                    return this[action](target, event);
+                } else {
+                    // Searches in config.methods for handler
+                    const resolvedHandler = this.resolveHandler(action, 'click');
+
+                    if (typeof resolvedHandler === 'function') {
+                        resolvedHandler.call(this, target, event)
+                    }
+                }
+            }
+
+            // Cache helper
+            getCache(cacheKey)          { return this.cache.get(cacheKey) }
+            deleteCache(cacheKey)       { this.cache.remove(cacheKey) }
+            toCache(cacheKey, cacheVal) { this.cache.set(cacheKey, cacheVal) }
+
+            // Reactive config, use data-key for the resolver and set up the resolver in `getSetTestValue`
+            setTestConfig(target, event) {
+                if (event.type !== 'change') return;
+
+                const key = target.dataset.key;
+
+                if (key) {
+                    benchmarkConfig.test[key] = this.getSetTestValue(key, target);
+
+                    // Special handling for eventTypes - recreate YpsilonHandler
+                    if (key === 'eventTypes' && currentMode === 'ypsilon' && ypsilonHandler.instance) {
+                        logMessage('🔄 Event types changed - recreating YpsilonEventHandler...', '#00aa88');
+                        ypsilonHandler.instance.destroy();
+                        ypsilonHandler.instance = new YpsilonHandler();
+                    }
+                }
+
+                this.updateUiConfig();
+            }
+
+            // Used to resolve config values, if data-action="setTestConfig" used. Set the value to return for each key.
+            getSetTestValue(key, target) {
+                switch(key) {
+                    // Input values
+                    case 'nestingDepth':
+                    case 'createTotalButton':
+                    case 'createTotalText':
+                    case 'createTotalCheckbox':
+                    case 'createTotalRadiobox':
+                    case 'createTotalSelect':
+                    case 'createTotalDiv':      return target.value;
+                    // Checkboxes
+                    case 'formElFocus':
+                    case 'onceOnly':            return target.checked;
+                    // Complex data
+                    case 'eventTypes':          return Array.from(target.selectedOptions).map(option => option.value);
+                }
+                return null;
+            }
+
+            updateTimerConfig() {
+                let actionTimeRangeMin = this.getCache('actionTimeRangeMin');
+                let actionTimeRangeMax = this.getCache('actionTimeRangeMax');
+
+                if (!actionTimeRangeMin) {
+                    actionTimeRangeMin = document.getElementById('actionTimeRangeMin');
+                    this.toCache('actionTimeRangeMin', actionTimeRangeMin);
+                }
+                if (!actionTimeRangeMax) {
+                    actionTimeRangeMax = document.getElementById('actionTimeRangeMax');
+                    this.toCache('actionTimeRangeMax', actionTimeRangeMax);
+                }
+
+                benchmarkConfig.simulateUsage.timeout = {
+                    min: actionTimeRangeMin?.value || 150,
+                    max: actionTimeRangeMax?.value || 400
+                }
+
+                this.updateUiConfig();
+            }
+
+            updateUiConfig() {
+                let currentConfiguration = this.getCache('currentConfiguration');
+                if (!currentConfiguration) {
+                    currentConfiguration = document.getElementById('currentConfiguration');
+                    this.toCache('currentConfiguration', currentConfiguration);
+                }
+                currentConfiguration.textContent = JSON.stringify({ benchmarkConfig, stats }, null, 2)
+            }
+
+            /**
+             * Action handler
+             */
+
+            async setMode(target) {
+                if (this.activeModeEl === target) return;
+
+                currentMode = target.dataset.mode || currentMode;
+                let modeCache = this.getCache('modeSwitch');
+
+                if (this.activeModeEl) {
+                    this.activeModeEl.classList.remove('active');
+                } else {
+                    document.querySelector('.active[data-action="setMode"]').classList.remove('active');
+                }
+
+                this.activeModeEl = target;
+                target.classList.add('active');
+
+                if (!modeCache) {
+                    this.toCache('modeSwitch', modeCache = {
+                        manualTest: document.getElementById('manualTest'),
+                        ypsilonTest: document.getElementById('ypsilonTest'),
+                    });
+                }
+
+                modeCache.manualTest.classList.toggle('hidden', currentMode !== 'manual');
+                modeCache.ypsilonTest.classList.toggle('hidden', currentMode !== 'ypsilon');
+
+                this.clearConflictingElements(); // removes conflicting elements, switches auto between [manualTest|ypsilon]
+                this.disableStressTestButtons(); // Disable stress tests when switching modes
+
+                this._toggleYpsilonHandler();
+
+                // Update element counter after mode switch
+                this.updateElementCount();
+            }
+
+            // Removes conflicting elements on setMode
+            clearConflictingElements() {
+                const clearId = currentMode === 'manual' ? 'ypsilonElements' : 'manualElements';
+                const cacheKey = `testContainer.${clearId}`;
+                let testContainer = this.getCache(cacheKey);
+
+                if (!testContainer) {
+                    this.toCache(cacheKey, testContainer = document.getElementById(clearId));
+                }
+
+                testContainer.innerHTML = '';
+            }
+
+            // Removes all elements, complete clear
+            clearElements(target) {
+                let manualElements = this.getCache('manualElements');
+                let ypsilonElements = this.getCache('ypsilonElements');
+
+                this.disableStressTestButtons();
+
+                if (!manualElements) {
+                    manualElements = document.getElementById('manualElements');
+                    this.toCache('manualElements', manualElements);
+                }
+                if (!ypsilonElements) {
+                    ypsilonElements = document.getElementById('ypsilonElements');
+                    this.toCache('ypsilonElements', ypsilonElements);
+                }
+
+                // Traditional manual cleanup nightmare - must removeEventListener for each bound function
+                manualListeners.forEach((listenerData, element) => {
+                    try {
+                        // Must use the exact same bound function reference for removal
+                        element.removeEventListener(listenerData.type, listenerData.handler);
+                    } catch (e) {
+                        // Cleanup can fail if element already removed or bound function lost
+                        console.warn('Manual listener cleanup failed:', e);
+                    }
+                });
+
+                manualElements.innerHTML = '';
+                ypsilonElements.innerHTML = '';
+                manualListeners.clear();
+                states.elementsCreated = null;
+                // Update element counter after clearing
+                this.updateElementCount();
+            }
+
+            _toggleYpsilonHandler() {
+                if (currentMode === 'manual' && ypsilonHandler.instance !== null) {
+                    ypsilonHandler.instance.destroy();
+                    ypsilonHandler.instance = null;
+                } else if (currentMode === 'ypsilon' && !ypsilonHandler.instance) {
+                    ypsilonHandler.instance = new YpsilonHandler();
+                }
+            }
+
+            generateElements(target) {
+                const count = benchmarkConfig.test.createTotalButton;
+                states.elementsCreated = currentMode;
+
+                // Generate all element types in both containers
+                if (currentMode === 'manual') {
+                    generateAllElements('manualElements', true);
+                } else {
+                    generateAllElements('ypsilonElements', false);
+                }
+
+                // Update element counter after generation
+                this.updateElementCount();
+
+                // Enable stress test buttons after elements are created
+                this.enableStressTestButtons();
+            }
+
+            enableStressTestButtons() {
+                const stressTestButtons = document.querySelectorAll('.stress-test-btn');
+                stressTestButtons.forEach(button => {
+                    button.disabled = false;
+                    // Re-enable animation for Infinity Test button
+                    if (button.dataset.action === 'infinityTest') {
+                        button.style.animation = 'glow 2s infinite';
+                    }
+                });
+            }
+
+            disableStressTestButtons() {
+                const stressTestButtons = document.querySelectorAll('.stress-test-btn');
+                stressTestButtons.forEach(button => {
+                    // Don't disable the "Create elements" button unless a test is actually running
+                    if (button.dataset.action === 'generateElements' && !testState.isRunning) {
+                        return;
+                    }
+                    button.disabled = true;
+                });
+            }
+
+            updateElementCount() {
+                let elementCountEl = this.getCache('elementCount');
+                if (!elementCountEl) {
+                    elementCountEl = document.getElementById('elementCount');
+                    this.toCache('elementCount', elementCountEl);
+                }
+
+                if (!elementCountEl) return;
+
+                // Count elements in the currently active container
+                const activeContainer = currentMode === 'manual'
+                    ? document.getElementById('manualElements')
+                    : document.getElementById('ypsilonElements');
+
+                if (activeContainer) {
+                    const count = activeContainer.querySelectorAll('button, input, select, div[data-action]').length;
+                    elementCountEl.textContent = count.toLocaleString();
+                } else {
+                    elementCountEl.textContent = '0';
+                }
+            }
+
+            startTest(testName, abortController = null) {
+                testState.isRunning = true;
+                testState.currentTest = testName;
+                testState.abortController = abortController;
+
+                // Reset performance metrics for clean test
+                stats.resetMetrics();
+
+                // Show abort button
+                const abortButton = document.getElementById('abortTestButton');
+                if (abortButton) {
+                    abortButton.style.display = 'inline-block';
+                }
+
+                // Disable all stress test buttons
+                this.disableStressTestButtons();
+            }
+
+            endTest() {
+                testState.isRunning = false;
+                testState.currentTest = null;
+                testState.abortController = null;
+
+                // Flush any remaining logs when test ends
+                if (loggingSystem.batchTimeout) {
+                    clearTimeout(loggingSystem.batchTimeout);
+                    loggingSystem.flushBuffer();
+                }
+
+                // Hide abort button
+                const abortButton = document.getElementById('abortTestButton');
+                if (abortButton) {
+                    abortButton.style.display = 'none';
+                }
+
+                // Re-enable stress test buttons if elements exist
+                if (states.elementsCreated) {
+                    this.enableStressTestButtons();
+                }
+            }
+
+            abortTest() {
+                if (!testState.isRunning) return;
+
+                logMessage(`⛔ Aborting test: ${testState.currentTest}`, '#f44336');
+
+                // Signal abort if controller exists
+                if (testState.abortController) {
+                    testState.abortController.abort();
+                }
+
+                this.endTest();
+            }
+
+            resetStats(target) {
+                stats.resetMetrics();
+                document.getElementById('eventCount').textContent = '0';
+                document.getElementById('eventsPerSecond').textContent = '0';
+                document.getElementById('peakEventsPerSecond').textContent = '0';
+
+                // Reset performance bar
+                const performanceBar = document.getElementById('performanceBar');
+                const statusElement = document.getElementById('throughputStatus');
+                if (performanceBar) performanceBar.style.width = '0%';
+                if (statusElement) {
+                    statusElement.textContent = 'Ready';
+                    statusElement.style.color = '#666';
+                    statusElement.style.fontWeight = 'normal';
+                }
+
+                // Reset benchmark progress
+                const benchmarkProgress = document.getElementById('benchmarkProgress');
+                const benchmarkBar = document.getElementById('benchmarkBar');
+                if (benchmarkProgress) benchmarkProgress.textContent = '0 / 3116';
+                if (benchmarkBar) {
+                    benchmarkBar.style.width = '0%';
+                    benchmarkBar.style.background = 'linear-gradient(90deg, #28a745, #17a2b8)';
+                }
+
+                logMessage('📊 Performance metrics reset', '#28a745');
+            }
+
+            clearLog(target) {
+                let eventLog = this.getCache('eventLog');
+                if (!eventLog) {
+                    eventLog = document.getElementById('eventLog');
+                    this.toCache('eventLog', eventLog);
+                }
+                eventLog.innerHTML = '';
+            }
+
+            stressTest(target) {
+                stressTest(target);
+            }
+
+            // Infinity test - exponential DOM scaling to test O(1) vs O(n)
+            infinityTest(target) {
+                infinityTest(target);
+            }
+
+            /**
+             * Init reactivity, initial values in input elements are used as defaults
+             */
+            initBenchTool() {
+                const getConfigs = document.querySelectorAll('[data-action="setTestConfig"]');
+
+                if (getConfigs.length) {
+                    getConfigs.forEach((element, index) => {
+                        const key = element.dataset.key;
+
+                        if (key) {
+                            benchmarkConfig.test[key] = this.getSetTestValue(key, element);
+                            this.toCache(key, element);
+                        }
+                    });
+                }
+
+                this.updateTimerConfig()
+            }
+
+            static getRandomArbitrary(min, max) {
+                return parseInt(Math.random() * (max - min) + min, 10);
+            }
+
+            static getTimestamp() {
+                return new Date().toLocaleTimeString('es-ES', {
+                    hour24: false, hour: '2-digit', minute: '2-digit', second: '2-digit'
+                });;
+            }
+
+            static shuffleArray(array) {
+                const shuffled = [...array];
+                for (let i = shuffled.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                }
+                return shuffled;
+            }
+        }
+
+        /**
+         * To handle page interactions
+         *
+         */
+        const benchTool = new BenchMarkHandler( benchmarkSetup.eventMapping, benchmarkSetup.aliases, benchmarkSetup.config );
+
+        benchTool.initBenchTool()
+
+        function shuffleArray(array) { return BenchMarkHandler.shuffleArray(array) }
+        function getRandomArbitrary() { return BenchMarkHandler.getRandomArbitrary }
+
+        // Batch processing to reduce reflow violations
+        async function processInBatches(elements, batchSize, processFn) {
+            for (let i = 0; i < elements.length; i += batchSize) {
+                const batch = elements.slice(i, i + batchSize);
+                await new Promise(resolve => {
+                    requestAnimationFrame(() => {
+                        batch.forEach(processFn);
+                        resolve();
+                    });
+                });
+                await new Promise(resolve => setTimeout(resolve, 50));
+            }
+        }
+
+        /**
+         * YpsilonEventHandler to test setup
+         *
+         * Needs to be setup correctly to delegate events
+         */
+        class YpsilonHandler extends YpsilonEventHandler {
+            constructor() {
+                // Use configurable event types
+                const eventTypes = benchmarkConfig.test.eventTypes || ['click', 'input', 'change'];
+                super({
+                    '#ypsilonElements': eventTypes
+                }, {}, {
+                    enableGlobalFallback: true,
+                    enableConfigValidation: false,
+                });
+            }
+
+            // Super Event handlers - use DRY proxyHandle pattern like BenchMarkHandler
+            handleClick(event, target)     { this.proxyHandle(event, target) }
+            handleInput(event, target)     { this.proxyHandle(event, target) }
+            handleChange(event, target)    { this.proxyHandle(event, target) }
+            handleFocus(event, target)     { this.proxyHandle(event, target) }
+            handleBlur(event, target)      { this.proxyHandle(event, target) }
+            handleSubmit(event, target)    { this.proxyHandle(event, target) }
+            handleKeydown(event, target)   { this.proxyHandle(event, target) }
+            handleKeyup(event, target)     { this.proxyHandle(event, target) }
+            handleMouseover(event, target) { this.proxyHandle(event, target) }
+            handleMouseout(event, target)  { this.proxyHandle(event, target) }
+
+            // DRY Proxy for event handler routing
+            proxyHandle(event, target) {
+                const action = target.dataset.action;
+                if (action && this[action]) {
+                    // Filter events: only handle the PRIMARY event type for each element
+                    const elementType = target.type || target.tagName.toLowerCase();
+                    const eventType = event.type;
+
+                    // Define primary event types for different elements
+                    const shouldHandle = this.shouldHandleEvent(elementType, eventType);
+
+                    if (shouldHandle) {
+                        this[action](target, event);
+
+                        // Once Only mode: remove data-action to ensure element is touched only once
+                        if (benchmarkConfig.test.onceOnly) {
+                            target.removeAttribute('data-action');
+                            logMessage(`🎯 Once Only: Removed data-action from ${elementType} element`, '#FFA500');
+                        }
+
+                        // Log the YpsilonEventHandler action for counting - use actual value like manual does
+                        let logAction = target.value || action;
+                        logEvent('Ypsilon', logAction, target);
+                    }
+                }
+            }
+
+            // Determine if this event type should be handled for this element type
+            shouldHandleEvent(elementType, eventType) {
+                // First check if this event type is configured to be handled at all
+                const configuredEvents = benchmarkConfig.test.eventTypes || ['click', 'input', 'change'];
+                if (!configuredEvents.includes(eventType)) {
+                    return false;
+                }
+
+                // Then check element-specific primary event preferences
+                switch (elementType) {
+                    case 'button':
+                        return eventType === 'click' || (eventType === 'keydown' || eventType === 'focus' || eventType === 'blur');
+                    case 'text':
+                    case 'email':
+                    case 'password':
+                        return eventType === 'input' || (eventType === 'focus' || eventType === 'blur' || eventType === 'keydown' || eventType === 'keyup');
+                    case 'checkbox':
+                    case 'radio':
+                        return eventType === 'change' || (eventType === 'focus' || eventType === 'blur'); // Only handle change, ignore click/input
+                    case 'select-one':
+                    case 'select-multiple':
+                        return eventType === 'change' || (eventType === 'focus' || eventType === 'blur');
+                    default:
+                        // For unknown elements, allow any configured event type
+                        return true;
+                }
+            }
+
+            // Realistic button action methods
+            saveData(target, event) {}
+            deleteItem(target, event) {}
+            editRecord(target, event) {}
+            submitForm(target, event) {}
+            cancelAction(target, event) {}
+
+            // Text input action methods
+            updateUsername(target, event) {}
+            updateEmail(target, event) {}
+            updatePassword(target, event) {}
+            searchQuery(target, event) {}
+
+            // Checkbox/Radio action methods
+            toggleNotifications(target, event) {}
+            selectTheme(target, event) {}
+            setPrivacyLevel(target, event) {}
+            enableFeature(target, event) {}
+
+            // Select action methods
+            changeLanguage(target, event) {}
+            selectCountry(target, event) {}
+            chooseCategory(target, event) {}
+            pickTimezone(target, event) {}
+        }
+
+        async function simulateButtonClicks(abortSignal = null) {
+            return new Promise((resolve, reject) => {
+                const buttons = document.querySelectorAll('#manualElements button, #ypsilonElements button');
+
+                logMessage(`🔥 Simulating ${buttons.length} button clicks in RANDOM order...`);
+
+                if (buttons.length === 0) {
+                    logMessage('⚠️ No buttons found, skipping button test');
+                    resolve();
+                    return;
+                }
+
+                // RANDOMIZE: Shuffle buttons for random clicking order
+                const timer = benchmarkConfig.simulateUsage.timeout;
+                const timeouts = [];
+
+                // Add abort support with timeout cleanup
+                if (abortSignal) {
+                    abortSignal.addEventListener('abort', () => {
+                        // Clear all pending timeouts
+                        timeouts.forEach(clearTimeout);
+                        reject(new Error('Button simulation aborted'));
+                    });
+                }
+
+                shuffleArray([...buttons]).forEach((btn, index) => {
+                    const timeout = setTimeout(() => {
+                        if (abortSignal?.aborted) return;
+
+                        btn.dispatchEvent(new PointerEvent('click', { bubbles: true }));
+
+                        if (benchmarkConfig.test.formElFocus) {
+                            btn.focus();
+                        }
+                        if (index === buttons.length - 1) {
+                            setTimeout(resolve, 100);
+                        }
+                    }, BenchMarkHandler.getRandomArbitrary(timer.min, timer.max) * (index / getTimingDivisor(stats.eventCount)));
+
+                    // Store timeout for cleanup on abort
+                    timeouts.push(timeout);
+                });
+            });
+        }
+
+        async function simulateInputInteractions(abortSignal = null) {
+            return new Promise((resolve, reject) => {
+                if (abortSignal?.aborted) {
+                    reject(new Error('Input simulation aborted'));
+                    return;
+                }
+                const inputs = document.querySelectorAll('#manualElements input[type="text"], #ypsilonElements input[type="text"]');
+                const testTexts = ['Hello', 'World', 'Test', 'Performance', 'Monster', 'YpsilonEventHandler'];
+
+                logMessage(`⌨️ Simulating typing in ${inputs.length} text inputs in RANDOM order...`);
+
+                if (inputs.length === 0) {
+                    logMessage('⚠️ No text inputs found, skipping input test');
+                    resolve();
+                    return;
+                }
+
+                // RANDOMIZE: Shuffle inputs and texts for random typing order
+                const timer = benchmarkConfig.simulateUsage.timeout;
+                const timeouts = [];
+
+                // Add abort support with timeout cleanup
+                if (abortSignal) {
+                    abortSignal.addEventListener('abort', () => {
+                        // Clear all pending timeouts
+                        timeouts.forEach(clearTimeout);
+                        reject(new Error('Input simulation aborted'));
+                    });
+                }
+
+                shuffleArray([...inputs]).forEach((input, index) => {
+                    const mainTimeout = setTimeout(async () => {
+                        if (abortSignal?.aborted) return;
+
+                        if (benchmarkConfig.test.formElFocus) {
+                            input.focus();
+                        }
+
+                        // Simulate real typing with random text
+                        const text = testTexts[index % testTexts.length];
+                        await simulateTyping(input, text, abortSignal);
+
+                        if (abortSignal?.aborted) return;
+
+                        const blurTimeout = setTimeout(async () => {
+                            if (abortSignal?.aborted) return;
+
+                            if (benchmarkConfig.test.formElFocus) {
+                                input.blur();
+                            }
+                            if (index === inputs.length - 1) {
+                                setTimeout(resolve, 200);
+                            }
+                        }, text.length * 50);
+
+                        timeouts.push(blurTimeout);
+                    }, BenchMarkHandler.getRandomArbitrary(timer.min, timer.max) * (index / getTimingDivisor(stats.eventCount)));
+
+                    timeouts.push(mainTimeout);
+                });
+            });
+        }
+
+        async function simulateTyping(input, text, abortSignal = null) {
+            return new Promise((resolve, reject) => {
+                let currentText = '';
+                const timeouts = [];
+
+                // Add abort support - just clean up timeouts, don't reject
+                if (abortSignal) {
+                    abortSignal.addEventListener('abort', () => {
+                        timeouts.forEach(clearTimeout);
+                        resolve(); // Resolve instead of reject to avoid uncaught promise
+                    });
+                }
+
+                [...text].forEach((char, index) => {
+                    const timeout = setTimeout(() => {
+                        if (abortSignal?.aborted) return;
+
+                        currentText += char;
+                        input.value = currentText;
+                        input.dispatchEvent(new InputEvent('input', {
+                            bubbles: true,
+                            data: char
+                        }));
+
+                        // Resolve when finished typing
+                        if (index === text.length - 1) {
+                            setTimeout(resolve, 50);
+                        }
+                    }, BenchMarkHandler.getRandomArbitrary(25, 85) * (index / getTimingDivisor(stats.eventCount)));
+
+                    timeouts.push(timeout);
+                });
+            });
+        }
+
+        async function simulateCheckboxRadio(abortSignal = null) {
+            if (abortSignal?.aborted) throw new Error('Checkbox/Radio simulation aborted');
+
+            return new Promise((resolve, reject) => {
+                const checkboxes = document.querySelectorAll('#manualElements input[type="checkbox"], #ypsilonElements input[type="checkbox"]');
+                const radios = document.querySelectorAll('#manualElements input[type="radio"], #ypsilonElements input[type="radio"]');
+                const timer = benchmarkConfig.simulateUsage.timeout;
+
+                if (checkboxes.length === 0 && radios.length === 0) {
+                    logMessage('⚠️ No checkboxes or radio buttons found, skipping checkbox test');
+                    resolve();
+                    return;
+                }
+
+                logMessage(`☑️ Simulating ${checkboxes.length} checkboxes and ${radios.length} radio buttons in RANDOM order...`);
+
+                const timeouts = [];
+                let completedCount = 0;
+                const totalElements = checkboxes.length + [...radios].filter(radio => !radio.checked).length;
+
+                // Add abort support
+                if (abortSignal) {
+                    abortSignal.addEventListener('abort', () => {
+                        timeouts.forEach(clearTimeout);
+                        reject(new Error('Checkbox/Radio simulation aborted'));
+                    });
+                }
+
+                function checkComplete() {
+                    completedCount++;
+                    if (completedCount >= totalElements) {
+                        setTimeout(resolve, 100); // Small buffer to ensure all events are processed
+                    }
+                }
+
+                // Process checkboxes with proper timing control
+                shuffleArray([...checkboxes]).forEach((checkbox, index) => {
+                    const timeout = setTimeout(() => {
+                        if (abortSignal?.aborted) return;
+
+                        if (benchmarkConfig.test.formElFocus) {
+                            checkbox.focus();
+                        }
+                        checkbox.checked = !checkbox.checked;
+                        checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+                        checkComplete();
+                    }, BenchMarkHandler.getRandomArbitrary(timer.min, timer.max) * (index / getTimingDivisor(stats.eventCount)));
+
+                    timeouts.push(timeout);
+                });
+
+                // Process radios with proper timing control
+                shuffleArray([...radios]).forEach((radio, index) => {
+                    if (!radio.checked) {
+                        const timeout = setTimeout(() => {
+                            if (abortSignal?.aborted) return;
+
+                            if (benchmarkConfig.test.formElFocus) {
+                                radio.focus();
+                            }
+                            radio.checked = true;
+                            radio.dispatchEvent(new Event('change', { bubbles: true }));
+                            checkComplete();
+                        }, BenchMarkHandler.getRandomArbitrary(timer.min, timer.max) * (index / getTimingDivisor(stats.eventCount)));
+
+                        timeouts.push(timeout);
+                    }
+                });
+
+                // If no elements to process, resolve immediately
+                if (totalElements === 0) {
+                    resolve();
+                }
+            });
+        }
+
+        async function simulateFormInteractions(abortSignal = null) {
+            if (abortSignal?.aborted) throw new Error('Form simulation aborted');
+            return new Promise((resolve) => {
+                const selects = document.querySelectorAll('#manualElements select, #ypsilonElements select');
+                const timer = benchmarkConfig.simulateUsage.timeout;
+
+                logMessage(`📋 Simulating ${selects.length} form interactions...`);
+
+                if (selects.length === 0) {
+                    logMessage('⚠️ No select elements found, skipping form test');
+                    resolve();
+                    return;
+                }
+
+                selects.forEach((select, index) => {
+                    setTimeout(() => {
+                        if (select.options.length > 1) {
+                            if (benchmarkConfig.test.formElFocus) {
+                                select.focus();
+                            }
+
+                            const randomIndex = Math.floor(Math.random() * select.options.length);
+                            select.selectedIndex = randomIndex;
+                            select.dispatchEvent(new Event('change', { bubbles: true }));
+                        }
+                    }, BenchMarkHandler.getRandomArbitrary(timer.min, timer.max) * (index / getTimingDivisor(stats.eventCount)));
+                });
+
+                setTimeout(resolve, selects.length * 150 + 200);
+            });
+        }
+
+        async function simulateMouseBehaviors(abortSignal = null) {
+            if (abortSignal?.aborted) throw new Error('Mouse simulation aborted');
+            return new Promise((resolve) => {
+                const allElements = document.querySelectorAll('#manualElements *, #ypsilonElements *');
+                const sampleElements = [...allElements].slice(0, Math.min(10, allElements.length));
+
+                logMessage(`🖱️ Simulating mouse behaviors on ${sampleElements.length} elements...`);
+
+                sampleElements.forEach((element, index) => {
+                    setTimeout(() => {
+                        // Simulate mouse enter/leave
+                        element.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
+
+                        setTimeout(() => {
+                            element.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
+                        }, 100);
+                    }, BenchMarkHandler.getRandomArbitrary(50, 200) * (index / getTimingDivisor(stats.eventCount)));
+                });
+
+                setTimeout(resolve, sampleElements.length * 150 + 300);
+            });
+        }
+
+        async function stressTest(target) {
+            const abortController = new AbortController();
+
+            try {
+                target.textContent = '🔥 » STRESSING 🔥';
+                target.disabled = true;
+
+                // Start test state management
+                benchTool.startTest('STRESSTEST', abortController);
+
+                logMessage('🔥 STRESSTEST: Generating ALL element types simultaneously!');
+                markTestArea('running', 'add');
+
+                if (states.elementsCreated !== currentMode) {
+                    generateAllElementsOnly();
+                }
+
+                // Check for abort
+                if (abortController.signal.aborted) throw new Error('Test aborted');
+
+                await new Promise((resolve, reject) => {
+                    const timeout = setTimeout(resolve, 1000);
+                    abortController.signal.addEventListener('abort', () => {
+                        clearTimeout(timeout);
+                        reject(new Error('Test aborted'));
+                    });
+                });
+
+                // Start comprehensive stress testing
+                logMessage('🚀 UFF TEST: Starting comprehensive stress test...');
+
+                // Check for abort before running stress tests
+                if (abortController.signal.aborted) throw new Error('Test aborted');
+
+                // Run all stress tests simultaneously with abort support
+                await Promise.allSettled([
+                    simulateButtonClicks(abortController.signal),
+                    simulateInputInteractions(abortController.signal),
+                    simulateCheckboxRadio(abortController.signal),
+                    simulateFormInteractions(abortController.signal),
+                    simulateMouseBehaviors(abortController.signal)
+                ]).then(results => {
+                    // Check if any simulation was actually aborted
+                    const abortedResults = results.filter(r =>
+                        r.status === 'rejected' && r.reason?.message?.includes('aborted')
+                    );
+
+                    if (abortedResults.length > 0 && !abortController.signal.aborted) {
+                        // Simulations were aborted but controller wasn't - this is unexpected
+                        throw new Error('Simulations aborted unexpectedly');
+                    } else if (abortController.signal.aborted) {
+                        // This is expected abort - throw to exit gracefully
+                        throw new Error('Test aborted');
+                    }
+
+                    // Log any other failures
+                    results.forEach((result, index) => {
+                        if (result.status === 'rejected' && !result.reason?.message?.includes('aborted')) {
+                            const simNames = ['Button', 'Input', 'Checkbox/Radio', 'Form', 'Mouse'];
+                            console.warn(`${simNames[index]} simulation failed:`, result.reason);
+                        }
+                    });
+                });
+
+                // Mark test as finished
+                markTestArea('running', 'remove');
+                markTestArea('finished', 'add');
+
+                // Wait for final memory cleanup and measurement
+                await new Promise(resolve => setTimeout(resolve, 500));
+
+                // Cleanup UI
+                setTimeout(() => {
+                    target.textContent = '🔥 STRESSTEST 🔥';
+                    target.disabled = false;
+                    markTestArea('finished', 'remove');
+                    benchTool.endTest(); // End test state management
+                    logMessage('🎖️ Ultimate Fury Fire Test COMPLETED successfully!', '#4caf50');
+                }, 2000);
+
+            } catch (error) {
+                console.error('STRESSTEST failed:', error);
+
+                const isAborted = error.message === 'Test aborted';
+                if (!isAborted) {
+                    logMessage('❌ STRESSTEST failed: ' + error.message, '#ff5722');
+                }
+
+                // Reset UI on error/abort
+                target.textContent = '🔥 STRESSTEST 🔥';
+                target.disabled = false;
+                benchTool.endTest(); // End test state management
+                markTestArea('running', 'remove');
+                markTestArea('finished', 'remove');
+            }
+        }
+
+        // Infinity Test - Exponential DOM scaling to prove O(1) vs O(n)
+        async function infinityTest(target) {
+            const abortController = new AbortController();
+
+            try {
+                target.innerHTML = '∞ <span>INFINITING</span> ∞';
+                target.disabled = true;
+
+                // Start test state management
+                benchTool.startTest('INFINITY TEST', abortController);
+
+                logMessage('∞ INFINITY TEST: Starting exponential DOM scaling to test O(1) vs O(n) performance...', '#e91e63');
+
+                // Get current active container
+                const activeContainer = currentMode === 'manual'
+                    ? document.getElementById('manualElements')
+                    : document.getElementById('ypsilonElements');
+
+                if (activeContainer.innerHTML) {
+                    // Simply duplicate the existing content
+                    activeContainer.insertAdjacentHTML('beforeend', activeContainer.innerHTML);
+                    // Update element counter after scaling
+                    if (benchTool && benchTool.updateElementCount) {
+                        benchTool.updateElementCount();
+                    }
+                }
+
+                setTimeout(() => {
+                    target.innerHTML = '∞ INFINITY TEST ∞';
+                    target.disabled = false;
+                    benchTool.endTest(); // End test state management
+                }, 500);
+
+            } catch (error) {
+                console.error('Infinity test failed:', error);
+
+                const isAborted = error.message === 'Test aborted';
+                if (!isAborted) {
+                    logMessage('❌ Infinity test failed: ' + error.message, '#ff5722');
+                }
+
+                target.innerHTML = '∞ INFINITY TEST ∞';
+                target.disabled = false;
+                benchTool.endTest(); // End test state management
+            }
+        }
+
+        // Performance-Optimized Logging System
+        const loggingSystem = {
+            buffer: [],
+            batchTimeout: null,
+            logLevel: 'minimal', // 'minimal', 'summary', 'verbose'
+            maxEntries: 1000,
+            keystrokeBuffer: new Map(), // For aggregating keystrokes
+
+            setLogLevel(level) {
+                // Prevent duplicate calls
+                if (this.logLevel === level) return;
+
+                this.logLevel = level;
+                const messages = {
+                    minimal: '⚡ Minimal logging: Only essential messages',
+                    summary: '📊 Summary logging: Aggregated events for performance',
+                    verbose: '🔍 Verbose logging: Every single event (may impact performance)'
+                };
+                logMessage(messages[level], '#FF6B35');
+            },
+
+            batchLog(entry) {
+                this.buffer.push(entry);
+
+                // Clear existing timeout
+                if (this.batchTimeout) clearTimeout(this.batchTimeout);
+
+                // Batch flush using requestAnimationFrame for smooth performance
+                this.batchTimeout = setTimeout(() => {
+                    requestAnimationFrame(() => {
+                        this.flushBuffer();
+                    });
+                }, 50); // 50ms batching
+            },
+
+            flushBuffer() {
+                if (this.buffer.length === 0) return;
+
+                const fragment = document.createDocumentFragment();
+
+                // Process keystroke aggregation
+                this.processKeystrokeAggregation();
+
+                // Add buffered entries
+                this.buffer.forEach(entry => fragment.appendChild(entry));
+
+                // Maintain max entries limit
+                while (eventLog.children.length + this.buffer.length > this.maxEntries) {
+                    eventLog.removeChild(eventLog.firstChild);
+                }
+
+                eventLog.appendChild(fragment);
+                this.buffer = [];
+
+                // Auto-scroll to bottom
+                eventLog.scrollTop = eventLog.scrollHeight;
+            },
+
+            processKeystrokeAggregation() {
+                for (const [targetId, data] of this.keystrokeBuffer) {
+                    if (data.count > 1) {
+                        const entry = document.createElement('div');
+                        entry.className = 'log-entry';
+                        entry.innerHTML = `
+                            <span class="log-date" style="color:${data.color};">[${data.lastTime}]</span>
+                            <span class="handler-type" style="color:${data.color};">📝 ${data.type}</span>
+                            <small>→</small> <span class="method-note" title="Typed aggregated">Typed "${data.fullText}" (${data.count} keys)</span>
+                            <small>→</small> <span class="log-data-last-col" title="${data.target}">${data.target}</span>
+                        `;
+                        this.buffer.push(entry);
+                        // Keystroke stats already counted individually above
+                    }
+                }
+                this.keystrokeBuffer.clear();
+            }
+        };
+
+        // Quantum Based Logger
+        function logEvent(handlerType, methodName, target, color = '#00ff00') {
+            const timestamp = BenchMarkHandler.getTimestamp();
+
+            let targetInfo = target.tagName.toLowerCase();
+            if (target.id) targetInfo += `#${target.id}`;
+            if (target.dataset && target.dataset.action) targetInfo += `[action:${target.dataset.action}]`;
+
+            // Always update statistics regardless of log level
+            stats.eventCount++;
+            stats.updateEventsPerSecond();
+            document.getElementById('eventCount').textContent = stats.eventCount;
+
+            // Update benchmark progress
+            const benchmarkProgress = document.getElementById('benchmarkProgress');
+            const benchmarkBar = document.getElementById('benchmarkBar');
+            if (benchmarkProgress) {
+                benchmarkProgress.textContent = `${stats.eventCount} / 3116`;
+            }
+            if (benchmarkBar) {
+                const percentage = Math.min((stats.eventCount / 3116) * 100, 100);
+                benchmarkBar.style.width = percentage + '%';
+
+                // Change color based on progress
+                if (stats.eventCount >= 3116) {
+                    benchmarkBar.style.background = '#28a745'; // Success green
+                } else if (stats.eventCount >= 2500) {
+                    benchmarkBar.style.background = 'linear-gradient(90deg, #ffc107, #dc3545)'; // Warning to danger
+                } else {
+                    benchmarkBar.style.background = 'linear-gradient(90deg, #28a745, #17a2b8)'; // Default
+                }
+            }
+
+            // Handle different log levels
+            if (loggingSystem.logLevel === 'minimal') {
+                // Only log important messages, skip all events (but stats still count)
+                return;
+            }
+
+            // Keystroke aggregation for text inputs (summary and minimal modes)
+            if (target.type === 'text' && methodName && methodName.length === 1 && loggingSystem.logLevel !== 'verbose') {
+                const targetId = target.id || target.tagName + Math.random().toString(36).substr(2, 9);
+
+                if (!loggingSystem.keystrokeBuffer.has(targetId)) {
+                    loggingSystem.keystrokeBuffer.set(targetId, {
+                        type: handlerType,
+                        target: targetInfo,
+                        fullText: '',
+                        count: 0,
+                        color: color,
+                        lastTime: timestamp
+                    });
+                }
+
+                const data = loggingSystem.keystrokeBuffer.get(targetId);
+                data.fullText += methodName;
+                data.count++;
+                data.lastTime = timestamp;
+
+                return; // Skip individual keystroke logging
+            }
+
+            // Skip verbose logging during stress tests unless in verbose mode
+            if (loggingSystem.logLevel === 'summary' && testState.isRunning &&
+                (methodName === 'onClick' || methodName === 'onChange' || methodName === 'onInput')) {
+                return;
+            }
+
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.innerHTML = `
+                <span class="log-date" style="color:${color};">[${timestamp}]</span>
+                <span class="handler-type" style="color:${color};">${handlerType}</span>
+                <small>→</small> <span class="method-note" title="${methodName}">${methodName}</span>
+                <small>→</small> <span class="log-data-last-col" title="${targetInfo}">${targetInfo}</span>
+            `;
+
+            // Use batched logging for performance
+            loggingSystem.batchLog(entry);
+        }
+
+        function logMessage(messsage, color = '#00ff00') {
+            const timestamp = BenchMarkHandler.getTimestamp();
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.innerHTML = `
+                <span class="log-date" style="color:${color};">[${timestamp}]</span>
+                <span class="handler-type" style="color:${color};">${messsage}</span>
+            `;
+            eventLog.appendChild(entry);
+            eventLog.scrollTop = eventLog.scrollHeight;
+        }
+
+        // Common handler for all events
+        function handleCommonEvent(event, actionPrefix = '') {
+            const target = event.target;
+            let action = 'unknown';
+
+            if (target.dataset && target.dataset.action) {
+                action = target.value || target.dataset.action;
+
+                // Once Only mode: remove data-action to ensure element is touched only once
+                if (benchmarkConfig.test.onceOnly && currentMode === 'manual') {
+                    target.removeAttribute('data-action');
+                    const elementType = target.type || target.tagName.toLowerCase();
+                    logMessage(`🎯 Once Only: Removed data-action from ${elementType} element (Manual)`, '#FFA500');
+                }
+            } else if (target.tagName === 'BUTTON') {
+                action = target.textContent.trim().toLowerCase().replace(/\s+/g, '-');
+            } else if (target.id) {
+                action = target.id;
+            }
+
+            if (!target.value) {
+                action = actionPrefix + action;
+            }
+
+            logEvent(currentMode === 'manual' ? 'Manual' : 'Ypsilon',
+                    action,
+                    target,
+                    currentMode === 'manual' ? '#4a6fa5' : '#00aa88');
+        }
+
+        // Helper to create elements
+        function createElement(type, index, addAction) {
+            let element,
+                label,
+                labelChild,
+                labelWrapper;
+
+            // Realistic action names for different element types
+            const buttonActions = ['saveData', 'deleteItem', 'editRecord', 'submitForm', 'cancelAction'];
+            const inputActions = ['updateUsername', 'updateEmail', 'updatePassword', 'searchQuery'];
+            const checkboxActions = ['toggleNotifications', 'enableFeature'];
+            const radioActions = ['selectTheme', 'setPrivacyLevel'];
+            const selectActions = ['changeLanguage', 'selectCountry', 'chooseCategory', 'pickTimezone'];
+
+            // Pick a random amount of options to use, so they differ
+            const selectOptions = [
+                { value: 'option1', text: 'Option 1' },
+                { value: 'option2', text: 'Option 2' },
+                { value: 'option3', text: 'Option 3' },
+                { value: 'option4', text: 'Option 4' },
+                { value: 'option5', text: 'Option 5' },
+                { value: 'option6', text: 'Option 6' },
+                { value: 'option7', text: 'Option 7' },
+                { value: 'option8', text: 'Option 8' },
+                { value: 'option9', text: 'Option 9' },
+                { value: 'option10', text: 'Option 10' },
+            ];
+
+            switch (type) {
+                case 'button':
+                    element = document.createElement('button');
+                    element.className = 'test-button';
+                    const buttonAction = buttonActions[index % buttonActions.length];
+                    element.textContent = buttonAction ? `${buttonAction.replace(/([A-Z])/g, ' $1').trim()} ${index}` : `Button ${index}`;
+                    if (addAction && buttonAction) {
+                        element.dataset.action = buttonAction;
+                    }
+                    break;
+                case 'text':
+                    element = document.createElement('input');
+                    element.className = 'test-input';
+                    element.type = 'text';
+                    element.name = `input-${index}`;
+                    element.defaultValue = '';
+                    const inputAction = inputActions[index % inputActions.length];
+                    element.placeholder = inputAction ? `${inputAction.replace(/([A-Z])/g, ' $1').trim()} ${index}` : `Input ${index}`;
+                    if (addAction && inputAction) {
+                        element.dataset.action = inputAction;
+                    }
+                    break;
+                case 'select':
+                    element = document.createElement('select');
+                    element.className = 'test-select';
+                    element.name = `select-${index}`;
+
+                    const selectAction = selectActions[index % selectActions.length];
+
+                    // Create option elements with realistic values - use random amount from selectOptions
+                    const numOptions = Math.floor(Math.random() * 6) + 3; // 3-8 options
+                    const shuffledOptions = shuffleArray([...selectOptions]).slice(0, numOptions);
+
+                    const options = [
+                        { value: '', text: selectAction ? `${selectAction.replace(/([A-Z])/g, ' $1').trim()} ${index}` : `Select ${index}` },
+                        ...shuffledOptions
+                    ];
+
+                    options.forEach(opt => {
+                        const option = document.createElement('option');
+                        option.value = opt.value;
+                        option.textContent = opt.text;
+                        element.appendChild(option);
+                    });
+
+                    if (addAction && selectAction) {
+                        element.dataset.action = selectAction;
+                    }
+                    break;
+                case 'checkbox':
+                    element = document.createElement('input');
+                    label = document.createElement('label');
+                    labelChild = document.createElement('span');
+                    labelWrapper = document.createElement('div');
+
+                    labelWrapper.className = 'test-checkbox-wrap';
+                    element.className = 'test-checkbox';
+                    element.type = 'checkbox';
+                    element.name = `checkbox-${index}`;
+                    // No ID needed - nested in label for automatic association
+                    const checkboxAction = checkboxActions[index % checkboxActions.length];
+                    labelChild.textContent = checkboxAction ? `${checkboxAction.replace(/([A-Z])/g, ' $1').trim()} ${index}` : `Checkbox ${index}`;
+
+                    if (addAction && checkboxAction) {
+                        element.dataset.action = checkboxAction;
+                    }
+
+                    label.appendChild(element);
+                    label.appendChild(labelChild);
+                    labelWrapper.appendChild(label);
+
+                    return labelWrapper;
+                case 'radio':
+                    element = document.createElement('input');
+                    label = document.createElement('label');
+                    labelChild = document.createElement('span');
+                    labelWrapper = document.createElement('div');
+
+                    labelWrapper.className = 'test-checkbox-radio';
+                    element.className = 'test-radio';
+                    element.type = 'radio';
+                    // Create separate radio groups to avoid conflicts
+                    element.name = `radio-group-${Math.floor(index / 5)}`; // Groups of 5 radios
+                    element.value = `radio-value-${index}`;
+                    // No ID needed - nested in label for automatic association
+                    const radioAction = radioActions[index % radioActions.length];
+                    labelChild.textContent = radioAction ? `${radioAction.replace(/([A-Z])/g, ' $1').trim()} ${index}` : `Radio ${index}`;
+
+                    if (addAction && radioAction) {
+                        element.dataset.action = radioAction;
+                    }
+
+                    label.appendChild(element);
+                    label.appendChild(labelChild);
+                    labelWrapper.appendChild(label);
+
+                    return labelWrapper;
+            }
+
+            return element;
+        }
+
+        function createNestedStructure(element, depth) {
+            if (depth <= 0) return element;
+
+            const wrapper = document.createElement('div');
+            wrapper.style.paddingLeft = '20px';
+            wrapper.style.margin = '5px 0';
+            wrapper.style.borderLeft = '1px solid #ddd';
+
+            wrapper.appendChild(element);
+            return createNestedStructure(wrapper, depth - 1);
+        }
+
+        function generateAllElementsOnly() {
+            states.elementsCreated = currentMode;
+
+            // Generate all element types in both containers
+            if (currentMode === 'manual') {
+                generateAllElements('manualElements', true);
+            } else {
+                generateAllElements('ypsilonElements', false);
+            }
+        }
+
+        function generateAllElements(containerId, isManual) {
+            const container = document.getElementById(containerId);
+            const elementTypes = ['button', 'text', 'checkbox', 'radio', 'select'];
+
+            container.innerHTML = ''; // Clear existing elements
+
+            const numKeys = {
+                button:   'createTotalButton',
+                text:     'createTotalText',
+                checkbox: 'createTotalCheckbox',
+                radio:    'createTotalRadiobox',
+                select:   'createTotalSelect',
+                div:      'createTotalDiv',
+            };
+
+            elementTypes.forEach(type => {
+                const counterConfigKey = numKeys[type];
+                const total = benchmarkConfig.test[counterConfigKey];
+
+                if (!total) return;
+
+                for (let i = 0; i < total; i++) {
+                    const element = createElement(type, i, true);
+                    container.appendChild(element);
+
+                    // Manual listener management nightmare - traditional approach
+                    if (isManual) {
+                        if (type === 'button') {
+                            const actualElement = element.tagName === 'DIV' ? element.querySelector('input, button') : element;
+
+                            // Traditional approach: individual handlers with bind() - memory leak prone
+                            function handleButtonClick(event) {
+                                handleCommonEvent(event);
+                            }
+
+                            // Bind to preserve context (creates new function every time - leak!)
+                            const boundHandler = handleButtonClick.bind(this);
+                            actualElement.addEventListener('click', boundHandler);
+
+                            // Must track bound functions for cleanup nightmare
+                            manualListeners.set(actualElement, {
+                                type: 'click',
+                                handler: boundHandler,
+                                originalHandler: handleButtonClick
+                            });
+                        }
+                        else if (type === 'text') {
+                            // Traditional approach: separate handler functions with bind()
+                            function handleTextInput(event) {
+                                handleCommonEvent(event, 'input-');
+                            }
+
+                            // Bind creates new function reference - memory overhead
+                            const boundHandler = handleTextInput.bind(this);
+                            element.addEventListener('input', boundHandler);
+
+                            manualListeners.set(element, {
+                                type: 'input',
+                                handler: boundHandler,
+                                originalHandler: handleTextInput
+                            });
+                        }
+                        else if (type === 'checkbox' || type === 'radio') {
+                            const actualElement = element.querySelector('input');
+
+                            // Traditional approach: different handler per element type
+                            function handleCheckboxRadioChange(event) {
+                                handleCommonEvent(event, 'change-');
+                            }
+
+                            // More bind() calls = more memory overhead
+                            const boundHandler = handleCheckboxRadioChange.bind(this);
+                            actualElement.addEventListener('change', boundHandler);
+
+                            manualListeners.set(actualElement, {
+                                type: 'change',
+                                handler: boundHandler,
+                                originalHandler: handleCheckboxRadioChange
+                            });
+                        }
+                        else if (type === 'select') {
+                            // Traditional approach: separate handler for select elements
+                            function handleSelectChange(event) {
+                                handleCommonEvent(event, 'select-');
+                            }
+
+                            // Another bind() call = more memory overhead
+                            const boundHandler = handleSelectChange.bind(this);
+                            element.addEventListener('change', boundHandler);
+
+                            manualListeners.set(element, {
+                                type: 'change',
+                                handler: boundHandler,
+                                originalHandler: handleSelectChange
+                            });
+                        }
+                    }
+                }
+            });
+        }
+
+        function markTestArea(setState, fn = 'add') {
+            document.querySelector('.test-area').classList[fn](setState);
+        }
+
+        // Initialize with manual mode
+        benchTool.setMode(document.querySelector('.active[data-action="setMode"]'));
+    </script>
+
+    <div class="src-nav">
+        <nav>
+            <small><i>© Sunny DeepSeek & Claude Van DOM & Engin Ypsilon</i></small>
+        </nav>
+    </div>
+
+</body>
+</html>

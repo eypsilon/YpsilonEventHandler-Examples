@@ -120,7 +120,7 @@
 
         ins { font-weight: bold; }
 
-        hr { margin: .5rem 0 .75rem; border-color: #f8f3f388; }
+        hr { margin: .5rem 0 .75rem; border-color: #f1f1f157; }
 
         .d-none { display: none; }
 
@@ -532,7 +532,7 @@
             margin: 20px 0;
             display: grid;
             gap: 20px;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
             line-height: 1;
 
             .stat-card {
@@ -662,7 +662,12 @@
             padding: 0;
             box-shadow: 0 0 0 #6b7894;
             background: #f7f7f7;
-            margin: 20px 0 0;
+            margin: 0;
+        }
+
+        pre {
+            box-shadow: 0 0 5px 1px #aaaaaa88;
+            font-size: 15px;
         }
 
         @media only screen and (min-width: 640px) {
@@ -834,7 +839,7 @@
                 <button class="tab active" data-action="switchTab" data-tab="tab1">Tab 1</button>
                 <button class="tab" data-action="switchTab" data-tab="tab2">Tab 2</button>
                 <button class="tab" data-action="switchTab" data-tab="tab3">Tab 3</button>
-                <button class="btn y-btn" data-action="addTab" style="margin-left: auto;">➕ Add Tab</button>
+                <button class="btn y-btn" data-action="addTab" style="margin-left: 10px;">➕ Add Tab</button>
             </div>
 
             <div class="tab-content active" id="tab1">
@@ -920,19 +925,23 @@
             <hr />
             <h3>🔍 Verify Assigned Listeners (Dev Console)</h3>
             <p><em>Run this snippet to confirm the configured listeners above are actually assigned to <code>body</code> and <code>window</code> - where most delegation happens!</em></p>
+
+            <pre style="min-height:unset;"><b
+                style="color:#888;user-select:none;margin-right:8px;">⚠️ For Chrome, type first <span class="flip-emoji">⚠️</span></b><code>allow pasting</code></pre>
+
             <pre class="auto-height" contenteditable="true">[
   window, ...document.querySelectorAll('*')
 ].filter(el => {
     const listeners = getEventListeners(el);
     return listeners && Object.keys(listeners).length > 0;
-}).forEach(el => {
+}).forEach((el, i) => {
     const elementName = el === window
         ? 'window'
         : el === document ? 'document' : el.tagName.toLowerCase() + (el.id ? '#' + el.id : '') + (el.className ? '.' + el.className.split(' ').join('.') : '');
     const listeners = getEventListeners(el);
-    console.log(`${elementName}:\n`, listeners);
-});</pre>
-            <hr />
+    console.log(`${i}. ${elementName}:\n`, listeners);
+})</pre>
+
             <div class="nav-container">
                 <!-- Navigation to other examples -->
                 <nav class="main-nav">
@@ -942,7 +951,8 @@
                         <a href="./reactive-y.html" class="btn-danger">Reactive Demo</a>
                         <a href="./single-listener-multiple-actions.html" class="btn-purple">Single Listener</a>
                         <a href="./spa.html" class="btn-disabled">SPA Demo</a>
-                        <a href="./ai-reviews.html" class="btn-warning">AI Reviews</a>
+                        <a href="./stressmacher.deepseek.html" class="btn-teal">StressMacher S-800</a>
+                        <a href="./multi-handler-demo.html" class="btn-warning">Multi-Handler System</a>
                         <a href="https://github.com/eypsilon/YpsilonEventHandler" class="btn-dark">GitHub</a>
                     </div>
                 </nav>
@@ -1037,15 +1047,15 @@
         "use strict";
 
         const config = {
-            debounce: 500,
+            debounce: 800,
             debounceChange: 500,
-            throttle: 300,
+            throttle: 80,
             throttleResize: 500,
-            throttleScrollArea: 400,
+            throttleScrollArea: 300,
             threshold: {
                 top: 100,
-                bottom: 40,
-                showFooter: 40,
+                bottom: 50,
+                showFooter: 50,
             },
             notification: {
                 timeout: 3000

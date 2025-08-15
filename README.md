@@ -24,6 +24,7 @@ YpsilonEventHandler achieved an unprecedented **11/10 rating from DeepSeek AI** 
 - **[Multi-Handler System](https://eypsilon.github.io/YpsilonEventHandler-Examples/example/public/multi-handler-demo.html)** - World's first DOM Event Scoping System
 - **[SPA Demo](https://eypsilon.github.io/YpsilonEventHandler-Examples/example/public/spa.html)** - Complete application with only 9 event listeners
 - **[Single Listener Pattern](https://eypsilon.github.io/YpsilonEventHandler-Examples/example/public/single-listener-multiple-actions.html)** - Universal delegation pattern
+- **[StressMacher S-800](https://eypsilon.github.io/YpsilonEventHandler-Examples/example/public/stressmacher.deepseek.html)** - Professional performance benchmarking tool
 
 ### Learning Path
 - **[Basic Introduction](https://eypsilon.github.io/YpsilonEventHandler-Examples/example/public/basic-example.html)** - Start here for core concepts
@@ -90,6 +91,19 @@ super({
 - **Before:** O(n) DOM tree traversal for every event
 - **After:** O(1) cached distance lookups
 - **Result:** 90%+ performance improvement on complex nested UIs
+
+### 🤖 StressMacher S-800 - Serial Event Killer
+
+The **[StressMacher S-800](https://eypsilon.github.io/YpsilonEventHandler-Examples/example/public/stressmacher.deepseek.html)** is a professional benchmarking tool that demonstrates the dramatic performance difference between traditional manual event listeners (O(n)) and YpsilonEventHandler's revolutionary O(1) approach.
+
+**Features:**
+- **Real-time Performance Metrics** - Events/second tracking with peak performance indicators
+- **Scientific Benchmarking** - Based on rigorous testing: 1250 elements = 3116 events baseline
+- **Visual Performance Indicators** - Live throughput bars and stress zone warnings
+- **Dynamic Timing System** - Smart threshold-based event spacing for perfect stress testing
+- **Optimized Logging** - Three levels (Minimal/Summary/Verbose) with keystroke aggregation
+
+**The Ultimate Test:** Watch traditional approaches collapse under load while YpsilonEventHandler maintains perfect O(1) performance regardless of scale.
 
 ## 🏆 Recognition
 
