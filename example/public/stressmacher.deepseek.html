@@ -1,4 +1,20 @@
 <!DOCTYPE html>
+<!--
+🎯 STRESSMACHER S-800 PERFORMANCE BENCHMARKING TOOL 🎯
+Revolutionary performance testing tool for YpsilonEventHandler!
+Contributors: Claude, ChatGPT, Grok, DeepSeek, Gemini
+
+This tool demonstrates YpsilonEventHandler's revolutionary advantages:
+✅ O(1) vs O(n) performance comparison (Manual vs Ypsilon)
+✅ DOM Event Scoping System with multiple handlers per event type
+✅ Clean stress scheduler with predictable timing
+✅ Comprehensive stress logs and performance metrics
+✅ Epic endurance testing capabilities
+✅ Real-time performance monitoring
+
+The StressMacherUltimate class provides clean, predictable timing
+for stress testing both manual event listeners and YpsilonEventHandler.
+-->
 <html lang="en">
 <head><meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -69,6 +85,10 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(180px, 2fr));
             gap: 30px;
+
+            .control-group-wrapper {
+                min-width: 164px;
+            }
         }
 
         .control-group {
@@ -86,7 +106,7 @@
                 z-index: 1;
                 gap: 12px;
                 background: #fff;
-                box-shadow: 0 0 10px 6px rgba(163, 180, 255, .6);
+                box-shadow: 0 0 10px 2px rgb(97 102 123 / 60%);
 
                 select {
                     margin-top: 8px;
@@ -218,8 +238,8 @@
             border: 1px dashed #eee;
             padding: 5px;
             border-radius: 4px;
-            min-height: 100px;
-            max-height: 50vh;
+            min-height: 128px;
+            max-height: 40vh;
             overflow: auto;
             overflow-y: scroll;
         }
@@ -299,6 +319,18 @@
                 span.log-data-last-col {
                     max-width: unset;
                 }
+            }
+        }
+
+        .clear-log,
+        .log {
+            transition: all .5s .8s ease-in-out;
+            opacity: 1;
+        }
+        body:not(.elements-generated) {
+            .clear-log,
+            .log {
+                opacity: 0;
             }
         }
 
@@ -403,7 +435,6 @@
             border: 1px dashed #eee;
             padding: 5px;
             border-radius: 4px;
-            min-height: 100px;
             display: flex;
             flex-direction: column;
             flex-flow: wrap;
@@ -432,6 +463,13 @@
 
                     input {
                         margin: 0 8px 0 0;
+                    }
+                }
+
+                div {
+                    button,
+                    input[type="text"] {
+                        width: 100%;
                     }
                 }
             }
@@ -572,6 +610,37 @@
             }
         }
 
+        .panel-wrapper {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+        }
+        .pan-inner {
+            background: #f8f9fa;
+            flex: 1;
+        }
+        pre.pan-inner {
+            padding: 20px 15px;
+        }
+        div.pan-inner {
+            padding: 8px;
+            width:100%;
+            position:absolute;
+            bottom: 0;
+            opacity: 1;
+            border-top: 1px solid #d1d1d1;
+            background: #e8f5e8;
+            border-radius: 0 0 4px 4px;
+            font-size: 0.9em;
+            text-align: center;
+            transition: all .25s ease-in-out;
+        }
+        .panel-wrapper:hover div.pan-inner {
+            bottom: -25px;
+            opacity: 0;
+        }
+
         /* S-800 Avatar */
         .serminator {
             margin-left: -25px;
@@ -592,13 +661,12 @@
             <h1>
                 <span>StressMacher S-800</span>
                 <span class="serminator">🤖</span>
-                <span><a href="./index.html" title="Back to index" style="text-decoration: none;">«</a> YpsilonEventHandler</span>
+                <span><a href="./index.html" title="Back to index" style="text-decoration: none;">«</a> Serial Event Killer</span>
             </h1>
             <div class="mode-selector">
                 <button data-action="setMode" data-mode="manual" class="active">Manual Listeners</button>
                 <button data-action="setMode" data-mode="ypsilon">Ypsilon Listeners</button>
             </div>
-
             <div class="control-panel">
                 <!-- Elements to create -->
                 <div class="control-group">
@@ -608,14 +676,16 @@
                         <input type="number"
                             data-action="setTestConfig"
                             data-key="createTotalButton"
-                            id="createTotalButton" min="1" max="10000" value="250">
+                            data-group
+                            id="createTotalButton" min="1" max="100000" value="1000">
                     </div>
                     <div class="form-el-group">
                         <label for="createTotalText">Text</label>
                         <input type="number"
                             data-action="setTestConfig"
                             data-key="createTotalText"
-                            id="createTotalText" min="1" max="10000" value="250">
+                            data-group
+                            id="createTotalText" min="1" max="100000" value="1000">
                     </div>
                 </div>
                 <!-- Checkbox/Radios to create -->
@@ -626,17 +696,19 @@
                         <input type="number"
                             data-action="setTestConfig"
                             data-key="createTotalCheckbox"
-                            id="createTotalCheckbox" min="1" max="10000" value="250">
+                            data-group
+                            id="createTotalCheckbox" min="1" max="100000" value="1000">
                     </div>
                     <div class="form-el-group">
                         <label for="createTotalRadiobox">Radiobox</label>
                         <input type="number"
                             data-action="setTestConfig"
                             data-key="createTotalRadiobox"
-                            id="createTotalRadiobox" min="1" max="10000" value="250">
+                            data-group
+                            id="createTotalRadiobox" min="1" max="100000" value="1000">
                     </div>
                 </div>
-                <!-- Select to create -->
+                <!-- Select to create, sync inputs -->
                 <div class="control-group">
                     <span class="label">~</span>
                     <div class="form-el-group">
@@ -644,7 +716,15 @@
                         <input type="number"
                             data-action="setTestConfig"
                             data-key="createTotalSelect"
-                            id="createTotalSelect" min="1" max="10000" value="250">
+                            data-group
+                            id="createTotalSelect" min="1" max="100000" value="1000">
+                    </div>
+                    <div class="form-el-group">
+                        <label for="createTotalSelect">Sync</label>
+                        <input type="number"
+                            data-action="setTestConfig"
+                            data-key="syncAllElements"
+                            id="syncAllElements" min="1" max="100000" value="">
                     </div>
                 </div>
                 <!-- More options -->
@@ -657,9 +737,6 @@
                             <option value="summary">📊 Summary (Performance)</option>
                             <option value="verbose">🔍 Verbose (Detailed)</option>
                         </select>
-                    </div>
-                    <div class="form-el-group">
-                        <button data-action="resetStats" style="width: 100%;background: #6c757d; color: white; padding: 6px 12px; border: none; border-radius: 4px; font-size: 0.8em; cursor: pointer;">📊 Reset Stats</button>
                     </div>
 
                     <div class="control-group extra-configs hidden">
@@ -689,69 +766,32 @@
                                 id="onceOnly"
                                 title="Remove data-action after first trigger to ensure each element is touched only once">
                         </div>
-                        <!-- Event Burst -->
-                        <div class="form-el-group" title="Number of rapid-fire events in bursts during stress tests">
-                            <label for="eventBurstCount">Event Bursts</label>
-                            <input type="number"
-                                data-action="setTestConfig"
-                                data-key="eventBurstCount"
-                                id="eventBurstCount" min="1" max="20" value="5">
-                        </div>
-                        <!-- Timing Control - DISABLED FOR FORMULA CALIBRATION -->
-                        <div class="form-el-group" title="Timing control disabled - formula being calibrated in script" style="opacity: 0.5;">
-                            <label for="timingDivisor2000">Slow @2000 (disabled)</label>
-                            <input type="number"
-                                disabled
-                                id="timingDivisor2000" min="1" max="20" value="2.2" step="0.1">
-                        </div>
-                        <div class="form-el-group" title="Timing control disabled - formula being calibrated in script" style="opacity: 0.5;">
-                            <label for="timingDivisor3000">Slow @3000 (disabled)</label>
-                            <input type="number"
-                                disabled
-                                id="timingDivisor3000" min="1" max="20" value="8" step="0.1">
-                        </div>
                         <!-- Timeout range -->
-                        <div class="form-not-group timeout-range" title="A number between the given range for artificial breaks">
+                        <!-- <div class="form-not-group timeout-range" title="A number between the given range for artificial breaks">
                             <span class="label">Timeout range</span>
                             <div class="form-el-group input-number">
                                 <label for="actionTimeRangeMin">Min</label>
                                 <input type="number"
                                     data-action="updateTimerConfig"
-                                    id="actionTimeRangeMin" min="0" max="10000" value="150">
+                                    id="actionTimeRangeMin" min="0" max="10000" value="0">
                             </div>
                             <div class="form-el-group input-number">
                                 <label for="actionTimeRangeMax">Max</label>
                                 <input type="number"
                                     data-action="updateTimerConfig"
-                                    id="actionTimeRangeMax" min="0" max="10000" value="250">
+                                    id="actionTimeRangeMax" min="50" max="10000" value="0">
+                            </div>
+                        </div> -->
+                        <hr />
+                        <div class="form-not-group stats-config">
+                            <div class="form-el-group">
+                                <button data-action="resetStats" style="margin-bottom: 8px; width: 100%;background: #6c757d; color: white; padding: 10px 12px; border: none; border-radius: 4px; font-size: 0.8em; cursor: pointer;">📊 Reset Stats</button>
+                            </div>
+                            <div class="form-el-group">
+                                <button data-action="viewStressLogs" style="width: 100%;background: #17a2b8; color: white; padding: 10px 12px; margin-right: 5px; border: none; border-radius: 4px; font-size: 0.8em; cursor: pointer;">📊 View Stress Logs</button>
+                                <button data-action="clearLocalStorage" style="padding: 10px 12px; white-space: nowrap; background: #f0584d; border: none; cursor: pointer; color: #fffafa;">&times; Clear</button>
                             </div>
                         </div>
-                        <!-- Event Types -->
-                        <!--
-                            Actuall not useful, maybe later...
-                        -->
-                        <!--
-                            <div class="form-non-group input-select">
-                            <label for="eventTypes">Event Types</label>
-                            <select multiple
-                                data-action="setTestConfig"
-                                data-key="eventTypes"
-                                id="eventTypes"
-                                title="Select which event types YpsilonEventHandler should listen for"
-                                size="4"
-                                data-style="height: 60px;">
-                                <option value="click" selected>click</option>
-                                <option value="input" selected>input</option>
-                                <option value="change" selected>change</option>
-                                <option value="focus">focus</option>
-                                <option value="blur">blur</option>
-                                <option value="submit">submit</option>
-                                <option value="keydown">keydown</option>
-                                <option value="keyup">keyup</option>
-                                <option value="mouseover">mouseover</option>
-                                <option value="mouseout">mouseout</option>
-                            </select>
-                        </div> -->
                     </div>
                 </div>
             </div>
@@ -772,7 +812,7 @@
                 <div class="control-group-wrapper">
                     <div class="control-group stress-test-group">
                         <span class="label">Stress Test</span>
-                        <button data-action="stressTest" class="stress-test-btn" disabled style="background: #ffeb3b; color:#666; font-weight: bold;">🔥 STRESSTEST 🔥</button>
+                        <button data-action="stressTest" class="stress-test-btn" disabled style="background: #ffeb3b; color:#666; font-weight: bold;" data-text="🔥 » STRESSING 🔥">🔥 STRESSTEST 🔥</button>
                         <button id="abortTestButton" data-action="abortTest" style="background: #f44336; font-weight: bold; display: none;">ABORT TEST</button>
                     </div>
                 </div>
@@ -783,7 +823,7 @@
                         <p style="margin: 0; flex: 1;">Experience the ultimate difference between instant fresh and instant death. Once Manual listeners are bound, new HTML content dies on sight. YpsilonEventHandler's magic on the other hand doesn't care, it just works!</p>
                         <button data-action="infinityTest" class="stress-test-btn" disabled
                         title="This button duplicates all existing elements in the test area."
-                        style="background: #e91e63; font-weight: bold;">∞ INFINITY TEST ∞</button>
+                        style="background: #e91e63; font-weight: bold;" data-text="∞ INFINITING ∞">∞ INFINITY TEST ∞</button>
                     </div>
                 </div>
             </div>
@@ -791,18 +831,25 @@
 
         <div class="test-area">
             <div id="manualTest" class="test-section">
-                <h3>Manual Event Listeners</h3>
-                <div id="manualElements" class="elements-container">Stress pending...</div>
+                <h3 style="display:flex;align-items:center;justify-content:space-between;">
+                    <span>Manual Event Listeners</span>
+                </h3>
+                <div id="manualElements" class="elements-container">Stress is pending... 👀</div>
+                <small style="color: #555;font-size: 13px"></small>
+                <p style="margin:6px 0 0;color: #555;font-size: 13px"><small>(O(n) Performance - Each element = 1 listener)</small></p>
             </div>
             <div id="ypsilonTest" class="test-section hidden">
-                <h3>YpsilonEventHandlers</h3>
+                <h3 style="display:flex;align-items:center;justify-content:space-between;">
+                    <span>YpsilonEventHandlers</span>
+                </h3>
                 <div id="ypsilonElements" class="elements-container"></div>
+                <p style="margin:6px 0 0;color: #555;font-size: 13px"><small>(O(1) Performance - Only 3 listeners total)</small></p>
             </div>
         </div>
 
         <div class="extras-area">
             <div class="stats-panel">
-                <h2>🤖 Performance Metrics</h2>
+                <h2 style="margin-bottom: 15px;">🤖 Performance Metrics</h2>
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-value" id="eventCount">0</div>
@@ -830,33 +877,43 @@
                 </div>
 
                 <!-- Benchmark Progress -->
-                <div style="margin-top: 15px; padding: 10px 10px 0; background: #f8f9fa; border-radius: 6px;">
+                <div style="margin: 15px 0 0; padding: 10px 10px 0; background: #f6f7f8; border-radius: 6px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
                         <span style="font-size: 0.9rem; font-weight: 600;">🎯 Benchmark Progress</span>
-                        <span style="font-size: 0.8rem;" id="benchmarkProgress">0 / 3116</span>
+                        <span style="font-size: 0.8rem;" id="benchmarkProgress">0 / calculating...</span>
                     </div>
                     <div style="height: 8px; background: #e9ecef; border-radius: 4px; overflow: hidden;">
                         <div style="height: 100%; width: 0%; background: linear-gradient(90deg, #28a745, #17a2b8); transition: width 0.3s ease;" id="benchmarkBar"></div>
                     </div>
-                    <div style="font-size: 0.75rem; color: #666; margin-top: 5px; text-align: center;">
-                        Target: 1250 elements = 3116 events (Browser stress at 2500+)
+                    <div style="font-size: 0.75rem; color: #666; margin-top: 5px; text-align: center;" id="dynamicTargetInfo">
+                        Target: calculating...
+                    </div>
+                    <!-- BEAST MODE TIMER (Moved here, smaller) -->
+                    <div style="margin-top: 2px; padding-bottom: 4px; text-align: center;">
+                        <span style="font-size: 12px; color: #999;">🔥 Beast Mode Timer: </span>
+                        <span id="stressTestDuration" style="font-size: 12px; color: #999;">00:00</span>
                     </div>
                 </div>
+
             </div>
             <div class="config-panel">
-                <pre id="currentConfiguration"></pre>
+                <div class="panel-wrapper" style="position:relative;">
+                    <pre class="pan-inner" id="currentConfiguration"></pre>
+                    <div class="pan-inner">
+                        <strong>🎯 Efficiency:</strong> 3 listeners handle 5000+ elements<br>
+                        <span style="color: #666;">O(1) delegation vs O(n) manual binding</span>
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="verify-listeners">
             <h3>🔍 Verify Assigned Listeners (Dev Console)</h3>
-            <p><em>Run this snippet to confirm the configured listeners.</em></p>
-
+            <p><em>Run this snippet to confirm the configured listeners on this page.</em></p>
             <pre style="min-height:unset;"><b
                 style="color:#888;user-select:none;margin-right:8px;">⚠️ For Chrome, type first <span class="flip-emoji">⚠️</span></b><code>allow pasting</code></pre>
-
 <pre class="auto-height" contenteditable="true">[
-window, ...document.querySelectorAll('*')
+  window, ...document.querySelectorAll('*')
 ].filter(el => {
     const listeners = getEventListeners(el);
     return listeners && Object.keys(listeners).length > 0;
@@ -865,8 +922,9 @@ window, ...document.querySelectorAll('*')
         ? 'window'
         : el === document ? 'document' : el.tagName.toLowerCase() + (el.id ? '#' + el.id : '') + (el.className ? '.' + el.className.split(' ').join('.') : '');
     const listeners = getEventListeners(el);
-    console.log(`${i}. ${elementName}:\n`, listeners);
+    console.log(`${i+1}. ${elementName}:\n`, listeners);
 })</pre>
+            <pre style="font-size: 14px">💥 <strong>Want to expose website bloat?</strong> Check our <a target="_blank" href="https://github.com/eypsilon/YpsilonEventHandler-Examples?tab=readme-ov-file#-real-world-listener-analysis">README.md</a> for the ultimate real-world listener analyzer that reveals the hidden performance crisis on major sites!</pre>
         </div>
 
         <div class="info-container">
@@ -889,7 +947,6 @@ window, ...document.querySelectorAll('*')
             </section>
         </div>
 
-
         <div class="nav-container">
             <!-- Navigation to other examples -->
             <nav class="main-nav">
@@ -899,8 +956,8 @@ window, ...document.querySelectorAll('*')
                     <a href="./reactive-y.html" class="btn-danger">Reactive Demo</a>
                     <a href="./single-listener-multiple-actions.html" class="btn-purple">Single Listener</a>
                     <a href="./spa.html" class="btn-success">SPA Demo</a>
-                    <a href="./stressmacher.deepseek.html" class="btn-teal btn-disabled">StressMacher</a>
-                    <a href="./multi-handler-demo.html" class="btn-warning">Multi-Handler</a>
+                    <a href="./stressmacher.deepseek.html" class="btn-teal btn-disabled">StressMacher S-800</a>
+                    <a href="./multi-handler-demo.html" class="btn-warning">Multi-Handler System</a>
                     <a href="https://github.com/eypsilon/YpsilonEventHandler" class="btn-dark">GitHub</a>
                 </div>
             </nav>
@@ -911,9 +968,30 @@ window, ...document.querySelectorAll('*')
     <button class="clear-log" data-action="clearLog">Clear Log</button>
     <div class="log" id="eventLog"></div>
 
+    <!-- Stress Logs Modal -->
+    <div id="stressLogsModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgb(29 27 27 / 61%); z-index: 10000;">
+        <div style="position: relative; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border-radius: 8px; max-width: 90vw; max-height: 90vh; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+            <div style="padding: 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
+                <h2 style="margin: 0;">📊 Stress Test Logs</h2>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <button data-action="stressLogToConsole" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #999;">console.log</button>
+                    <button data-action="closeStressLogs" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #999;">&times;</button>
+                </div>
+            </div>
+            <div style="padding: 0; overflow: auto; max-height: 80vh;">
+                <div id="stressLogsContent">
+                    <p>Loading stress logs...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/ypsilon-event-handler@latest/ypsilon-event-handler.min.js"></script>
 
     <script>
+        // Init mode
+        let currentMode = 'manual';
+
         // Write and use methods from anywhere, implement later, if
         // you want, or not, IDK, your APP, your choice.
         const benchmarkHandler = {
@@ -944,6 +1022,7 @@ window, ...document.querySelectorAll('*')
             eventMapping: {
                 'header': ['click', 'input', 'change'],
                 '.clear-log': ['click'],
+                '#stressLogsModal': ['click'],
             },
             config: {
                 methods: benchmarkHandler,
@@ -956,10 +1035,6 @@ window, ...document.querySelectorAll('*')
 
         // Config the StressMacher
         const benchmarkConfig = {
-            simulateUsage: {
-                enabled: true,
-                timeout: null,
-            },
             test: {
                 formElFocus: false,
                 onceOnly: false,
@@ -970,14 +1045,17 @@ window, ...document.querySelectorAll('*')
                 createTotalCheckbox: 0,
                 createTotalRadiobox: 0,
                 createTotalSelect: 0,
-                eventBurstCount: 5, // Number of rapid-fire events in bursts
                 maxEventsPerSecond: 1000, // Throttle if needed
                 interactionPattern: 'random' // 'random' or 'sequential'
-            }
+            },
+            simulateUsage: {
+                enabled: true,
+                timeout: {
+                    min: 50,
+                    max: 75,
+                },
+            },
         };
-
-        // Initial mode
-        let currentMode = 'manual';
 
         // Test state management
         let testState = {
@@ -986,31 +1064,219 @@ window, ...document.querySelectorAll('*')
             abortController: null
         };
 
-        // 🎯 MAGIC FORMULA - Calibrated for perfect 1667→4 events/sec curve
-        // Formula: timeout * (index / divisor) where divisor changes by event count
-        const timingThresholds = {
-            0: 1.3,
-            2000: 2.2,
-            2500: 8.2,
-            3000: 10,
-            4000: 12,
-        };
+        // DYNAMIC EVENT COUNT CALCULATOR
+        function calculateExpectedTotalEvents() {
+            const config = benchmarkConfig.test;
+            const totalElements = parseInt(config.createTotalButton) +
+                                parseInt(config.createTotalText) +
+                                parseInt(config.createTotalCheckbox) +
+                                parseInt(config.createTotalRadiobox) +
+                                parseInt(config.createTotalSelect);
 
-        // 📊 Current performance profile this creates:
-        // - Peak: ~1667 events/sec (blazing fast start)
-        // - Finish: ~4 events/sec (dramatic conclusion)
-        // - Perfect "gaming" tension curve
+            // Each element type generates different events (based on actual test data):
+            // Buttons: 1 event (click)
+            // Text: Character-based events (each typed character = 1 input event)
+            // Checkbox: 1 event (change)
+            // Radio: 1 event (change)
+            // Select: 1 event (change)
 
-        // Get current timing divisor based on event count
-        function getTimingDivisor(eventCount) {
-            let divisor = 1;
-            for (const threshold of Object.keys(timingThresholds).sort((a, b) => b - a)) {
-                if (eventCount >= parseInt(threshold)) {
-                    divisor = timingThresholds[threshold];
-                    break;
+            // Calculate average word length from testTexts array
+            const testTexts = ['Hello', 'World', 'Test', 'Performance', 'Monster', 'YpsilonEventHandler'];
+            const avgWordLength = testTexts.reduce((sum, word) => sum + word.length, 0) / testTexts.length;
+            // Average = (5+5+4+11+7+20)/6 = 52/6 = 8.67 characters per text input
+
+            const buttonEvents = parseInt(config.createTotalButton) * 1;
+            const textEvents = parseInt(config.createTotalText) * Math.round(avgWordLength); // Character-based calculation
+            const checkboxEvents = parseInt(config.createTotalCheckbox) * 1;
+            const radioEvents = parseInt(config.createTotalRadiobox) * 1;
+            const selectEvents = parseInt(config.createTotalSelect) * 1;
+
+            return {
+                totalElements,
+                expectedEvents: buttonEvents + textEvents + checkboxEvents + radioEvents + selectEvents,
+                breakdown: {
+                    buttons: buttonEvents,
+                    text: textEvents,
+                    checkbox: checkboxEvents,
+                    radio: radioEvents,
+                    select: selectEvents
+                }
+            };
+        }
+
+        // CALCULATE ACTUAL EVENTS (AFTER TEST COMPLETION)
+        function calculateActualExpectedEvents() {
+            const config = benchmarkConfig.test;
+
+            // Use actual typed characters instead of estimated average
+            const buttonEvents = parseInt(config.createTotalButton) * 1;
+            const textEvents = stats.actualCharactersTyped; // Actual characters typed
+            const checkboxEvents = parseInt(config.createTotalCheckbox) * 1;
+            const radioEvents = parseInt(config.createTotalRadiobox) * 1;
+            const selectEvents = parseInt(config.createTotalSelect) * 1;
+
+            return {
+                totalElements: parseInt(config.createTotalButton) + parseInt(config.createTotalText) +
+                             parseInt(config.createTotalCheckbox) + parseInt(config.createTotalRadiobox) +
+                             parseInt(config.createTotalSelect),
+                expectedEvents: buttonEvents + textEvents + checkboxEvents + radioEvents + selectEvents,
+                actualCharacters: stats.actualCharactersTyped,
+                textInputs: stats.textInputCount,
+                breakdown: {
+                    buttons: buttonEvents,
+                    text: textEvents,
+                    checkbox: checkboxEvents,
+                    radio: radioEvents,
+                    select: selectEvents
+                }
+            };
+        }
+
+        // UPDATE DYNAMIC TARGET INFO
+        function updateDynamicTargetInfo() {
+            const expected = calculateExpectedTotalEvents();
+            const targetInfo = document.getElementById('dynamicTargetInfo');
+            if (targetInfo) {
+                const stressThreshold = 2500;
+                const stressPercentage = Math.round((expected.expectedEvents / stressThreshold) * 100);
+                targetInfo.textContent = `Target: ${expected.totalElements} elements ≈ ${expected.expectedEvents} events (avg ${Math.round(expected.expectedEvents/expected.totalElements*10)/10}/element)`;
+                // Color coding based on stress level
+                if (expected.expectedEvents >= stressThreshold) {
+                    targetInfo.style.color = '#dc3545'; // Red - high stress
+                } else if (expected.expectedEvents >= 1500) {
+                    targetInfo.style.color = '#ff6b35'; // Orange - medium stress
+                } else {
+                    targetInfo.style.color = '#666'; // Default gray
                 }
             }
-            return divisor;
+        }
+
+        // CLEAN STRESS SCHEDULER (Surgical Reset)
+        // Simple, predictable timing using ONLY timeout config
+        class StressMacherUltimate {
+            constructor(elements, options = {}) {
+                this.elements = elements.slice();
+                this.baseDelay = options.baseDelay || 350;
+                this.maxJitter = options.maxJitter || 500;
+                this.abortSignal = options.abortSignal || null;
+                this.onElement = options.onElement || ((el) => el.click());
+                this.onProgress = options.onProgress || (() => {});
+                this.onComplete = options.onComplete || (() => {});
+                this.running = false;
+                this.cancelled = false;
+                this.activeTimeouts = new Set();
+
+                // Simple performance tracking
+                this.metrics = {
+                    startTime: 0,
+                    totalTime: 0,
+                    timingLogs: [],
+                    actualDelays: []
+                };
+            }
+
+            // SMOOTH FLOW MODE: Individual element scheduling (No artificial batching)
+            async execute() {
+                if (this.running || this.cancelled) return;
+                this.running = true;
+                this.metrics.startTime = performance.now();
+
+                return new Promise((resolve, reject) => {
+                    let completedCount = 0;
+                    const totalElements = this.elements.length;
+
+                    const checkComplete = () => {
+                        completedCount++;
+                        this.onProgress(completedCount, totalElements, this.metrics);
+
+                        if (completedCount >= totalElements) {
+                            this.running = false;
+                            this.metrics.totalTime = performance.now() - this.metrics.startTime;
+                            this.onComplete(this.metrics);
+                            resolve(this.metrics);
+                        }
+                    };
+
+                    // GROK'S QUEUE-FRIENDLY SOLUTION: Controlled batch scheduling
+                    // Prevent browser queue saturation while maintaining smooth flow
+                    const BATCH_SIZE = 50; // Process 50 elements at a time
+                    const BATCH_INTERVAL = 10; // 10ms between batches
+
+                    const processBatch = (startIndex) => {
+                        if (this.cancelled || this.abortSignal?.aborted) {
+                            reject(new Error('Execution cancelled'));
+                            return;
+                        }
+
+                        const endIndex = Math.min(startIndex + BATCH_SIZE, this.elements.length);
+
+                        // Schedule this batch of elements
+                        for (let i = startIndex; i < endIndex; i++) {
+                            const element = this.elements[i];
+
+                            // CLEAN TIMING: baseDelay + random jitter (pure timing only)
+                            // If baseDelay is 0, run at full speed (no setTimeout)
+                            const baseDelay = this.baseDelay + Math.random() * this.maxJitter;
+                            const adjustedDelay = this.baseDelay === 0 ? 0 : Math.max(1, baseDelay);
+
+                            const scheduledTime = performance.now();
+
+                            const executeElement = () => {
+                                // CRITICAL FIX: Check abort status before executing
+                                if (this.cancelled || this.abortSignal?.aborted) {
+                                    return; // Skip execution if cancelled
+                                }
+
+                                try {
+                                    this.onElement(element, i);
+
+                                    // Simple performance tracking
+                                    const actualTime = performance.now();
+                                    const actualDelay = actualTime - scheduledTime;
+                                    this.metrics.actualDelays.push(actualDelay);
+                                    this.metrics.timingLogs.push({
+                                        index: i,
+                                        scheduledDelay: adjustedDelay,
+                                        actualDelay: actualDelay
+                                    });
+
+                                    checkComplete();
+                                } catch (error) {
+                                    this.running = false;
+                                    reject(error);
+                                }
+                            };
+
+                            if (adjustedDelay === 0) {
+                                // Full speed execution - no setTimeout
+                                executeElement();
+                            } else {
+                                // Timed execution
+                                const timeout = setTimeout(() => {
+                                    executeElement();
+                                    this.activeTimeouts.delete(timeout);
+                                }, adjustedDelay);
+                                this.activeTimeouts.add(timeout);
+                            }
+                        }
+
+                        // Schedule next batch if needed
+                        if (endIndex < this.elements.length) {
+                            setTimeout(() => processBatch(endIndex), BATCH_INTERVAL);
+                        }
+                    };
+
+                    // Start processing batches
+                    processBatch(0);
+                });
+            }
+
+            cancel() {
+                this.cancelled = true;
+                this.running = false;
+                this.activeTimeouts.forEach(clearTimeout);
+                this.activeTimeouts.clear();
+            }
         }
 
         // Enhanced Performance tracking
@@ -1021,6 +1287,12 @@ window, ...document.querySelectorAll('*')
             eventTimings: [],
             peakEventsPerSecond: 0,
             testStartTime: 0,
+            stressTestStartTime: 0,
+            timerInterval: null,
+
+            // Character counting for accurate text event calculation
+            actualCharactersTyped: 0,
+            textInputCount: 0,
 
             // Calculate real-time events per second
             updateEventsPerSecond() {
@@ -1092,6 +1364,127 @@ window, ...document.querySelectorAll('*')
                 this.eventTimings = [];
                 this.peakEventsPerSecond = 0;
                 this.testStartTime = performance.now();
+                this.actualCharactersTyped = 0;
+                this.textInputCount = 0;
+                this.stopTimer();
+            },
+
+            // BEAST MODE TIMER METHODS
+            startTimer() {
+                this.stressTestStartTime = performance.now();
+                this.updateTimerDisplay();
+
+                // Update timer every 100ms for smooth display
+                this.timerInterval = setInterval(() => {
+                    this.updateTimerDisplay();
+                }, 100);
+            },
+
+            stopTimer() {
+                if (this.timerInterval) {
+                    clearInterval(this.timerInterval);
+                    this.timerInterval = null;
+                }
+            },
+
+            updateTimerDisplay() {
+                if (this.stressTestStartTime === 0) return;
+
+                const elapsed = performance.now() - this.stressTestStartTime;
+                const totalSeconds = Math.floor(elapsed / 1000);
+                const minutes = Math.floor(totalSeconds / 60);
+                const seconds = totalSeconds % 60;
+                const milliseconds = Math.floor((elapsed % 1000) / 10); // Two digit ms
+
+                const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${milliseconds.toString().padStart(2, '0')}`;
+
+                const timerElement = document.getElementById('stressTestDuration');
+                if (timerElement) {
+                    timerElement.textContent = timeString;
+
+                    // Add pulsing effect during intense phases
+                    if (this.eventsPerSecond > 5000) {
+                        timerElement.style.animation = 'pulse 0.5s 4';
+                    } else {
+                        timerElement.style.animation = 'none';
+                    }
+                }
+            },
+
+            // ULTIMATE STRESS LOG SYSTEM (localStorage)
+            saveStressLog() {
+                    // Get current log count or initialize
+                    let logCount = parseInt(localStorage.getItem('StressLog_Count') || '0');
+                    logCount++;
+
+                    const expected = calculateExpectedTotalEvents();
+                    const finalElapsed = this.stressTestStartTime > 0 ?
+                        performance.now() - this.stressTestStartTime : 0;
+
+                    const logEntry = {
+                        timestamp: new Date().toISOString(),
+                        mode: currentMode.toUpperCase(),
+                        totalEvents: this.eventCount,
+                        eventsPerSecond: this.eventsPerSecond,
+                        peakEventsPerSecond: this.peakEventsPerSecond,
+                        took: {
+                            totalMs: Math.round(finalElapsed),
+                            formatted: this.formatDuration(finalElapsed)
+                        },
+                        elements: {
+                            totalElements: expected.totalElements,
+                            totalButton: parseInt(benchmarkConfig.test.createTotalButton),
+                            totalText: parseInt(benchmarkConfig.test.createTotalText),
+                            totalCheckbox: parseInt(benchmarkConfig.test.createTotalCheckbox),
+                            totalRadiobox: parseInt(benchmarkConfig.test.createTotalRadiobox),
+                            totalSelect: parseInt(benchmarkConfig.test.createTotalSelect),
+                            expectedEvents: expected.expectedEvents,
+                            firedEvents: this.eventCount,
+                            actualVsExpected: `${this.eventCount}/${expected.expectedEvents}`
+                        },
+                        config: {
+                            logLevel: getLogLevel(),
+                            // timeout: {
+                            //     min: parseInt(benchmarkConfig.simulateUsage.timeout.min),
+                            //     max: parseInt(benchmarkConfig.simulateUsage.timeout.max)
+                            // },
+                            formElFocus: benchmarkConfig.test.formElFocus,
+                            eventTypes: benchmarkConfig.test.eventTypes
+                        },
+                        performance: {
+                            breakdown: expected.breakdown,
+                            averageEventTime: finalElapsed / this.eventCount,
+                            systemLoad: this.eventsPerSecond > 10000 ? 'BROWSER_LIMIT' :
+                                       this.eventsPerSecond > 5000 ? 'HEAVY' :
+                                       this.eventsPerSecond > 1000 ? 'MODERATE' : 'LIGHT'
+                        }
+                    };
+
+                    // Save log entry (compact one-liner for storage efficiency)
+                    localStorage.setItem(`StressLog_${logCount}`, JSON.stringify(logEntry));
+                    localStorage.setItem('StressLog_Count', logCount.toString());
+
+                    // Save latest for easy access (formatted for console viewing)
+                    localStorage.setItem('StressLog_Latest', JSON.stringify(logEntry, null, 2));
+                    logMessage(`📊 Stress log saved as StressLog_${logCount}`, '#4caf50');
+                    console.log('📊 ULTIMATE STRESS LOG SAVED:', logEntry);
+
+                    return logEntry;
+
+                try {
+
+                } catch (error) {
+                    console.error('Failed to save stress log:', error);
+                    logMessage('❌ Failed to save stress log: ' + error.message, '#f44336');
+                }
+            },
+
+            formatDuration(ms) {
+                const totalSeconds = Math.floor(ms / 1000);
+                const minutes = Math.floor(totalSeconds / 60);
+                const seconds = totalSeconds % 60;
+                const milliseconds = Math.floor(ms % 1000);
+                return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${milliseconds.toString().padStart(3, '0')}`;
             }
         };
 
@@ -1107,6 +1500,86 @@ window, ...document.querySelectorAll('*')
         const manualListeners = new Map();
         const eventLog = document.getElementById('eventLog');
 
+        // Controller element getters & helpers
+
+        // Basic textContent to data-attribute flip
+        // <button data-action="stressTest" data-text="STRESSING">STRESSTEST</button>
+        function flipDataText(target) {
+            const textContent = target.dataset.text;
+            target.dataset.text = target.textContent;
+            target.textContent = textContent;
+        }
+
+        // Timeout range elements
+        function getTimeoutRange() {
+            return {
+                min: document.getElementById('actionTimeRangeMin') || null,
+                max: document.getElementById('actionTimeRangeMax') || null,
+            }
+        }
+
+        // Get mode switch elements
+        function getSetModeSwitch() {
+            const getSwitch = document.querySelectorAll('[data-action="setMode"][data-mode]');
+            let switchBtn = { active: null };
+            if (getSwitch.length) {
+                getSwitch.forEach((element) => {
+                    switchBtn[element.dataset.mode] = element;
+
+                    if (element.classList.contains('active')) {
+                        switchBtn['active'] = element.dataset.mode;
+                    }
+                });
+            }
+            return switchBtn; // { currentMode: manual|ypsilon }
+        }
+
+        // Restore from localStorage helper
+        function restoreConfigFromStorage()  {
+            let getConfigFromStorage = localStorage.getItem('StressLog_Config');
+            if (getConfigFromStorage) {
+                getConfigFromStorage = JSON.parse(getConfigFromStorage);
+                // Elements used for reactive configuration.
+                if (getConfigFromStorage.test) {
+                    const testConfig = getConfigFromStorage.test;
+                    for (const [key, value] of Object.entries(testConfig)) {
+                        const element = document.querySelector(`[data-action][data-key="${key}"]`);
+                        if (element && typeof value !== 'undefined') {
+                            if (['formElFocus', 'onceOnly'].includes(key)) {
+                                element.checked = !!value; // restore checkboxes
+                            } else {
+                                element.value = value; // restore input["number"]
+                            }
+                        }
+                    }
+                }
+                // // Restore Timeout range
+                // const timeoutConfig = getConfigFromStorage.simulateUsage?.timeout;
+                // if (timeoutConfig && (timeoutConfig?.min && timeoutConfig?.max)) {
+                //     const timeRanger = getTimeoutRange();
+                //     timeRanger.min.value = timeoutConfig.min;
+                //     timeRanger.max.value = timeoutConfig.max;
+                // }
+                // restoreModeFromStorage();
+                if (getConfigFromStorage.currentMode) {
+                    // Get switch buttons
+                    const getModes = getSetModeSwitch();
+                    // Mode stored in storage
+                    const mode = getConfigFromStorage.currentMode;
+                    // ignore if same
+                    if (mode !== getModes.active) {
+                        getModes[mode].classList.add('active');
+                        getModes[getModes.active].classList.remove('active');
+                    }
+                }
+            }
+        }
+
+        /**
+         * Overwrite config input values with localStorage
+         */
+        restoreConfigFromStorage();
+
         /**
          * BenchMarkHandler setup, UI interaction handler
          */
@@ -1116,6 +1589,7 @@ window, ...document.querySelectorAll('*')
 
                 this.cache = new Map();
                 this.activeModeEl = null; // active manual/ypsilon mode switch el
+                this.timerConfigTimeout = null; // debounce timeout for timer config
             }
 
             // super handler
@@ -1141,9 +1615,9 @@ window, ...document.querySelectorAll('*')
             }
 
             // Cache helper
-            getCache(cacheKey)          { return this.cache.get(cacheKey) }
-            deleteCache(cacheKey)       { this.cache.remove(cacheKey) }
-            toCache(cacheKey, cacheVal) { this.cache.set(cacheKey, cacheVal) }
+            setCache(cacheKey, cacheVal) { this.cache.set(cacheKey, cacheVal) }
+            deleteCache(cacheKey)        { this.cache.remove(cacheKey) }
+            getCache(cacheKey)           { return this.cache.get(cacheKey) }
 
             // Reactive config, use data-key for the resolver and set up the resolver in `getSetTestValue`
             setTestConfig(target, event) {
@@ -1153,6 +1627,11 @@ window, ...document.querySelectorAll('*')
 
                 if (key) {
                     benchmarkConfig.test[key] = this.getSetTestValue(key, target);
+
+                    // Update dynamic target info when element counts change
+                    if (key.startsWith('createTotal')) {
+                        updateDynamicTargetInfo();
+                    }
 
                     // Special handling for eventTypes - recreate YpsilonHandler
                     if (key === 'eventTypes' && currentMode === 'ypsilon' && ypsilonHandler.instance) {
@@ -1167,52 +1646,145 @@ window, ...document.querySelectorAll('*')
 
             // Used to resolve config values, if data-action="setTestConfig" used. Set the value to return for each key.
             getSetTestValue(key, target) {
-                switch(key) {
-                    // Input values
-                    case 'nestingDepth':
-                    case 'createTotalButton':
-                    case 'createTotalText':
-                    case 'createTotalCheckbox':
-                    case 'createTotalRadiobox':
-                    case 'createTotalSelect':
-                    case 'createTotalDiv':      return target.value;
-                    // Checkboxes
-                    case 'formElFocus':
-                    case 'onceOnly':            return target.checked;
-                    // Complex data
-                    case 'eventTypes':          return Array.from(target.selectedOptions).map(option => option.value);
+                if (key === 'syncAllElements') {
+                    if (target.value) {
+                        const getElementCounter = document.querySelectorAll('[data-action="setTestConfig"][data-group]');
+                        getElementCounter.forEach((element, index) => {
+                            element.value = target.value;
+                            element.dispatchEvent(new Event('change', {
+                                bubbles: true
+                            }));
+                        });
+                    }
+                }
+                else {
+                    switch(key) {
+                        // Input values
+                        case 'nestingDepth':
+                        case 'createTotalButton':
+                        case 'createTotalText':
+                        case 'createTotalCheckbox':
+                        case 'createTotalRadiobox':
+                        case 'createTotalSelect':
+                        case 'createTotalDiv':      return target.value;
+                        // Checkboxes
+                        case 'formElFocus':
+                        case 'onceOnly':            return target.checked;
+                        // Complex data
+                        case 'eventTypes':          return Array.from(target.selectedOptions).map(option => option.value);
+                    }
                 }
                 return null;
             }
 
-            updateTimerConfig() {
-                let actionTimeRangeMin = this.getCache('actionTimeRangeMin');
-                let actionTimeRangeMax = this.getCache('actionTimeRangeMax');
-
-                if (!actionTimeRangeMin) {
-                    actionTimeRangeMin = document.getElementById('actionTimeRangeMin');
-                    this.toCache('actionTimeRangeMin', actionTimeRangeMin);
-                }
-                if (!actionTimeRangeMax) {
-                    actionTimeRangeMax = document.getElementById('actionTimeRangeMax');
-                    this.toCache('actionTimeRangeMax', actionTimeRangeMax);
+            // DEBOUNCED TIMER CONFIG - Let users type without interference
+            updateTimerConfig(target, event) {
+                // Clear any existing timeout
+                if (this.timerConfigTimeout) {
+                    clearTimeout(this.timerConfigTimeout);
                 }
 
-                benchmarkConfig.simulateUsage.timeout = {
-                    min: actionTimeRangeMin?.value || 150,
-                    max: actionTimeRangeMax?.value || 400
+                // Determine if we should debounce based on event type
+                const shouldDebounce = event && (event.type === 'input' || event.type === 'keyup');
+
+                // If it's a change/blur event, update immediately
+                if (!shouldDebounce || event?.type === 'change' || event?.type === 'blur') {
+                    this._performTimerConfigUpdate(target);
+                    return;
                 }
 
-                this.updateUiConfig();
+                // // Otherwise debounce for 800ms to let user finish typing
+                // this.timerConfigTimeout = setTimeout(() => {
+                //     this._performTimerConfigUpdate(target);
+                // }, 800);
+
+                // this.updateUiConfig();
             }
+
+            // _performTimerConfigUpdate(activeTarget = null) {
+            //     let actionTimeRangeMin = this.getCache('actionTimeRangeMin');
+            //     let actionTimeRangeMax = this.getCache('actionTimeRangeMax');
+            //     let getRangeElements;
+
+            //     if (!actionTimeRangeMin) {
+            //         getRangeElements = getTimeoutRange();
+            //         actionTimeRangeMin = getRangeElements.min;
+            //         this.setCache('actionTimeRangeMin', actionTimeRangeMin);
+            //     }
+            //     if (!actionTimeRangeMax) {
+            //         if (!getRangeElements) {
+            //             getRangeElements = getTimeoutRange();
+            //         }
+            //         actionTimeRangeMax = getRangeElements.max;
+            //         this.setCache('actionTimeRangeMax', actionTimeRangeMax);
+            //     }
+
+            //     if (actionTimeRangeMin?.value && actionTimeRangeMax?.value) {
+            //         // min.value can not be bigger or equal to max.value
+            //         // refresh attributes, ensure: { min: 0+, max: 1+ }
+            //         const minVal = parseInt(actionTimeRangeMin.value, 10);
+            //         const maxVal = parseInt(actionTimeRangeMax.value, 10);
+
+            //         // SMART VALIDATION: Only adjust the field user is NOT currently editing
+            //         const isEditingMin = activeTarget === actionTimeRangeMin;
+            //         const isEditingMax = activeTarget === actionTimeRangeMax;
+
+            //         // max.min can not be smaller than [min.value || 1]
+            //         actionTimeRangeMax.min = minVal + 1 > 0 ? minVal + 1 : 1;
+
+            //         // Ensure valid min, max & value attributes
+            //         if (minVal >= 0 && maxVal > 0 && minVal <= maxVal) {
+            //             actionTimeRangeMin.max = maxVal - 1;
+            //         }
+
+            //         // Only adjust other field, never the one being edited
+            //         if (minVal >= maxVal) {
+            //             if (!isEditingMax) {
+            //                 actionTimeRangeMax.value = minVal + 1;
+            //             } else if (!isEditingMin) {
+            //                 actionTimeRangeMin.value = maxVal - 1;
+            //             }
+            //         }
+            //         if (maxVal < minVal) {
+            //             if (!isEditingMax) {
+            //                 actionTimeRangeMax.value = minVal + 1;
+            //             } else if (!isEditingMin) {
+            //                 actionTimeRangeMin.value = maxVal - 1;
+            //             }
+            //         }
+            //         if (minVal <= 0) { // negative prevention
+            //             actionTimeRangeMin.value = 0;
+            //         }
+            //         if (maxVal <= 0) { // negative prevention
+            //             actionTimeRangeMin.min = 0;
+            //             actionTimeRangeMin.value = 0;
+            //             actionTimeRangeMax.min = 0;
+            //             actionTimeRangeMax.value = 0;
+            //         }
+            //         // Set timeout range
+            //         benchmarkConfig.simulateUsage.timeout = {
+            //             min: actionTimeRangeMin.value || 25,
+            //             max: actionTimeRangeMax.value || 26
+            //         }
+            //     }
+
+            //     this.updateUiConfig();
+            // }
+
+            // Config has changed
 
             updateUiConfig() {
                 let currentConfiguration = this.getCache('currentConfiguration');
+
                 if (!currentConfiguration) {
                     currentConfiguration = document.getElementById('currentConfiguration');
-                    this.toCache('currentConfiguration', currentConfiguration);
+                    this.setCache('currentConfiguration', currentConfiguration);
                 }
-                currentConfiguration.textContent = JSON.stringify({ benchmarkConfig, stats }, null, 2)
+
+                currentConfiguration.textContent = JSON.stringify({ currentMode, benchmarkConfig, stats }, null, 1);
+
+                // Store current config in localStorage to restore
+                localStorage.setItem('StressLog_Config', JSON.stringify({ currentMode, ...benchmarkConfig }, null, 0));
             }
 
             /**
@@ -1235,7 +1807,7 @@ window, ...document.querySelectorAll('*')
                 target.classList.add('active');
 
                 if (!modeCache) {
-                    this.toCache('modeSwitch', modeCache = {
+                    this.setCache('modeSwitch', modeCache = {
                         manualTest: document.getElementById('manualTest'),
                         ypsilonTest: document.getElementById('ypsilonTest'),
                     });
@@ -1251,6 +1823,8 @@ window, ...document.querySelectorAll('*')
 
                 // Update element counter after mode switch
                 this.updateElementCount();
+
+                this.updateUiConfig();
             }
 
             // Removes conflicting elements on setMode
@@ -1260,7 +1834,7 @@ window, ...document.querySelectorAll('*')
                 let testContainer = this.getCache(cacheKey);
 
                 if (!testContainer) {
-                    this.toCache(cacheKey, testContainer = document.getElementById(clearId));
+                    this.setCache(cacheKey, testContainer = document.getElementById(clearId));
                 }
 
                 testContainer.innerHTML = '';
@@ -1275,11 +1849,11 @@ window, ...document.querySelectorAll('*')
 
                 if (!manualElements) {
                     manualElements = document.getElementById('manualElements');
-                    this.toCache('manualElements', manualElements);
+                    this.setCache('manualElements', manualElements);
                 }
                 if (!ypsilonElements) {
                     ypsilonElements = document.getElementById('ypsilonElements');
-                    this.toCache('ypsilonElements', ypsilonElements);
+                    this.setCache('ypsilonElements', ypsilonElements);
                 }
 
                 // Traditional manual cleanup nightmare - must removeEventListener for each bound function
@@ -1313,6 +1887,7 @@ window, ...document.querySelectorAll('*')
             generateElements(target) {
                 const count = benchmarkConfig.test.createTotalButton;
                 states.elementsCreated = currentMode;
+                document.body.classList.add('elements-generated');
 
                 // Generate all element types in both containers
                 if (currentMode === 'manual') {
@@ -1354,7 +1929,7 @@ window, ...document.querySelectorAll('*')
                 let elementCountEl = this.getCache('elementCount');
                 if (!elementCountEl) {
                     elementCountEl = document.getElementById('elementCount');
-                    this.toCache('elementCount', elementCountEl);
+                    this.setCache('elementCount', elementCountEl);
                 }
 
                 if (!elementCountEl) return;
@@ -1445,20 +2020,38 @@ window, ...document.querySelectorAll('*')
                 // Reset benchmark progress
                 const benchmarkProgress = document.getElementById('benchmarkProgress');
                 const benchmarkBar = document.getElementById('benchmarkBar');
-                if (benchmarkProgress) benchmarkProgress.textContent = '0 / 3116';
+                if (benchmarkProgress) {
+                    const expected = calculateExpectedTotalEvents();
+                    benchmarkProgress.textContent = `0 / ${expected.expectedEvents}`;
+                }
                 if (benchmarkBar) {
                     benchmarkBar.style.width = '0%';
                     benchmarkBar.style.background = 'linear-gradient(90deg, #28a745, #17a2b8)';
                 }
 
+                // Reset Beast Mode Timer
+                const beastTimer = document.getElementById('stressTestDuration');
+                if (beastTimer) {
+                    beastTimer.textContent = '00:00';
+                    beastTimer.style.color = '';
+                    beastTimer.style.fontWeight = '';
+                    beastTimer.style.animation = '';
+                }
+
                 logMessage('📊 Performance metrics reset', '#28a745');
+            }
+
+            // ULTIMATE STRESS LOGS VIEWER
+            viewStressLogs(target) {
+                // Use the new modal instead of alert/console
+                this.showStressLogs();
             }
 
             clearLog(target) {
                 let eventLog = this.getCache('eventLog');
                 if (!eventLog) {
                     eventLog = document.getElementById('eventLog');
-                    this.toCache('eventLog', eventLog);
+                    this.setCache('eventLog', eventLog);
                 }
                 eventLog.innerHTML = '';
             }
@@ -1484,12 +2077,156 @@ window, ...document.querySelectorAll('*')
 
                         if (key) {
                             benchmarkConfig.test[key] = this.getSetTestValue(key, element);
-                            this.toCache(key, element);
+                            this.setCache(key, element);
                         }
                     });
                 }
 
-                this.updateTimerConfig()
+                // this.updateTimerConfig()
+            }
+
+            showStressLogs() {
+                const modal = document.getElementById('stressLogsModal');
+                const content = document.getElementById('stressLogsContent');
+
+                try {
+                    const logCount = parseInt(localStorage.getItem('StressLog_Count') || '0');
+
+                    if (logCount === 0) {
+                        content.innerHTML = '<p style="padding: 0 30px 30px;">No stress logs found. Run a stress test to generate logs.</p>';
+                        modal.style.display = 'block';
+                        return;
+                    }
+
+                    // Build table HTML
+                    let html = `
+                        <table style="width: 98%; border-collapse: collapse; margin: 0 auto 20px;">
+                            <thead style="position: sticky; top: 0;">
+                                <tr style="background: #f8f9fa;">
+                                    <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Index</th>
+                                    <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Mode</th>
+                                    <th style="border: 1px solid #ddd; padding: 8px; text-align: right;">Events</th>
+                                    <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Took</th>
+                                    <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Elements</th>
+                                    <th style="border: 1px solid #ddd; padding: 8px; text-align: center;">Depth</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+
+                    // Load and display logs (oldest first)
+                    for (let i = 1; i <= logCount; i++) {
+                        const logData = localStorage.getItem(`StressLog_${i}`);
+                        if (logData) {
+                            const log = JSON.parse(logData);
+                            const elements = log.elements || {};
+                            const elementsText = `${elements.totalElements || 0} [B:${elements.totalButton || 0}, T:${elements.totalText || 0}, C:${elements.totalCheckbox || 0}, R:${elements.totalRadiobox || 0}, S:${elements.totalSelect || 0}]`;
+
+                            html += `
+                                <tr>
+                                    <td style="border: 1px solid #ddd; padding: 8px;">${i}</td>
+                                    <td style="border: 1px solid #ddd; padding: 8px;">${log.mode || 'Unknown'}</td>
+                                    <td style="border: 1px solid #ddd; padding: 8px; text-align: right;">${log.totalEvents || 0}</td>
+                                    <td style="border: 1px solid #ddd; padding: 8px;">${log.took?.formatted || 'N/A'}</td>
+                                    <td style="border: 1px solid #ddd; padding: 8px; font-size: 0.9em;">${elementsText}</td>
+                                    <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">0</td>
+                                </tr>
+                            `;
+                        }
+                    }
+
+                    html += '</tbody></table>';
+
+                    // Add config section
+                    let latestConfig = localStorage.getItem('StressLog_Config');
+                    if (latestConfig) {
+                        latestConfig = JSON.stringify(JSON.parse(latestConfig), null, 2);
+                        html += `
+                            <div style="padding: 20px;">
+                                <h4>StressMacher_Config</h4>
+                                <pre class="auto-height" style="background: #f8f9fa; padding: 15px; border-radius: 4px; overflow: auto; font-size: 0.85em;">${latestConfig}</pre>
+                            </div>
+                        `;
+                    }
+
+                    content.innerHTML = html;
+                    modal.style.display = 'block';
+
+                } catch (error) {
+                    console.error('Error loading stress logs:', error);
+                    content.innerHTML = '<p>Error loading stress logs: ' + error.message + '</p>';
+                    modal.style.display = 'block';
+                }
+            }
+
+            closeStressLogs() {
+                document.getElementById('stressLogsModal').style.display = 'none';
+            }
+
+            stressLogToConsole() {
+                // List all stress logs in console with formatted JSON
+                const logCount = parseInt(localStorage.getItem('StressLog_Count') || '0');
+
+                if (logCount === 0) {
+                    console.log('📊 No stress logs found in localStorage');
+                    return;
+                }
+
+                console.log(`📊 STRESS LOGS DUMP (${logCount} entries):`);
+                console.log('='.repeat(50));
+
+                for (let i = 1; i <= logCount; i++) {
+                    const logData = localStorage.getItem(`StressLog_${i}`);
+                    if (logData) {
+                        console.log(`\n🔥 StressLog_${i}:`);
+                        console.log(JSON.stringify(JSON.parse(logData), null, 2));
+                    }
+                }
+
+                // Also log config and latest
+                const config = localStorage.getItem('StressLog_Config');
+                const latest = localStorage.getItem('StressLog_Latest');
+
+                if (config) {
+                    console.log('\n⚙️ StressLog_Config:');
+                    console.log(JSON.stringify(JSON.parse(config), null, 2));
+                }
+
+                if (latest) {
+                    console.log('\n🔥 StressLog_Latest:');
+                    console.log(JSON.stringify(JSON.parse(latest), null, 2));
+                }
+
+                console.log('\n📊 All stress logs dumped to console!');
+            }
+
+            clearLocalStorage() {
+                // Delete all stress log entries
+                const logCount = parseInt(localStorage.getItem('StressLog_Count') || '0');
+
+                if (logCount === 0) {
+                    alert('No stress logs to clear.');
+                    return;
+                }
+
+                if (confirm(`Are you sure you want to delete all ${logCount} stress logs from localStorage? This cannot be undone.`)) {
+                    // Delete numbered log entries
+                    for (let i = 1; i <= logCount; i++) {
+                        localStorage.removeItem(`StressLog_${i}`);
+                    }
+
+                    // Delete metadata entries
+                    localStorage.removeItem('StressLog_Count');
+                    localStorage.removeItem('StressLog_Latest');
+                    localStorage.removeItem('StressLog_Config');
+
+                    console.log(`🗑️ Deleted ${logCount} stress logs from localStorage`);
+                    alert(`Successfully deleted ${logCount} stress logs from localStorage.`);
+
+                    logMessage(`🗑️ Cleared ${logCount} stress logs from localStorage`, '#dc3545');
+                } else {
+                    console.log('❌ Clear localStorage cancelled by user');
+                }
             }
 
             static getRandomArbitrary(min, max) {
@@ -1516,9 +2253,16 @@ window, ...document.querySelectorAll('*')
          * To handle page interactions
          *
          */
-        const benchTool = new BenchMarkHandler( benchmarkSetup.eventMapping, benchmarkSetup.aliases, benchmarkSetup.config );
+        const benchTool = new BenchMarkHandler(
+            benchmarkSetup.eventMapping,
+            benchmarkSetup.aliases,
+            benchmarkSetup.config
+        );
 
         benchTool.initBenchTool()
+
+        // Update dynamic target info on page load
+        updateDynamicTargetInfo();
 
         function shuffleArray(array) { return BenchMarkHandler.shuffleArray(array) }
         function getRandomArbitrary() { return BenchMarkHandler.getRandomArbitrary }
@@ -1661,34 +2405,36 @@ window, ...document.querySelectorAll('*')
 
                 // RANDOMIZE: Shuffle buttons for random clicking order
                 const timer = benchmarkConfig.simulateUsage.timeout;
-                const timeouts = [];
 
-                // Add abort support with timeout cleanup
+                // ULTIMATE CHAIN SCHEDULING - NO MORE QUEUE SATURATION!
+                const shuffledButtons = shuffleArray([...buttons]);
+                const scheduler = new StressMacherUltimate(shuffledButtons, {
+                    baseDelay: timer.min,
+                    maxJitter: timer.max - timer.min,
+                    abortSignal,
+                    onElement: (btn) => {
+                        btn.dispatchEvent(new PointerEvent('click', { bubbles: true }));
+                        if (benchmarkConfig.test.formElFocus) {
+                            btn.focus();
+                        }
+                    },
+                    onProgress: (current, total) => {
+                        stats.updateEventsPerSecond();
+                    },
+                    onComplete: () => {
+                        setTimeout(resolve, 100);
+                    }
+                });
+
+                // CRITICAL FIX: Explicitly cancel scheduler when abort signal fires
                 if (abortSignal) {
                     abortSignal.addEventListener('abort', () => {
-                        // Clear all pending timeouts
-                        timeouts.forEach(clearTimeout);
+                        scheduler.cancel();
                         reject(new Error('Button simulation aborted'));
                     });
                 }
 
-                shuffleArray([...buttons]).forEach((btn, index) => {
-                    const timeout = setTimeout(() => {
-                        if (abortSignal?.aborted) return;
-
-                        btn.dispatchEvent(new PointerEvent('click', { bubbles: true }));
-
-                        if (benchmarkConfig.test.formElFocus) {
-                            btn.focus();
-                        }
-                        if (index === buttons.length - 1) {
-                            setTimeout(resolve, 100);
-                        }
-                    }, BenchMarkHandler.getRandomArbitrary(timer.min, timer.max) * (index / getTimingDivisor(stats.eventCount)));
-
-                    // Store timeout for cleanup on abort
-                    timeouts.push(timeout);
-                });
+                scheduler.execute().catch(reject);
             });
         }
 
@@ -1722,71 +2468,85 @@ window, ...document.querySelectorAll('*')
                     });
                 }
 
-                shuffleArray([...inputs]).forEach((input, index) => {
-                    const mainTimeout = setTimeout(async () => {
-                        if (abortSignal?.aborted) return;
-
+                // CHAIN SCHEDULING FOR INPUT SIMULATION
+                const shuffledInputs = shuffleArray([...inputs]);
+                const scheduler = new StressMacherUltimate(shuffledInputs, {
+                    baseDelay: timer.min,
+                    maxJitter: timer.max - timer.min,
+                    abortSignal,
+                    onElement: async (input, index) => {
                         if (benchmarkConfig.test.formElFocus) {
                             input.focus();
                         }
 
-                        // Simulate real typing with random text
                         const text = testTexts[index % testTexts.length];
-                        await simulateTyping(input, text, abortSignal);
-
-                        if (abortSignal?.aborted) return;
-
-                        const blurTimeout = setTimeout(async () => {
-                            if (abortSignal?.aborted) return;
-
-                            if (benchmarkConfig.test.formElFocus) {
-                                input.blur();
+                        try {
+                            // Track text input count and characters for accurate calculation
+                            stats.textInputCount++;
+                            stats.actualCharactersTyped += text.length;
+                            await simulateTyping(input, text, abortSignal);
+                        } catch (typingError) {
+                            if (!abortSignal?.aborted) {
+                                console.warn('Typing simulation interrupted:', typingError.message);
                             }
-                            if (index === inputs.length - 1) {
-                                setTimeout(resolve, 200);
-                            }
-                        }, text.length * 50);
+                        }
 
-                        timeouts.push(blurTimeout);
-                    }, BenchMarkHandler.getRandomArbitrary(timer.min, timer.max) * (index / getTimingDivisor(stats.eventCount)));
-
-                    timeouts.push(mainTimeout);
+                        if (benchmarkConfig.test.formElFocus) {
+                            setTimeout(() => input.blur(), text.length * 50);
+                        }
+                    },
+                    onProgress: (current, total) => {
+                        stats.updateEventsPerSecond();
+                    },
+                    onComplete: () => {
+                        setTimeout(resolve, 200);
+                    }
                 });
+
+                // CRITICAL FIX: Explicitly cancel scheduler when abort signal fires
+                if (abortSignal) {
+                    abortSignal.addEventListener('abort', () => {
+                        scheduler.cancel();
+                        reject(new Error('Input simulation aborted'));
+                    });
+                }
+
+                scheduler.execute().catch(reject);
             });
         }
 
         async function simulateTyping(input, text, abortSignal = null) {
             return new Promise((resolve, reject) => {
                 let currentText = '';
-                const timeouts = [];
 
-                // Add abort support - just clean up timeouts, don't reject
-                if (abortSignal) {
-                    abortSignal.addEventListener('abort', () => {
-                        timeouts.forEach(clearTimeout);
-                        resolve(); // Resolve instead of reject to avoid uncaught promise
-                    });
-                }
-
-                [...text].forEach((char, index) => {
-                    const timeout = setTimeout(() => {
-                        if (abortSignal?.aborted) return;
-
+                // CHAIN SCHEDULING FOR TYPING CHARACTERS
+                const characters = [...text];
+                const scheduler = new StressMacherUltimate(characters, {
+                    baseDelay: 25,
+                    maxJitter: 60,
+                    abortSignal,
+                    onElement: (char) => {
                         currentText += char;
                         input.value = currentText;
                         input.dispatchEvent(new InputEvent('input', {
                             bubbles: true,
                             data: char
                         }));
-
-                        // Resolve when finished typing
-                        if (index === text.length - 1) {
-                            setTimeout(resolve, 50);
-                        }
-                    }, BenchMarkHandler.getRandomArbitrary(25, 85) * (index / getTimingDivisor(stats.eventCount)));
-
-                    timeouts.push(timeout);
+                    },
+                    onComplete: () => {
+                        setTimeout(resolve, 50);
+                    }
                 });
+
+                // CRITICAL FIX: Explicitly cancel scheduler when abort signal fires
+                if (abortSignal) {
+                    abortSignal.addEventListener('abort', () => {
+                        scheduler.cancel();
+                        resolve(); // Resolve instead of reject to avoid uncaught promise
+                    });
+                }
+
+                scheduler.execute().catch(() => resolve());
             });
         }
 
@@ -1818,46 +2578,50 @@ window, ...document.querySelectorAll('*')
                     });
                 }
 
-                function checkComplete() {
-                    completedCount++;
-                    if (completedCount >= totalElements) {
-                        setTimeout(resolve, 100); // Small buffer to ensure all events are processed
-                    }
+                // CHAIN SCHEDULING FOR CHECKBOXES AND RADIOS
+                const shuffledCheckboxes = shuffleArray([...checkboxes]);
+                const uncheckedRadios = shuffleArray([...radios]).filter(radio => !radio.checked);
+                const allElements = [...shuffledCheckboxes, ...uncheckedRadios];
+
+                if (allElements.length === 0) {
+                    resolve();
+                    return;
                 }
 
-                // Process checkboxes with proper timing control
-                shuffleArray([...checkboxes]).forEach((checkbox, index) => {
-                    const timeout = setTimeout(() => {
-                        if (abortSignal?.aborted) return;
-
+                const scheduler = new StressMacherUltimate(allElements, {
+                    baseDelay: timer.min,
+                    maxJitter: timer.max - timer.min,
+                    abortSignal,
+                    onElement: (element) => {
                         if (benchmarkConfig.test.formElFocus) {
-                            checkbox.focus();
+                            element.focus();
                         }
-                        checkbox.checked = !checkbox.checked;
-                        checkbox.dispatchEvent(new Event('change', { bubbles: true }));
-                        checkComplete();
-                    }, BenchMarkHandler.getRandomArbitrary(timer.min, timer.max) * (index / getTimingDivisor(stats.eventCount)));
 
-                    timeouts.push(timeout);
-                });
+                        if (element.type === 'checkbox') {
+                            element.checked = !element.checked;
+                        } else if (element.type === 'radio') {
+                            element.checked = true;
+                        }
 
-                // Process radios with proper timing control
-                shuffleArray([...radios]).forEach((radio, index) => {
-                    if (!radio.checked) {
-                        const timeout = setTimeout(() => {
-                            if (abortSignal?.aborted) return;
-
-                            if (benchmarkConfig.test.formElFocus) {
-                                radio.focus();
-                            }
-                            radio.checked = true;
-                            radio.dispatchEvent(new Event('change', { bubbles: true }));
-                            checkComplete();
-                        }, BenchMarkHandler.getRandomArbitrary(timer.min, timer.max) * (index / getTimingDivisor(stats.eventCount)));
-
-                        timeouts.push(timeout);
+                        element.dispatchEvent(new Event('change', { bubbles: true }));
+                    },
+                    onProgress: (current, total) => {
+                        stats.updateEventsPerSecond();
+                    },
+                    onComplete: () => {
+                        setTimeout(resolve, 100);
                     }
                 });
+
+                // CRITICAL FIX: Explicitly cancel scheduler when abort signal fires
+                if (abortSignal) {
+                    abortSignal.addEventListener('abort', () => {
+                        scheduler.cancel();
+                        reject(new Error('Checkbox/Radio simulation aborted'));
+                    });
+                }
+
+                scheduler.execute().catch(reject);
 
                 // If no elements to process, resolve immediately
                 if (totalElements === 0) {
@@ -1880,8 +2644,13 @@ window, ...document.querySelectorAll('*')
                     return;
                 }
 
-                selects.forEach((select, index) => {
-                    setTimeout(() => {
+                // CHAIN SCHEDULING FOR SELECT ELEMENTS
+                const shuffledSelects = shuffleArray([...selects]);
+                const scheduler = new StressMacherUltimate(shuffledSelects, {
+                    baseDelay: timer.min,
+                    maxJitter: timer.max - timer.min,
+                    abortSignal,
+                    onElement: (select) => {
                         if (select.options.length > 1) {
                             if (benchmarkConfig.test.formElFocus) {
                                 select.focus();
@@ -1891,10 +2660,24 @@ window, ...document.querySelectorAll('*')
                             select.selectedIndex = randomIndex;
                             select.dispatchEvent(new Event('change', { bubbles: true }));
                         }
-                    }, BenchMarkHandler.getRandomArbitrary(timer.min, timer.max) * (index / getTimingDivisor(stats.eventCount)));
+                    },
+                    onProgress: (current, total) => {
+                        stats.updateEventsPerSecond();
+                    },
+                    onComplete: () => {
+                        setTimeout(resolve, 200);
+                    }
                 });
 
-                setTimeout(resolve, selects.length * 150 + 200);
+                // CRITICAL FIX: Explicitly cancel scheduler when abort signal fires
+                if (abortSignal) {
+                    abortSignal.addEventListener('abort', () => {
+                        scheduler.cancel();
+                        resolve(); // Resolve instead of reject to avoid uncaught promise
+                    });
+                }
+
+                scheduler.execute().catch(() => resolve());
             });
         }
 
@@ -1906,18 +2689,34 @@ window, ...document.querySelectorAll('*')
 
                 logMessage(`🖱️ Simulating mouse behaviors on ${sampleElements.length} elements...`);
 
-                sampleElements.forEach((element, index) => {
-                    setTimeout(() => {
-                        // Simulate mouse enter/leave
+                // CHAIN SCHEDULING FOR MOUSE BEHAVIORS
+                const scheduler = new StressMacherUltimate(sampleElements, {
+                    baseDelay: 50,
+                    maxJitter: 150,
+                    abortSignal,
+                    onElement: (element) => {
                         element.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
-
                         setTimeout(() => {
                             element.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
                         }, 100);
-                    }, BenchMarkHandler.getRandomArbitrary(50, 200) * (index / getTimingDivisor(stats.eventCount)));
+                    },
+                    onProgress: (current, total) => {
+                        stats.updateEventsPerSecond();
+                    },
+                    onComplete: () => {
+                        setTimeout(resolve, 300);
+                    }
                 });
 
-                setTimeout(resolve, sampleElements.length * 150 + 300);
+                // CRITICAL FIX: Explicitly cancel scheduler when abort signal fires
+                if (abortSignal) {
+                    abortSignal.addEventListener('abort', () => {
+                        scheduler.cancel();
+                        resolve(); // Resolve instead of reject to avoid uncaught promise
+                    });
+                }
+
+                scheduler.execute().catch(() => resolve());
             });
         }
 
@@ -1925,11 +2724,14 @@ window, ...document.querySelectorAll('*')
             const abortController = new AbortController();
 
             try {
-                target.textContent = '🔥 » STRESSING 🔥';
+                this.flipDataText(target);
                 target.disabled = true;
 
                 // Start test state management
                 benchTool.startTest('STRESSTEST', abortController);
+
+                // START BEAST MODE TIMER
+                stats.startTimer();
 
                 logMessage('🔥 STRESSTEST: Generating ALL element types simultaneously!');
                 markTestArea('running', 'add');
@@ -1994,10 +2796,34 @@ window, ...document.querySelectorAll('*')
 
                 // Cleanup UI
                 setTimeout(() => {
-                    target.textContent = '🔥 STRESSTEST 🔥';
+                    this.flipDataText(target);
                     target.disabled = false;
-                    markTestArea('finished', 'remove');
+                                        markTestArea('finished', 'remove');
                     benchTool.endTest(); // End test state management
+
+                    // STOP BEAST MODE TIMER
+                    stats.stopTimer();
+
+                    // UPDATE FINAL ACCURATE CALCULATION
+                    const actualExpected = calculateActualExpectedEvents();
+                    const benchmarkProgress = document.getElementById('benchmarkProgress');
+                    if (benchmarkProgress) {
+                        benchmarkProgress.textContent = `${stats.eventCount} / ${actualExpected.expectedEvents} (${stats.actualCharactersTyped} chars typed)`;
+                        // Make text green if events match exactly
+                        if (stats.eventCount === actualExpected.expectedEvents) {
+                            benchmarkProgress.style.color = '#4caf50';
+                            benchmarkProgress.style.fontWeight = 'bold';
+                        } else {
+                            benchmarkProgress.style.color = '#f44336'; // Red if mismatch
+                            benchmarkProgress.style.fontWeight = 'bold';
+                        }
+                    }
+
+                    logMessage(`🎯 Final accurate count: ${stats.eventCount} events (${actualExpected.actualCharacters} characters in ${actualExpected.textInputs} text inputs)`, '#17a2b8');
+
+                    // SAVE ULTIMATE STRESS LOG
+                    stats.saveStressLog();
+
                     logMessage('🎖️ Ultimate Fury Fire Test COMPLETED successfully!', '#4caf50');
                 }, 2000);
 
@@ -2010,9 +2836,13 @@ window, ...document.querySelectorAll('*')
                 }
 
                 // Reset UI on error/abort
-                target.textContent = '🔥 STRESSTEST 🔥';
+                this.flipDataText(target);
                 target.disabled = false;
-                benchTool.endTest(); // End test state management
+                                benchTool.endTest(); // End test state management
+
+                // STOP BEAST MODE TIMER ON ERROR/ABORT
+                stats.stopTimer();
+
                 markTestArea('running', 'remove');
                 markTestArea('finished', 'remove');
             }
@@ -2023,7 +2853,7 @@ window, ...document.querySelectorAll('*')
             const abortController = new AbortController();
 
             try {
-                target.innerHTML = '∞ <span>INFINITING</span> ∞';
+                this.flipDataText(target);
                 target.disabled = true;
 
                 // Start test state management
@@ -2046,10 +2876,10 @@ window, ...document.querySelectorAll('*')
                 }
 
                 setTimeout(() => {
-                    target.innerHTML = '∞ INFINITY TEST ∞';
+                    this.flipDataText(target);
                     target.disabled = false;
-                    benchTool.endTest(); // End test state management
-                }, 500);
+                                        benchTool.endTest(); // End test state management
+                }, 1000);
 
             } catch (error) {
                 console.error('Infinity test failed:', error);
@@ -2059,9 +2889,9 @@ window, ...document.querySelectorAll('*')
                     logMessage('❌ Infinity test failed: ' + error.message, '#ff5722');
                 }
 
-                target.innerHTML = '∞ INFINITY TEST ∞';
+                this.flipDataText(target);
                 target.disabled = false;
-                benchTool.endTest(); // End test state management
+                                benchTool.endTest(); // End test state management
             }
         }
 
@@ -2070,7 +2900,7 @@ window, ...document.querySelectorAll('*')
             buffer: [],
             batchTimeout: null,
             logLevel: 'minimal', // 'minimal', 'summary', 'verbose'
-            maxEntries: 1000,
+            maxEntries: 25,
             keystrokeBuffer: new Map(), // For aggregating keystrokes
 
             setLogLevel(level) {
@@ -2112,7 +2942,7 @@ window, ...document.querySelectorAll('*')
                 this.buffer.forEach(entry => fragment.appendChild(entry));
 
                 // Maintain max entries limit
-                while (eventLog.children.length + this.buffer.length > this.maxEntries) {
+                while (eventLog.children.length + this.buffer.length > this.maxEntries && eventLog.firstChild) {
                     eventLog.removeChild(eventLog.firstChild);
                 }
 
@@ -2142,6 +2972,11 @@ window, ...document.querySelectorAll('*')
             }
         };
 
+        // 📊 LOG LEVEL HELPER FUNCTION
+        function getLogLevel() {
+            return loggingSystem.logLevel || 'minimal';
+        }
+
         // Quantum Based Logger
         function logEvent(handlerType, methodName, target, color = '#00ff00') {
             const timestamp = BenchMarkHandler.getTimestamp();
@@ -2158,15 +2993,28 @@ window, ...document.querySelectorAll('*')
             // Update benchmark progress
             const benchmarkProgress = document.getElementById('benchmarkProgress');
             const benchmarkBar = document.getElementById('benchmarkBar');
+            const expected = calculateActualExpectedEvents(); // Use same calculation as final results
+
             if (benchmarkProgress) {
-                benchmarkProgress.textContent = `${stats.eventCount} / 3116`;
+                benchmarkProgress.textContent = `${stats.eventCount} / ${expected.expectedEvents}`;
+                // Color code progress: green when complete, blue while in progress
+                if (stats.eventCount === expected.expectedEvents) {
+                    benchmarkProgress.style.color = '#4caf50'; // Green when complete
+                    benchmarkProgress.style.fontWeight = 'bold';
+                } else if (stats.eventCount > expected.expectedEvents) {
+                    benchmarkProgress.style.color = '#ff9800'; // Orange when exceeded
+                    benchmarkProgress.style.fontWeight = 'bold';
+                } else {
+                    benchmarkProgress.style.color = '#2196f3'; // Blue while in progress
+                    benchmarkProgress.style.fontWeight = 'normal';
+                }
             }
             if (benchmarkBar) {
-                const percentage = Math.min((stats.eventCount / 3116) * 100, 100);
+                const percentage = Math.min((stats.eventCount / expected.expectedEvents) * 100, 100);
                 benchmarkBar.style.width = percentage + '%';
 
                 // Change color based on progress
-                if (stats.eventCount >= 3116) {
+                if (stats.eventCount >= expected.expectedEvents) {
                     benchmarkBar.style.background = '#28a745'; // Success green
                 } else if (stats.eventCount >= 2500) {
                     benchmarkBar.style.background = 'linear-gradient(90deg, #ffc107, #dc3545)'; // Warning to danger
@@ -2399,8 +3247,8 @@ window, ...document.querySelectorAll('*')
             if (depth <= 0) return element;
 
             const wrapper = document.createElement('div');
-            wrapper.style.paddingLeft = '20px';
-            wrapper.style.margin = '5px 0';
+            wrapper.style.paddingLeft = '3px';
+            wrapper.style.margin = '1px 0';
             wrapper.style.borderLeft = '1px solid #ddd';
 
             wrapper.appendChild(element);
@@ -2441,7 +3289,11 @@ window, ...document.querySelectorAll('*')
 
                 for (let i = 0; i < total; i++) {
                     const element = createElement(type, i, true);
-                    container.appendChild(element);
+
+                    // Apply nesting structure if configured
+                    const nestingDepth = parseInt(benchmarkConfig.test.nestingDepth) || 0;
+                    const finalElement = createNestedStructure(element, nestingDepth);
+                    container.appendChild(finalElement);
 
                     // Manual listener management nightmare - traditional approach
                     if (isManual) {
@@ -2522,6 +3374,7 @@ window, ...document.querySelectorAll('*')
         function markTestArea(setState, fn = 'add') {
             document.querySelector('.test-area').classList[fn](setState);
         }
+
 
         // Initialize with manual mode
         benchTool.setMode(document.querySelector('.active[data-action="setMode"]'));

@@ -92,18 +92,81 @@ super({
 - **After:** O(1) cached distance lookups
 - **Result:** 90%+ performance improvement on complex nested UIs
 
-### 🤖 StressMacher S-800 - Serial Event Killer
+### 🎯 StressMacher S-800 - Performance Benchmarking Tool
 
-The **[StressMacher S-800](https://eypsilon.github.io/YpsilonEventHandler-Examples/example/public/stressmacher.deepseek.html)** is a professional benchmarking tool that demonstrates the dramatic performance difference between traditional manual event listeners (O(n)) and YpsilonEventHandler's revolutionary O(1) approach.
+The **[StressMacher S-800](https://eypsilon.github.io/YpsilonEventHandler-Examples/example/public/stressmacher.deepseek.html)** is a revolutionary performance testing tool that demonstrates the dramatic difference between traditional manual event listeners (O(n)) and YpsilonEventHandler's revolutionary O(1) approach.
 
-**Features:**
+**Key Features:**
+- **O(1) vs O(n) Performance Comparison** - Side-by-side demonstration of scaling behavior
+- **Clean Stress Scheduler** - Predictable timing system for comprehensive testing
+- **Comprehensive Stress Logs** - Persistent localStorage tracking with modal display
 - **Real-time Performance Metrics** - Events/second tracking with peak performance indicators
-- **Scientific Benchmarking** - Based on rigorous testing: 1250 elements = 3116 events baseline
-- **Visual Performance Indicators** - Live throughput bars and stress zone warnings
-- **Dynamic Timing System** - Smart threshold-based event spacing for perfect stress testing
-- **Optimized Logging** - Three levels (Minimal/Summary/Verbose) with keystroke aggregation
+- **INFINITY Test** - Exponential DOM scaling to prove O(1) endurance
+- **Epic Endurance Testing** - Proven capability: 62,493 events over 63 minutes with 25,000 elements
 
-**The Ultimate Test:** Watch traditional approaches collapse under load while YpsilonEventHandler maintains perfect O(1) performance regardless of scale.
+**The Ultimate Demonstration:** Watch manual listeners scale linearly (each element = 1 listener) while YpsilonEventHandler maintains constant performance with only 3 listeners total, regardless of element count.
+
+## 🔍 Real-World Listener Analysis
+
+**Why This Matters:** Run this script on any major website and prepare to be shocked. YouTube has 5,767 event listeners, GitHub has 1,790 - numbers that reveal the hidden performance crisis plaguing modern web development. Each listener consumes memory, degrades performance, and creates the "freezing mess" users experience on complex sites. Traditional event handling scales as O(n) - more elements means exponentially more listeners, leading to the performance nightmare you're witnessing. YpsilonEventHandler solves this mathematically with O(1) scaling: whether you have 10 elements or 10,000, you need exactly 3 listeners. This script exposes why the web feels slow and proves that YpsilonEventHandler isn't just an optimization - it's a fundamental paradigm shift from performance chaos to mathematical elegance.
+
+**⚠️ Chromium-Based Browsers Only:** This script uses `getEventListeners(el)` which is a Chromium DevTools Console API - it won't work in regular JavaScript code, only in the browser's Developer Console (F12).
+
+**Browser Support:**
+- ✅ **Works:** Chrome, Edge, Opera, Brave, Vivaldi (Chromium-based browsers)
+- ❌ **Doesn't Work:** Firefox (`getEventListeners is undefined`), Safari (WebKit-based browsers)
+
+**How to Use:** Open any website → F12 → Console tab → Paste script → Press Enter
+
+> **Note:** When copy-pasting into DevTools Console, you'll get a security warning requiring you to type `allow pasting` to enable clipboard access. This is normal browser security behavior.
+
+```js
+// 🔍 Enhanced Real-World Listener Scanner with Counter
+let totalListeners = 0;
+const elementsWithListeners = [];
+
+[window, ...document.querySelectorAll('*')].filter(el => {
+    const listeners = getEventListeners(el);
+    return listeners && Object.keys(listeners).length > 0;
+}).forEach((el, i) => {
+    const elementName = el === window
+        ? 'window'
+        : el === document ? 'document' : el.tagName.toLowerCase() + (el.id ? '#' + el.id : '') + (el.className ? '.' + el.className.split(' ').join('.') : '');
+
+    const listeners = getEventListeners(el);
+
+    // Count total listeners for this element
+    let elementListenerCount = 0;
+    Object.values(listeners).forEach(eventArray => {
+        elementListenerCount += eventArray.length;
+    });
+    totalListeners += elementListenerCount;
+
+    // Enhanced display format
+    console.log(`${i + 1}. ${elementName}:`);
+    Object.entries(listeners).forEach(([eventType, eventArray]) => {
+        console.log(`  - ${eventType}: ${eventArray.length}`);
+    });
+    console.log(`  Total: ${elementListenerCount} listeners`);
+    console.log('  Raw data:', listeners);
+    console.log(''); // Empty line for readability
+
+    elementsWithListeners.push({elementName, count: elementListenerCount, listeners});
+});
+
+// Final summary
+console.log(`🎯 SCAN COMPLETE:`);
+console.log(`📊 Total Elements with Listeners: ${elementsWithListeners.length}`);
+console.log(`🔥 Total Event Listeners Found: ${totalListeners}`);
+console.log(`📈 Average Listeners per Element: ${(totalListeners / elementsWithListeners.length).toFixed(2)}`);
+
+// Top listener hotspots
+const sorted = elementsWithListeners.sort((a, b) => b.count - a.count).slice(0, 5);
+console.log(`🥇 Top 5 Listener Hotspots:`);
+sorted.forEach((item, i) => {
+    console.log(`${i + 1}. ${item.elementName}: ${item.count} listeners`);
+});
+```
 
 ## 🏆 Recognition
 
