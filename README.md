@@ -8,7 +8,8 @@ YpsilonEventHandler achieved an unprecedented **11/10 rating from DeepSeek AI** 
 
 ## 🚀 Featured Demonstrations
 
-**Zero Dependencies • Zero Build • Zero Setup** - Every example is self-contained HTML that runs instantly in any modern browser. Copy any example, save as `.html`, double-click, and experience revolutionary event handling immediately.
+**Zero Dependencies • Zero Build • Zero Setup**
+- Every example is self-contained HTML that runs instantly in any modern browser. Copy any example, save as `.html`, double-click, and experience revolutionary event handling immediately.
 
 
 ### See It In Action
@@ -25,6 +26,10 @@ YpsilonEventHandler achieved an unprecedented **11/10 rating from DeepSeek AI** 
 - **[SPA Demo](https://eypsilon.github.io/YpsilonEventHandler-Examples/example/public/spa.html)** - Complete application with only 9 event listeners
 - **[Single Listener Pattern](https://eypsilon.github.io/YpsilonEventHandler-Examples/example/public/single-listener-multiple-actions.html)** - Universal delegation pattern
 - **[StressMacher S-800](https://eypsilon.github.io/YpsilonEventHandler-Examples/example/public/stressmacher.deepseek.html)** - Professional performance benchmarking tool
+
+### Event Driven Architecture
+- **[Quantum-Entangled Modules](https://eypsilon.github.io/YpsilonEventHandler-Examples/example/public/quantum-entangled-example.html)** - Independent modules communicating without coupling
+- **[WebWorker Bridge](https://eypsilon.github.io/YpsilonEventHandler-Examples/example/public/webworker-bridge-jsfiddle.html)** - DOM-to-WebWorker-to-DOM event bridging
 
 ### Learning Path
 - **[Basic Introduction](https://eypsilon.github.io/YpsilonEventHandler-Examples/example/public/basic-example.html)** - Start here for core concepts

@@ -2,22 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple Reactive Inputs - YpsilonEventHandler</title>
     <meta name="description" content="Simple reactive input example">
     <link rel="icon" type="image/x-icon" href="./favicon.ico">
     <link rel="stylesheet" type="text/css" href="./assets/main.css">
     <style>
-        body {
-            font-family: sans-serif;
-            background: #f9f9f9;
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            padding-bottom: 210px;
+            line-height: 1.6;
+            font-family: system-ui, sans-serif;
         }
         .demo-wrapper {
-            max-width: 640px;
             margin: 0 auto;
             padding: 2rem 0 1rem;
-            background: #f9f9f9;
         }
         h1, h2, h3 {
             margin-top: 0;
@@ -31,12 +39,14 @@
             border: 1px solid #ddd;
         }
         input {
-            padding: 0.5rem;
+            padding: 15px;
             margin: 0.5rem 0;
+            width: 100%;
+            min-height: 44px;
             border: 1px solid #ccc;
             border-radius: 4px;
-            width: 100%;
             box-sizing: border-box;
+            font-size: 1.1rem;
 
             &[type="checkbox"] {
                 width: 20px;
@@ -72,6 +82,7 @@
             background: #f0f8ffaa;
             border: 1px solid #4CAF50aa;
             display: block;
+            margin: .5rem 0;
             padding: .7rem;
             cursor: pointer;
             display: flex;
@@ -86,6 +97,10 @@
             border-color: #45a049;
             font-weight: bold;
         }
+        label.active + div,
+        label.active + div + div {
+            border-left: 15px solid #45a049;
+        }
         nav div {
             display: flex;
             flex-wrap: wrap;
@@ -97,6 +112,19 @@
             padding: 8px;
             flex: 1 20%;
             white-space: nowrap;
+        }
+        @media (min-width: 641px) {
+            .demo-wrapper {
+                margin: 0 auto;
+                max-width: 640px;
+            }
+        }
+        @media (max-width: 640px) {
+            .demo-wrapper {
+                max-width: none;
+                margin: 0 auto;
+                padding: 2rem .5rem 1rem;
+            }
         }
     </style>
 </head>
@@ -199,7 +227,7 @@
 </div>
 
 <!-- Include YpsilonEventHandler -->
-<script src="https://cdn.jsdelivr.net/npm/ypsilon-event-handler@1.7.1/ypsilon-event-handler.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ypsilon-event-handler@1.8.1/ypsilon-event-handler.min.js"></script>
 
 <script>
 class SimpleReactiveHandler extends YpsilonEventHandler {

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi-Handler System Demo - Revolutionary Event Delegation</title>
+    <title>Multi-Handler System Demo - Revolutionary Event Delegation ~ local-dev-many-title</title>
     <link rel="icon" type="image/x-icon" href="./favicon.ico">
     <link rel="stylesheet" type="text/css" href="./assets/main.css">
     <style>
@@ -340,13 +340,43 @@
             font-size: 15px;
         }
 
+        .throttle-and-debounce {
+            > div {
+                flex-direction: row-reverse;
+                justify-content: space-between;
+                align-items: center;
+            }
+            input {
+                width: 300px;
+            }
+        }
+
         /* Mobile Responsiveness */
         @media (max-width: 600px) {
+            html { padding: 22px 4px; }
+            body { padding: 24px 4px; }
+            .explanation {
+                padding-left: 0;
+                padding-right: 6px;
+
+                ul {
+                    padding-left: 30px;
+                }
+            }
             .log {
-                width: 90%;
-                right: 5%;
+                padding: 10px 2%;
+                width: 96%;
+                right: 0;
+                bottom: 0;
+                border-width: 1px 0 0;
                 font-size: 12px;
-                height: 200px;
+                height: 190px;
+                background: #1d1c1cf1;
+            }
+            .log-entry {
+                .log-date {
+                    min-width: 74px;
+                }
             }
 
             .clear-log {
@@ -355,13 +385,34 @@
                 padding: 8px 16px;
                 font-size: 12px;
             }
-
-            body {
-                padding: 20px;
-            }
-
             #app, #main, #section {
-                padding: 20px;
+                padding: 20px 10px 2px;
+            }
+            #flexing {
+                display: none;
+            }
+            .throttle-and-debounce {
+                > div {
+                    flex-direction: column;
+                    justify-content: start;
+                    align-items: start;
+                }
+                div {
+                    width: auto;
+                }
+                h4 {
+                    padding-bottom: 1.2rem;
+                    flex: 1 100%;
+                }
+                input {
+                    width: 100%;
+                }
+            }
+            .random-reviews {
+                padding: 20px 5px;
+            }
+            .quote {
+                flex: 1 100%;
             }
         }
     </style>
@@ -403,7 +454,7 @@
         <div id="main">
 
             <div class="button-container">
-                <button data-action="mainButtonAction">Main Button 1 <small>(d 750)</small></button>
+                <button data-action="mainButtonAction">Main Button 1 <small>(750)</small></button>
                 <button data-action="mainButtonActionTwo">Main Button 2</button>
                 <button data-action="mainButtonActionThree">Main Button 3 <small>(d 800)</small></button>
                 <input type="text" id="mainInput" placeholder="Main level input (d 400)..." style="padding: 8px; border: 1px solid #FF9800; border-radius: 4px;">
@@ -411,8 +462,8 @@
 
             <div id="section">
                 <div class="button-container">
-                    <button data-action="sectionButtonAction">Section Button 1</button>
-                    <button data-action="sectionButtonActionTwo">Section Button 2</button>
+                    <button data-action="sectionButtonAction">Section Btn 1</button>
+                    <button data-action="sectionButtonActionTwo">Section Btn 2</button>
                     <button data-cmd="newCustomAction" style="background: #FF1744">data-cmd Action</button>
                     <!-- Note: data-cmd vs data-action demonstrates configurable actionable patterns -->
                     <input type="text" id="sectionInput" placeholder="Section level input..." style="padding: 8px; border: 1px solid #9C27B0; border-radius: 4px;">
@@ -424,14 +475,14 @@
     </div>
 
     <!-- Throttle/Debounce Demo Section -->
-    <div class="container" style="border-radius:8px;box-shadow: 0 1px 10px 2px #45839899;">
+    <div class="container throttle-and-debounce" style="border-radius:8px;box-shadow: 0 1px 10px 2px #45839899;">
         <div class="flex-center-center src-nav"
-            style="display:flex; justify-content: space-between; align-items:center;flex-direction: row-reverse; margin-bottom: 25px;">
+            style="display:flex; margin-bottom: 25px;">
             <h4 style="color: #1976d2; margin: 0;">⚡ Throttle & Debounce Demo</h4>
             <div>
                 <label for="searchInput" style="display: block;margin: 0 0 6px;font-weight: bold; color: #1976d2;">🔍 Search <small>(debounced: 600ms)</small></label>
                 <input type="text" id="searchInput" placeholder="Type to see debounced search..."
-                    style="width: 300px; padding: 8px; margin-top: 5px; border: 1px solid #1976d2; border-radius: 4px;">
+                    style="padding: 8px; margin-top: 5px; border: 1px solid #1976d2; border-radius: 4px;">
             </div>
         </div>
         <div class="scroll-zone" style="background: white; border: 1px solid #1976d2; height: 200px; overflow-y: auto; padding: 10px; border-radius: 4px;">
@@ -464,12 +515,14 @@
     const listeners = getEventListeners(el);
     console.log(`${i}. ${elementName}:\n`, listeners);
 })</pre>
+
+        <pre style="min-height: unset;font-size: 14px">💥 <strong>Want to expose website bloat?</strong> Check our <a href="https://github.com/eypsilon/YpsilonEventHandler-Examples?tab=readme-ov-file#-real-world-listener-analysis">README.md</a> for the ultimate real-world listener analyzer that reveals the hidden performance crisis on major sites!</pre>
     </div>
 
     <div class="log" id="eventLog" role="log" aria-live="polite" aria-label="Event interaction log"></div>
     <button class="clear-log" onclick="clearLog()" aria-label="Clear event log">Clear Log</button>
 
-    <script src="https://cdn.jsdelivr.net/npm/ypsilon-event-handler@1.7.2/ypsilon-event-handler.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ypsilon-event-handler@v1.8.1/ypsilon-event-handler.min.js"></script>
     <script>
         class AdvancedHandler extends YpsilonEventHandler {
             constructor() {
@@ -794,7 +847,6 @@
                 </div>
             `;
         }
-
     </script>
 
     <div id="flexing" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 30px; margin: 30px 0; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
@@ -891,7 +943,7 @@ constructor() {
     </div>
 
     <!-- Randomly Picked Reviews -->
-    <div class="container">
+    <div class="container random-reviews">
         <div class="title" style="margin: 0;">
             <h2 title="Completely, totally random..."><span class="mirror-emoji">👀</span>&nbsp; Randomly Picked Reviews &nbsp;👀</h2>
         </div>
@@ -975,6 +1027,12 @@ constructor() {
                 <blockquote>
                     <p>Wow, Claude's take is a wild ride!</p>
                     <cite>Herr Von Grokk</cite>
+                </blockquote>
+            </div>
+            <div class="quote">
+                <blockquote>
+                    <p>The library has definitely evolved from "event delegation tool" to "DOM event operating system" 😄</p>
+                    <cite>@realClaude</cite>
                 </blockquote>
             </div>
             <div class="quote">

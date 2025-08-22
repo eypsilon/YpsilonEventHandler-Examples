@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebWorker Bridge Demo | YpsilonEventHandler</title>
+    <meta name="description" content="WebWorker Bridge: DOM-to-WebWorker-to-DOM example">
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <link rel="stylesheet" type="text/css" href="./assets/main.css">
+    <style>
+        body {
+            margin: 20px auto;
+            padding: 0 20px;
+            max-width: 840px;
+            background: #f5f5f5;
+            font-family: Ubuntu, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        h1 {
+            font-size: 1.3rem;
+        }
+        h2, h3 {
+            font-size: 1.1rem;
+        }
+        h1, h2, h3, p {
+            margin-top: 0;
+        }
+        header, main, section {
+            margin: 20px 0;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 2px 9px 0px #efe8e8;
+        }
+        footer {
+            margin: 30px 0;
+            padding: 20px;
+            text-align: center;
+        }
+        pre span {
+            color: #999;
+        }
+        input {
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            transition: border-color 0.3s;
+        }
+        input:focus {
+            outline: none;
+            border-color: #007acc;
+        }
+        .task-container {
+            display: flex;
+            justify-content: space-between;
+
+            label {
+                margin: 0;
+            }
+        }
+        .result {
+            padding: 8px 0;
+            transition: all .9s ease-in-out;
+
+            &:not(:last-of-type) {
+                border-bottom: 1px solid #ddd;
+            }
+        }
+        .auto-height {
+            min-height: unset;
+            line-height: 1.6;
+            font-size: 15px;
+            background: #f8f8f8;
+        }
+        .mb-0 {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>
+        <a href="./index.html" title="Back to index" style="text-decoration: none;">«</a>
+        🚨 DOM-to-WebWorker-to-DOM Event Bridge
+    </h1>
+    <p>Revolutionary data flow architecture bridging DOM events to WebWorker computations:</p>
+    <h2>Event Chain:</h2>
+    <pre class="auto-height">DOM input → handleInput() → worker.postMessage() →
+  WebWorker computation → worker.onmessage →
+    this.dispatch('worker-result')
+      → displayResult()</pre>
+    <p class="mb-0"><small><b>Key Innovation:</b> Seamless DOM-to-WebWorker-to-DOM event bridging through YpsilonEventHandler's custom event system. Heavy computations never block the UI.</small></p>
+    <p class="mb-0"><small><b>Note:</b> Runs directly on <code>file://</code> protocol like all YpsilonEventHandler examples - just download and open in browser! (Requires internet for CDN library access)</small></p>
+</header>
+
+<main class="main">
+    <p>Type in the input to trigger heavy computation in WebWorker:</p>
+
+    <div class="task-container">
+        <input type="text"
+            name="worker-input"
+            placeholder="Type anything... debounce: 1.5 seconds" style="width: 300px;">
+        <label>Compute
+            <input type="number" name="compute" min="500000" max="50000000" step="500000" value="10000000">
+        </label>
+    </div>
+
+    <div id="output" style="margin-top: 20px; padding: 10px; background: #f4f4f4; border-radius: 5px;"></div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/ypsilon-event-handler@latest/ypsilon-event-handler.min.js"></script>
+
+<script>
+// Bridge DOM events to WebWorkers via custom events
+class WebWorkerBridge extends YpsilonEventHandler {
+    constructor() {
+        super({
+            '[name="worker-input"]': [{ type: 'input', debounce: 1500 }],
+            '[name="compute"]': [{ type: 'input' }],
+        });
+
+        // Create worker for heavy computations
+        this.worker = new Worker('data:application/javascript,' + encodeURIComponent(`
+            self.onmessage = function(e) {
+                // Simulate heavy computation (sum of X numbers)
+                const numbers = arguments[0].data[1].compute;
+                const result = Array(numbers).fill(0).reduce((a, b, i) => a + i);
+                self.postMessage({
+                    type: 'computation-done',
+                    numbers,
+                    result,
+                    input: e.data,
+                    timestamp: Date.now()
+                });
+            };
+        `));
+
+        this.worker.onmessage = (e) => {
+            // Worker results become DOM events
+            this.dispatch('worker-result', e.data);
+        };
+    }
+
+    handleInput(event, target) {
+        if (target.name === 'compute') {
+            const toCompute = parseInt(target.value, 10);
+            if (toCompute > 50000000) target.value = 50000000;
+            return;
+        }
+
+        // Send DOM input to WebWorker
+        if (target.value.trim()) {
+            let compute = document.body.querySelector('[name="compute"]');
+            if (compute && compute.value) {
+                compute = parseInt(compute.value, 10);
+            }
+            compute = compute || 1000000;
+            // Variable compute numbers, because why not?
+            this.worker.postMessage([target.value, { compute }]);
+            this.updateOutput(`🚀 Sent to worker: "<b>${target.value}</b>", compute: <b>${compute.toLocaleString()}</b>`);
+        }
+    }
+
+    updateOutput(message) {
+        const output = document.getElementById('output');
+        const div = document.createElement('div');
+        div.className = 'result';
+        div.innerHTML = message;
+        output.appendChild(div);
+        if (output.children.length > 8) {
+            output.removeChild(output.firstChild);
+        }
+    }
+}
+
+// Extend to handle worker results
+class WorkerResultHandler extends WebWorkerBridge {
+    constructor() {
+        super();
+        // Add subscriber for: 'worker-result'
+        this.addEvent('document', { type: 'worker-result', handler: 'displayResult' });
+    }
+
+    displayResult(event) {
+        const {
+            result,
+            input,
+            timestamp,
+            numbers,
+            type
+        } = event.detail;
+        const message = `💪 Worker computed sum of <b>${numbers.toLocaleString()}</b> numbers: <b>${result.toLocaleString()}</b> (for input: "<b>${input[0]}</b>")`;
+        this.updateOutput(message);
+    }
+}
+
+// Initialize the revolutionary event bridge
+new WorkerResultHandler();
+
+// Add some startup info
+document.addEventListener('DOMContentLoaded', () => {
+    const output = document.getElementById('output');
+    output.innerHTML = '<div class="result">💡 Ready! Type in the input above to see DOM-to-WebWorker event bridging in action.</div>';
+});
+</script>
+
+<!--
+    About
+-->
+<section class="extras">
+    <h3>What has this to do with Ypsilon?</h3>
+    <p>In this example, we use <code>YpsilonEventHandler</code> as Subscriber System to subscribe and dispatch Events.</p>
+    <p><code>YpsilonEventHandler</code> provides 2 ways to subscribe:</p>
+    <pre class="auto-height"><span>// Subcribe immediately via document selector in the constructor</span>
+constructor() {
+    super({
+        document: [
+            { type: 'worker-result', handler: 'onEventUseMethod' }
+        ]
+    });
+}
+
+<span>// Or like in this example, on the fly using this.addEvent
+// It will listen immediately after adding</span>
+this.addEvent('document', { type: 'worker-result', handler: 'displayResult' });</pre>
+</section>
+
+<div class="nav-container">
+    <!-- Navigation to other examples -->
+    <nav class="main-nav">
+        <div>
+            <a href="./index.html" class="btn-primary">Start</a>
+            <a href="./basic-example.html" class="btn-secondary">Basic Example</a>
+            <a href="./multi-handler-demo.html" class="btn-warning">Multi-Handler</a>
+            <a href="./single-listener-multiple-actions.html" class="btn-purple">Single Listener</a>
+            <a href="./spa.html" class="btn-success">SPA Demo</a>
+            <a href="./quantum-entangled-example.html" class="btn-info">Quantum Modules</a>
+            <a href="./stressmacher.deepseek.html" class="btn-teal">StressMacher</a>
+            <a href="https://github.com/eypsilon/YpsilonEventHandler" class="btn-dark">GitHub</a>
+        </div>
+    </nav>
+</div>
+
+<footer><i>© Claude Van DOM &amp; Engin Ypsilon</i></footer>
+
+</body>
+</html>

@@ -136,7 +136,12 @@
 
         .src-nav {
             margin: 2.5rem 1.5rem;
+            line-height: 1;
 
+            i {
+                font-size: 14px;
+                font-weight: 600;
+            }
             nav {
                 padding-bottom: 5px;
                 display: flex;
@@ -277,7 +282,7 @@
 
         .dynamic-grid {
             display: grid;
-            gap: 20px;
+            gap: 14px;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         }
 
@@ -529,14 +534,14 @@
         }
 
         .stats {
-            margin: 20px 0;
+            margin: 20px 0 0;
             display: grid;
             gap: 20px;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
             line-height: 1;
 
             .stat-card {
-                padding: 20px;
+                padding: 16px 4px;
                 color: white;
                 text-align: center;
                 border-radius: 10px;
@@ -726,9 +731,9 @@
 <body class="y-scroll-top">
     <div class="header y-fade-in">
         <div class="container">
-            <h1>🚀 YpsilonEventHandler SPA Demo</h1>
+            <h1><span class="mirror-emoji">🚀</span> YpsilonEventHandler SPA Demo 🚀</h1>
             <p>Demonstrating the power of event delegation with dynamic content</p>
-            <p><strong>⚡ ONLY 10 EVENT LISTENERS for this ENTIRE SPA! ⚡</strong></p>
+            <p><strong>⚡ ONLY <span class="listeners-total">X</span> EVENT LISTENERS for this ENTIRE SPA! <span class="mirror-emoji">⚡</span></strong></p>
             <p><strong>ONE handler on body handles ALL events - no matter when elements are created!</strong></p>
         </div>
     </div>
@@ -774,7 +779,7 @@
             <h2>🎯 Dynamic Content Creator</h2>
             <p>Create new elements dynamically - they work instantly without new listeners!</p>
 
-            <div style="margin: 20px 0;">
+            <div style="margin: 20px 0 14px;">
                 <button class="btn btn-success y-btn" data-action="createCard">➕ Create Card</button>
                 <button class="btn btn-warning y-btn" data-action="createButton">🔘 Create Button</button>
                 <button class="btn btn-danger y-btn" data-action="clearAll">🗑️ Clear All</button>
@@ -792,7 +797,7 @@
                 <label style="display: flex; flex-wrap: wrap; align-items: center; cursor: pointer; font-weight: bold;">
                     <input type="checkbox" id="auto-target-toggle" style="margin-right: 10px;">
                     <span>
-                        <span>🧠 Enable Smart Target Resolution (autoTargetResolution)</span>
+                        <span>✴️ Enable Smart Target Resolution (autoTargetResolution) ✴️</span>
                         <br />
                         <small>When enabled, clicks on nested elements like SVGs will resolve to their intended parent buttons</small>
                     </span>
@@ -920,7 +925,7 @@
         <div class="section" id="ypsilon-assigned">
             <h2>📡 Assigned Event Listeners</h2>
             <p><strong>These are the event listeners assigned to this entire SPA!</strong></p>
-            <p>No additional listeners will be created - all dynamic content uses these same <del>5</del> <ins>10</ins> listeners via event delegation.</p>
+            <p>No additional listeners will be created - all dynamic content uses these same <del>5</del> <ins class="listeners-total">X</ins> listeners via event delegation.</p>
             <div></div>
             <hr />
             <h3>🔍 Verify Assigned Listeners (Dev Console)</h3>
@@ -939,8 +944,9 @@
         ? 'window'
         : el === document ? 'document' : el.tagName.toLowerCase() + (el.id ? '#' + el.id : '') + (el.className ? '.' + el.className.split(' ').join('.') : '');
     const listeners = getEventListeners(el);
-    console.log(`${i}. ${elementName}:\n`, listeners);
+    console.log(`${i+1}. ${elementName}:\n`, listeners);
 })</pre>
+            <pre style="font-size: 14px">💥 <strong>Want to expose website bloat?</strong> Check our <a href="https://github.com/eypsilon/YpsilonEventHandler-Examples?tab=readme-ov-file#-real-world-listener-analysis">README.md</a> for the ultimate real-world listener analyzer that reveals the hidden performance crisis on major sites!</pre>
 
             <div class="nav-container">
                 <!-- Navigation to other examples -->
@@ -1042,7 +1048,7 @@
         <p>💫 YpsilonEventHandler - The power of native handleEvent interface</p>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/ypsilon-event-handler@1.7.1/ypsilon-event-handler.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ypsilon-event-handler@1.8.1/ypsilon-event-handler.min.js"></script>
     <script>
         "use strict";
 
@@ -1054,8 +1060,8 @@
             throttleScrollArea: 300,
             threshold: {
                 top: 100,
-                bottom: 50,
-                showFooter: 50,
+                bottom: 40,
+                showFooter: 60,
             },
             notification: {
                 timeout: 3000
@@ -1149,7 +1155,7 @@
                 if (this.hasUserInteracted()) {
                     event.preventDefault();
                     event.returnValue = 'Are you sure you want to leave Ypsilon?';
-                } else { // User hasn't interacted, clean up silently
+                } else { // User hasn't interacted, clean up silently and let'em go
                     this.destroy();
                 }
             }
@@ -1696,6 +1702,9 @@
 
                 if (assignedListener) {
                     assignedListener.innerHTML = this.createEventList(this.eventMapping);
+                    document.querySelectorAll('.listeners-total').forEach(listener => {
+                        listener.textContent = this.eventListeners.size;
+                    });
                 }
 
                 if (footer && !docBody.classList.contains('footer-size-padding')) {

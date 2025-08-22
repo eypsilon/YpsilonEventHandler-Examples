@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum-Entangled Modules Demo | YpsilonEventHandler</title>
+    <meta name="description" content="Event-driven modular architecture with independent communicating modules">
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <link rel="stylesheet" type="text/css" href="./assets/main.css">
+    <style>
+        body {
+            margin: 20px auto;
+            padding: 0 20px;
+            max-width: 840px;
+            background: #f5f5f5;
+            font-family: Ubuntu, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        h1 {
+            font-size: 1.3rem;
+        }
+        h2, h3 {
+            font-size: 1.1rem;
+        }
+        h1, h2, h3, p {
+            margin-top: 0;
+        }
+        p {
+            line-height: 1.5;
+        }
+        header, main, section {
+            margin: 20px 0;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 2px 9px 0px #efe8e8;
+        }
+        footer {
+            margin: 30px 0;
+            padding: 20px;
+            text-align: center;
+        }
+        pre span {
+            color: #999;
+        }
+        pre.auto-height {
+            min-height: unset;
+            line-height: 1.6;
+            font-size: 15px;
+            background: #f8f8f8;
+        }
+        #user-panel, #data-controls {
+            border: 2px solid #ddd;
+            padding: 25px;
+            margin: 10px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            user-select: none;
+        }
+        #user-panel { border-color: #4CAF50; }
+        #data-controls { border-color: #2196F3; }
+        #output {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        #log {
+            height: 200px;
+            overflow-y: auto;
+            background: #f9f9f9;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        #log div { margin: 2px 0; }
+    </style>
+</head>
+<body>
+<!--
+    ## 🌌 **Pattern: Quantum-Entangled Modules**
+-->
+<header>
+    <h1>
+        <a href="./index.html" title="Back to index" style="text-decoration: none;">«</a>
+        🌌 Quantum-Entangled Modules Demo</h1>
+    <p><b>Decouple your UI and data management. Communicate via events for true modularity—no direct references, no import spaghetti.</b></p>
+    <p><b>Use When:</b> You want to build modular apps where data and UI are developed independently, or when building micro-frontend architectures.</p>
+    <p>Independent modules that communicate through event dispatch without coupling.</p>
+    <p>Event-driven architecture in minutes and zero configuration.</p>
+    <p><small><b>Note:</b> Runs directly on <code>file://</code> protocol like all YpsilonEventHandler examples - just download and open in browser! (Requires internet for CDN library access)</small></p>
+</header>
+
+<main class="main">
+    <div id="user-panel">
+        User Interface Module
+    </div>
+
+    <div id="data-controls">
+        Data Manager Module
+    </div>
+
+    <div id="output">
+        <h3>Event Log:</h3>
+        <div id="log"></div>
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/ypsilon-event-handler@latest/ypsilon-event-handler.min.js"></script>
+
+<script>
+// Simple logger for demo
+function log(message) {
+    const logDiv = document.getElementById('log');
+    logDiv.innerHTML += '<div>' + message + '</div>';
+    logDiv.scrollTop = logDiv.scrollHeight;
+}
+
+// Module A: User Interface
+class UserInterface extends YpsilonEventHandler {
+    constructor() {
+        super({
+            '#user-panel': ['click'],
+            'document': [{ type: 'data.update', handler: 'onDataChange' }]
+        });
+    }
+
+    handleClick(event, target, containerElement) {
+        // broadcast to other modules
+        this.dispatch('ui.action', {
+            userId: containerElement?.dataset?.userId || 'user-123',
+            timestamp: Date.now(),
+        });
+    }
+
+    onDataChange(event) {
+        log('🖼️ UI received data change: ' + JSON.stringify(event.detail));
+    }
+}
+
+// Module B: Data Manager
+class DataManager extends YpsilonEventHandler {
+    constructor() {
+        super({
+            '#data-controls': ['click'],
+            'document': [{ type: 'ui.action', handler: 'onUIAction' }]
+        });
+    }
+
+    handleClick(event, target, containerElement) {
+        // Boadcast to other modules
+        this.dispatch('data.update', {
+            timestamp: Date.now(),
+            source: 'data-manager'
+        });
+    }
+
+    onUIAction(event) {
+        log('📊 Data received UI action: ' + JSON.stringify(event.detail));
+    }
+}
+
+// Initialize both modules - they communicate automatically!
+const ui = new UserInterface();
+const data = new DataManager();
+
+log('🚀 Quantum-Entangled Modules initialized! Click the marked sections to see cross-module communication.');
+</script>
+
+<!--
+    About
+-->
+<section class="extras">
+    <h3>What has this to do with Ypsilon?</h3>
+    <p>In this example, we use <code>YpsilonEventHandler</code> as Subscriber System to subscribe and dispatch Events.</p>
+    <p><code>YpsilonEventHandler</code> provides 2 ways to subscribe:</p>
+    <pre class="auto-height"><span>// Subcribe immediately via document selector in the constructor</span>
+constructor() {
+    super({
+        document: [
+            { type: 'worker-result', handler: 'displayResult' },
+        ]
+    });
+}
+
+<span>// Or on the fly. It will listen immediately after adding</span>
+this.addEvent('document', { type: 'worker-result', handler: 'displayResult' });</pre>
+</section>
+
+<div class="nav-container">
+    <!-- Navigation to other examples -->
+    <nav class="main-nav">
+        <div>
+            <a href="./index.html" class="btn-primary">Start</a>
+            <a href="./basic-example.html" class="btn-secondary">Basic Example</a>
+            <a href="./multi-handler-demo.html" class="btn-warning">Multi-Handler</a>
+            <a href="./single-listener-multiple-actions.html" class="btn-purple">Single Listener</a>
+            <a href="./spa.html" class="btn-success">SPA Demo</a>
+            <a href="./webworker-bridge-jsfiddle.html" class="btn-info">WebWorker Bridge</a>
+            <a href="./stressmacher.deepseek.html" class="btn-teal">StressMacher</a>
+            <a href="https://github.com/eypsilon/YpsilonEventHandler" class="btn-dark">GitHub</a>
+        </div>
+    </nav>
+</div>
+
+<footer><i>© Claude Van DOM &amp; Engin Ypsilon</i></footer>
+
+</body>
+</html>
