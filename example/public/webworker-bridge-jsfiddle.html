@@ -28,7 +28,7 @@
             margin: 20px 0;
             padding: 20px;
             background: #fff;
-            box-shadow: 0 2px 9px 0px #efe8e8;
+            box-shadow: 0 2px 9px 0px #ad9c9c;
         }
         footer {
             margin: 30px 0;
@@ -60,6 +60,7 @@
         .result {
             padding: 8px 0;
             transition: all .9s ease-in-out;
+            background: #f3f3f3;
 
             &:not(:last-of-type) {
                 border-bottom: 1px solid #ddd;
@@ -69,7 +70,7 @@
             min-height: unset;
             line-height: 1.6;
             font-size: 15px;
-            background: #f8f8f8;
+            background: #f3f3f3;
         }
         .mb-0 {
             margin-bottom: 0;
@@ -105,7 +106,9 @@
         </label>
     </div>
 
-    <div id="output" style="margin-top: 20px; padding: 10px; background: #f4f4f4; border-radius: 5px;"></div>
+    <div id="output" style="margin-top: 20px; padding: 10px; background: #f4f4f4; border-radius: 5px;">
+        <div class="result">💡 Ready! Type in the input above to see DOM-to-WebWorker event bridging in action.</div>
+    </div>
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/ypsilon-event-handler@latest/ypsilon-event-handler.min.js"></script>
@@ -197,11 +200,11 @@ class WorkerResultHandler extends WebWorkerBridge {
 // Initialize the revolutionary event bridge
 new WorkerResultHandler();
 
-// Add some startup info
-document.addEventListener('DOMContentLoaded', () => {
-    const output = document.getElementById('output');
-    output.innerHTML = '<div class="result">💡 Ready! Type in the input above to see DOM-to-WebWorker event bridging in action.</div>';
-});
+// // Add some startup info
+// document.addEventListener('DOMContentLoaded', () => {
+//     const output = document.getElementById('output');
+//     output.innerHTML = '<div class="result">💡 Ready! Type in the input above to see DOM-to-WebWorker event bridging in action.</div>';
+// });
 </script>
 
 <!--
