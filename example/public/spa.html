@@ -8,37 +8,35 @@
     <link rel="icon" type="image/x-icon" href="./favicon.ico">
     <link rel="stylesheet" type="text/css" href="./assets/main.css">
     <style>
-        /* Note: This demo uses modern CSS nesting syntax.
-           If your browser doesn't support it, some styling may not work,
-           but the JavaScript functionality will work perfectly. */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         html {
             scroll-behavior: smooth;
         }
+
         body {
             padding-bottom: 210px;
             line-height: 1.6;
             background: #f5f5f5;
             font-family: system-ui, sans-serif;
+        }
 
-            .scroll-to-top {
-                padding: 6px 12px;
-                position: fixed;
-                bottom: -4px;
-                right: -40px;
-                z-index: 1001;
-                opacity: 0;
-                font-size: 22px;
+        body .scroll-to-top {
+            padding: 6px 12px;
+            position: fixed;
+            bottom: -4px;
+            right: -40px;
+            z-index: 1001;
+            opacity: 0;
+            font-size: 22px;
+        }
 
-            }
-
-            .scroll-to-top:hover {
-                transform: translateY(0);
-            }
+        body .scroll-to-top:hover {
+            transform: translateY(0);
         }
 
         body.y-scrolled .scroll-to-top {
@@ -51,63 +49,68 @@
             margin: 0;
             padding: 0;
             list-style-type: none;
+        }
 
-            &.assigned-listener-list {
-                margin-top: 15px;
-            }
-            li {
-                margin: 0;
-                padding: 0;
+        ul.assigned-listener-list {
+            margin-top: 15px;
+        }
 
-                li {
-                    display: flex;
-                    align-items: center;
-                    counter-increment: section;
+        ul li {
+            margin: 0;
+            padding: 0;
+        }
 
-                    &::before {
-                        content: counters(section, ".") ". ";
-                        padding: 6px 6px 6px 8px;
-                        display: block;
-                        color: #aaa;
-                        font-size: 14px;
-                    }
-                    &:not(:last-of-type) {
-                        border-bottom: 1px solid #f1f1f1;
-                    }
-                }
-                span {
-                    display: block;
-                    &.selector {
-                        padding: 8px 10px;
-                        font-weight: bold;
-                        background: #f4f4f4;
-                    }
-                    &.config {
-                        padding: 10px 2px;
-                    }
-                }
-            }
+        ul li li {
+            display: flex;
+            align-items: center;
+            counter-increment: section;
+        }
+
+        ul li li::before {
+            content: counters(section, ".") ". ";
+            padding: 6px 6px 6px 8px;
+            display: block;
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        ul li li:not(:last-of-type) {
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        ul li span {
+            display: block;
+        }
+
+        ul li span.selector {
+            padding: 8px 10px;
+            font-weight: bold;
+            background: #f4f4f4;
+        }
+
+        ul li span.config {
+            padding: 10px 2px;
         }
 
         .table-container {
             margin: 20px 0;
             overflow: auto;
+        }
 
-            table,
-            td {
-                border: 1px solid rgb(129, 114, 114);
-                border-collapse: collapse;
-            }
+        .table-container table,
+        .table-container td {
+            border: 1px solid #817272;
+            border-collapse: collapse;
+        }
 
-            table {
-                width: 100%;
+        .table-container table {
+            width: 100%;
+        }
 
-                td,
-                tr {
-                    padding: 8px;
-                    white-space: nowrap;
-                }
-            }
+        .table-container table td,
+        .table-container table tr {
+            padding: 8px;
+            white-space: nowrap;
         }
 
         del {
@@ -115,53 +118,62 @@
             text-decoration-color: #f00;
             text-decoration-thickness: auto;
             text-shadow: 0px 2px 11px #f00;
-            opacity: .8;
+            opacity: 0.8;
         }
 
-        ins { font-weight: bold; }
+        ins {
+            font-weight: bold;
+        }
 
-        hr { margin: .5rem 0 .75rem; border-color: #f1f1f157; }
+        hr {
+            margin: 0.5rem 0 0.75rem;
+            border-color: #f1f1f157;
+        }
 
-        .d-none { display: none; }
+        .d-none {
+            display: none;
+        }
 
         .flex-center-center {
             display: flex;
             align-items: center;
             justify-content: center;
+        }
 
-            a, small {
-                margin: 0 5px;
-            }
+        .flex-center-center a,
+        .flex-center-center small {
+            margin: 0 5px;
         }
 
         .src-nav {
             margin: 2.5rem 1.5rem;
             line-height: 1;
+        }
 
-            i {
-                font-size: 14px;
-                font-weight: 600;
-            }
-            nav {
-                padding-bottom: 5px;
-                display: flex;
-                justify-content: center;
-                line-height: 1;
+        .src-nav i {
+            font-size: 14px;
+            font-weight: 600;
+        }
 
-                a {
-                    margin: 0 12px 0 0;
-                    padding: 0 12px 0 0;
-                    display: inline-block;
-                    text-decoration: none;
-                    border-right: 1px solid rgb(187, 179, 179);
+        .src-nav nav {
+            padding-bottom: 5px;
+            display: flex;
+            justify-content: center;
+            line-height: 1;
+        }
 
-                    &:last-of-type {
-                        margin: 0;
-                        padding: 0;
-                        border: 0 none;
-                    }
-                }
-            }
+        .src-nav nav a {
+            margin: 0 12px 0 0;
+            padding: 0 12px 0 0;
+            display: inline-block;
+            text-decoration: none;
+            border-right: 1px solid #bbb3b3;
+        }
+
+        .src-nav nav a:last-of-type {
+            margin: 0;
+            padding: 0;
+            border: 0 none;
         }
 
         .container {
@@ -183,17 +195,18 @@
             padding: 30px;
             border-radius: 10px;
             background: white;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
 
-            &:last-of-type {
-                margin: 30px 0 0;
-            }
-            h2 {
-                margin-bottom: 20px;
-                padding-bottom: 10px;
-                color: #333;
-                border-bottom: 2px solid rgb(122, 145, 248);
-            }
+        .section:last-of-type {
+            margin: 30px 0 0;
+        }
+
+        .section h2 {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            color: #333;
+            border-bottom: 2px solid #7a91f8;
         }
 
         .btn {
@@ -208,47 +221,56 @@
             color: white;
             background: #667eea;
             cursor: pointer;
-            transition: all .3s ease;
+            transition: all 0.3s ease;
+        }
 
-            &:hover {
-                background: #5a6fd8;
-                transform: translateY(-2px);
-            }
-            &.btn-success {
-                background: #28a745;
+        .btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
 
-                &:hover { background: #218838; }
-            }
-            &.btn-danger {
-                background: #dc3545;
+        .btn.btn-success {
+            background: #28a745;
+        }
 
-                &:hover { background: #c82333; }
-            }
-            &.btn-warning {
-                background: #ffc107;
-                color: #212529;
+        .btn.btn-success:hover {
+            background: #218838;
+        }
 
-                &:hover { background: #e0a800; }
-            }
+        .btn.btn-danger {
+            background: #dc3545;
+        }
 
-            &.svg-btn {
-                padding: 0;
+        .btn.btn-danger:hover {
+            background: #c82333;
+        }
 
-                svg {
-                    padding: 8px;
-                    height: 40px;
-                    width: 40px;
-                    display: block;
-                }
-            }
+        .btn.btn-warning {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        .btn.btn-warning:hover {
+            background: #e0a800;
+        }
+
+        .btn.svg-btn {
+            padding: 0;
+        }
+
+        .btn.svg-btn svg {
+            padding: 8px;
+            height: 40px;
+            width: 40px;
+            display: block;
         }
 
         label {
             position: relative;
+        }
 
-            span {
-                transition: all .3s ease-in-out;
-            }
+        label span {
+            transition: all 0.3s ease-in-out;
         }
 
         code {
@@ -258,26 +280,27 @@
         #auto-target-toggle {
             position: absolute;
             left: 18px;
-            opacity: .1;
+            opacity: 0.1;
             transform: scale(1.5);
+        }
 
-            + span {
-                padding: 12px 18px 12px 46px;
-                width: 100%;
-                display: block;
-                box-shadow: 0 0 2px 2px #17a2b855;
-            }
-            &:checked {
-                opacity: .6;
+        #auto-target-toggle+span {
+            padding: 12px 18px 12px 46px;
+            width: 100%;
+            display: block;
+            box-shadow: 0 0 2px 2px #17a2b855;
+        }
 
-                + span {
-                    box-shadow: 0 0 4px 2px #2c9444ee;
+        #auto-target-toggle:checked {
+            opacity: 0.6;
+        }
 
-                    span {
-                        color: #2c9444;
-                    }
-                }
-            }
+        #auto-target-toggle:checked+span {
+            box-shadow: 0 0 4px 2px #2c9444ee;
+        }
+
+        #auto-target-toggle:checked+span span {
+            color: #2c9444;
         }
 
         .dynamic-grid {
@@ -291,16 +314,17 @@
             border: 1px solid #dee2e6;
             border-radius: 8px;
             background: #f8f9fa;
-            transition: all .3s ease;
+            transition: all 0.3s ease;
+        }
 
-            &:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-            }
-            h3 {
-                margin-bottom: 10px;
-                color: #495057;
-            }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+            color: #495057;
         }
 
         .todo-item {
@@ -312,49 +336,51 @@
             border: 1px solid #ddd;
             border-radius: 6px;
             background: #fff;
-            transition: all .3s ease;
+            transition: all 0.3s ease;
+        }
 
-            &.completed {
-                text-decoration: line-through;
-                opacity: 0.7;
-                background: #d4edda;
-            }
+        .todo-item.completed {
+            text-decoration: line-through;
+            opacity: 0.7;
+            background: #d4edda;
+        }
 
-            .todo-content {
-                width: 100%;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
+        .todo-item .todo-content {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .form-group {
             margin: 15px 0;
+        }
 
-            label {
-                margin-bottom: 5px;
-                display: block;
-                font-weight: bold;
-                color: #555;
-            }
+        .form-group label {
+            margin-bottom: 5px;
+            display: block;
+            font-weight: bold;
+            color: #555;
+        }
 
-            &.dynamic-group {
-                margin: 5px 0;
-                display: flex;
-                align-items: center;
+        .form-group.dynamic-group {
+            margin: 5px 0;
+            display: flex;
+            align-items: center;
+        }
 
-                &:last-of-type {
-                    margin-bottom: 20px;
-                }
-                label,
-                button {
-                    white-space: nowrap;
-                }
-                label {
-                    margin: 0 10px 0 0;
-                    opacity: .7;
-                }
-            }
+        .form-group.dynamic-group:last-of-type {
+            margin-bottom: 20px;
+        }
+
+        .form-group.dynamic-group label,
+        .form-group.dynamic-group button {
+            white-space: nowrap;
+        }
+
+        .form-group.dynamic-group label {
+            margin: 0 10px 0 0;
+            opacity: 0.7;
         }
 
         .form-control {
@@ -363,12 +389,12 @@
             font-size: 14px;
             border: 1px solid #ddd;
             border-radius: 4px;
+        }
 
-            &:focus {
-                outline: none;
-                border-color: #667eea;
-                box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
-            }
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
         }
 
         .counter {
@@ -384,60 +410,60 @@
         .log-container {
             font-family: monospace;
             font-size: 12px;
+        }
 
-            h2 {
-                margin: 5px 0 15px;
-            }
-            .log {
-                margin: 15px 0;
-                padding: 15px;
-                height: 200px;
-                background: #f5f5f5;
-                border-radius: 6px;
-                border: 1px solid #dee2e6;
-                overflow-y: auto;
+        .log-container h2 {
+            margin: 5px 0 15px;
+        }
 
-                .log-entry {
-                    margin: 2px 0;
-                    padding: 2px 0;
-                    white-space: nowrap;
+        .log-container .log {
+            margin: 15px 0;
+            padding: 15px;
+            height: 200px;
+            background: #f5f5f5;
+            border-radius: 6px;
+            border: 1px solid #dee2e6;
+            overflow-y: auto;
+        }
 
-                    &:not(:last-of-type) {
-                        border-bottom: 1px solid #eee;
-                    }
-                }
-            }
-            .show-logs-always {
-                max-width: 1040px;
-                position: fixed;
-                left: 2px;
-                bottom: 1px;
-                z-index: 11111;
-                box-shadow: 0 0 8px 2px #c1b3b3;
+        .log-container .log .log-entry {
+            margin: 2px 0;
+            padding: 2px 0;
+            white-space: nowrap;
+        }
 
-                .log {
-                    margin: 0;
-                    padding: 4px 10px;
-                    max-height: 180px;
-                    overscroll-behavior: contain;
-                }
-            }
+        .log-container .log .log-entry:not(:last-of-type) {
+            border-bottom: 1px solid #eee;
+        }
+
+        .log-container .show-logs-always {
+            max-width: 1040px;
+            position: fixed;
+            left: 2px;
+            bottom: 1px;
+            z-index: 11111;
+            box-shadow: 0 0 8px 2px #c1b3b3;
+        }
+
+        .log-container .show-logs-always .log {
+            margin: 0;
+            padding: 4px 10px;
+            max-height: 180px;
+            overscroll-behavior: contain;
         }
 
         body.show-logs-always {
             padding-bottom: 400px;
+        }
 
-            &.y-scroll-bottom {
-                .show-logs-always {
-                    box-shadow: 0 0 8px 0px #c1b3b3;
-                    bottom: 180px;
-                    opacity: .85;
+        body.show-logs-always.y-scroll-bottom .show-logs-always {
+            box-shadow: 0 0 8px 0px #c1b3b3;
+            bottom: 180px;
+            opacity: 0.85;
+        }
 
-                    .log {
-                        max-height: 128px;
-                    }
-                }
-            }
+        body.show-logs-always.y-scroll-bottom .show-logs-always .log {
+            max-height: 128px;
         }
 
         .tabs {
@@ -446,21 +472,21 @@
             overflow: hidden;
             border-radius: 6px;
             background: #f8f9fa;
+        }
 
-            .tab {
-                flex: 1;
-                padding: 15px;
-                text-align: center;
-                cursor: pointer;
-                border: none;
-                background: #e9ecef;
-                transition: all .3s ease;
+        .tabs .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            background: #e9ecef;
+            transition: all 0.3s ease;
+        }
 
-                &.active {
-                    color: white;
-                    background: #667eea;
-                }
-            }
+        .tabs .tab.active {
+            color: white;
+            background: #667eea;
         }
 
         .tab-content {
@@ -468,8 +494,10 @@
             display: none;
             border-radius: 6px;
             background: white;
+        }
 
-            &.active { display: block; }
+        .tab-content.active {
+            display: block;
         }
 
         .badge {
@@ -493,10 +521,12 @@
             color: white;
             background: linear-gradient(135deg, #667eeaaa 0%, #764ba2ee 100%);
             transform: translateX(100%);
-            transition: all .4s ease-in-out;
+            transition: all 0.4s ease-in-out;
             color: transparent;
+        }
 
-            &.show { transform: translateX(0); }
+        .notification.show {
+            transform: translateX(0);
         }
 
         .toast {
@@ -509,28 +539,30 @@
             color: white;
             border-radius: 4px;
             cursor: default;
-            transition: all .4s ease-in-out;
+            transition: all 0.4s ease-in-out;
+        }
 
-            span {
-                padding: 0 15px;
-                display: block;
-                max-width: 95%;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-            button {
-                padding: 10px 15px;
-                background:rgb(35, 126, 56);
-                border: none;
-                color: white;
-                cursor: pointer;
-                font-weight: bold;
-                font-size: 22px;
-            }
-            &:not(:last-of-type) {
-                border-bottom: 1px solid #c3c3c3;
-            }
+        .toast span {
+            padding: 0 15px;
+            display: block;
+            max-width: 95%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .toast button {
+            padding: 10px 15px;
+            background: #237e38;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 22px;
+        }
+
+        .toast:not(:last-of-type) {
+            border-bottom: 1px solid #c3c3c3;
         }
 
         .stats {
@@ -539,23 +571,25 @@
             gap: 20px;
             grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
             line-height: 1;
+        }
 
-            .stat-card {
-                padding: 16px 4px;
-                color: white;
-                text-align: center;
-                border-radius: 10px;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            }
-            .stat-number {
-                margin-bottom: 10px;
-                font-size: 2em;
-                font-weight: bold;
-            }
-            .stat-label {
-                font-size: 0.9em;
-                opacity: 0.9;
-            }
+        .stats .stat-card {
+            padding: 16px 4px;
+            color: white;
+            text-align: center;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .stats .stat-number {
+            margin-bottom: 10px;
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .stats .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
         }
 
         .stats-placeholder {
@@ -565,54 +599,63 @@
         .stats-section {
             width: 100%;
             position: absolute;
-            transition: all .3s ease;
+            transition: all 0.3s ease;
+        }
 
-            .container {
-                margin: 0 auto;
-                padding: 0 20px;
+        .stats-section .container {
+            margin: 0 auto;
+            padding: 0 20px;
+        }
 
-                .section { margin: 0; }
-            }
-            &.sticky {
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                z-index: 1000;
-                background: rgba(255, 255, 255, 0.75);
-                backdrop-filter: blur(10px);
-                border-bottom: 1px solid rgba(102, 126, 234, 0.2);
-                box-shadow: 0 0px 16px 1px rgba(0, 0, 0, 0.3);
+        .stats-section .container .section {
+            margin: 0;
+        }
 
-                .container {
-                    padding: 0 20px;
-                }
-                .section {
-                    margin: 0;
-                    padding: 0 4px 1px;
-                    background: transparent;
-                    box-shadow: none;
-                }
-                .stats {
-                    margin: 5px 0;
-                    gap: 5px;
-                }
-                .stat-card {
-                    padding: 4px 6px;
-                    border-radius: 3px;
-                }
-                .stat-number {
-                    margin: 4px 0;
-                    font-size: 1.2em;
-                }
-                .stat-label {
-                    margin-bottom: 4px;
-                    font-size: 0.7em;
-                }
-                h2 {
-                    display: none;
-                }
-            }
+        .stats-section.sticky {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+            box-shadow: 0 0px 16px 1px rgba(0, 0, 0, 0.3);
+        }
+
+        .stats-section.sticky .container {
+            padding: 0 20px;
+        }
+
+        .stats-section.sticky .section {
+            margin: 0;
+            padding: 0 4px 1px;
+            background: transparent;
+            box-shadow: none;
+        }
+
+        .stats-section.sticky .stats {
+            margin: 5px 0;
+            gap: 5px;
+        }
+
+        .stats-section.sticky .stat-card {
+            padding: 4px 6px;
+            border-radius: 3px;
+        }
+
+        .stats-section.sticky .stat-number {
+            margin: 4px 0;
+            font-size: 1.2em;
+        }
+
+        .stats-section.sticky .stat-label {
+            margin-bottom: 4px;
+            font-size: 0.7em;
+        }
+
+        .stats-section.sticky h2 {
+            display: none;
         }
 
         .ypsi-buttons {
@@ -626,12 +669,12 @@
             border: 2px solid #2196f3;
             border-radius: 8px;
             padding: 20px;
+        }
 
-            .scroll-content {
-                background: linear-gradient(to bottom, #fff3e0, #ffcc02);
-                padding: 20px;
-                border-radius: 4px;
-            }
+        .scroll-area .scroll-content {
+            background: linear-gradient(to bottom, #fff3e0, #ffcc02);
+            padding: 20px;
+            border-radius: 4px;
         }
 
         .footer {
@@ -646,21 +689,24 @@
             white-space: nowrap;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             transform: translateY(100%);
-            transition: transform .3s ease;
+            transition: transform 0.3s ease;
+        }
 
-            &.visible {
-                transform: translateY(0);
-            }
-            h3 {
-                margin-bottom: 10px;
-            }
-            p {
-                margin: 5px 0;
-                opacity: 0.9;
-            }
-            a {
-                color: #fff;
-            }
+        .footer.visible {
+            transform: translateY(0);
+        }
+
+        .footer h3 {
+            margin-bottom: 10px;
+        }
+
+        .footer p {
+            margin: 5px 0;
+            opacity: 0.9;
+        }
+
+        .footer a {
+            color: #fff;
         }
 
         .nav-container {
@@ -679,12 +725,12 @@
             .ypsi-buttons {
                 display: flex;
                 justify-content: space-between;
+            }
 
-                .helper-btn,
-                .starter-btn {
-                    display: flex;
-                    align-items: center;
-                }
+            .ypsi-buttons .helper-btn,
+            .ypsi-buttons .starter-btn {
+                display: flex;
+                align-items: center;
             }
         }
 
@@ -692,29 +738,30 @@
             body {
                 padding-bottom: 260px;
             }
-            .stats-section {
-                .stats {
-                    display: flex;
-                    flex-wrap: wrap;
-                    gap: 5px;
-                }
-                .stat-card {
-                    padding: 4px 6px;
-                    flex: 1 32%;
-                    border-radius: 3px;
 
-                    .stat-label {
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        margin: 0 auto;
-                        max-width: 90px;
-                    }
-                    .stat-number {
-                        margin-bottom: 1px;
-                        font-size: 1.5em;
-                    }
-                }
+            .stats-section .stats {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+
+            .stats-section .stat-card {
+                padding: 4px 6px;
+                flex: 1 32%;
+                border-radius: 3px;
+            }
+
+            .stats-section .stat-card .stat-label {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                margin: 0 auto;
+                max-width: 90px;
+            }
+
+            .stats-section .stat-card .stat-number {
+                margin-bottom: 1px;
+                font-size: 1.5em;
             }
         }
 
@@ -786,6 +833,22 @@
             </div>
 
             <div class="dynamic-grid" id="dynamic-container"><!-- Dynamic elements --></div>
+        </div>
+
+        <!-- Event subscriber -->
+        <div class="section">
+            <h2>📢 Subscribe and Emit</h2>
+
+            <pre style="padding: 10px;"
+                >this.on('testEmit', 'onTestEmit')<hr
+                />this.emit('testEmit', {emitting: true, id: 'onTestEmit'})<hr
+                />this.onTestEmit(event, target) { console.log({ arguments }) }</pre>
+
+            <div style="margin: 20px 0 0;">
+                <button class="btn" data-action="emitData">this.emit</button>
+                <button class="btn" data-action="addNewListener">this.on (subscribe)</button>
+                <button class="btn btn-info" data-action="demonstrateChaining">🔗 Chain Demo</button>
+            </div>
         </div>
 
         <!-- Smart Target Resolution Demo -->
@@ -895,7 +958,7 @@
 
         <!-- Scroll area -->
         <div class="section">
-            <h2>Scroll Test (Passive Listeners)</h2>
+            <h2>↕️ Scroll Test (Passive Listeners)</h2>
             <p>Scroll in the area below to test passive scroll events:</p>
 
             <div class="scroll-area" id="scroll-area">
@@ -935,7 +998,7 @@
                 style="color:#888;user-select:none;margin-right:8px;">⚠️ For Chrome, type first <span class="flip-emoji">⚠️</span></b><code>allow pasting</code></pre>
 
             <pre class="auto-height" contenteditable="true">[
-  window, ...document.querySelectorAll('*')
+  window, document, ...document.querySelectorAll('*')
 ].filter(el => {
     const listeners = getEventListeners(el);
     return listeners && Object.keys(listeners).length > 0;
@@ -1048,20 +1111,20 @@
         <p>💫 YpsilonEventHandler - The power of native handleEvent interface</p>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/ypsilon-event-handler@1.8.1/ypsilon-event-handler.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ypsilon-event-handler@1.8.2/ypsilon-event-handler.min.js"></script>
     <script>
         "use strict";
 
         const config = {
-            debounce: 800,
+            debounce: 1000,
             debounceChange: 500,
             throttle: 80,
-            throttleResize: 500,
-            throttleScrollArea: 300,
+            throttleResize: 800,
+            throttleScrollArea: 800,
             threshold: {
                 top: 100,
-                bottom: 40,
-                showFooter: 60,
+                bottom: 50,
+                showFooter: 50,
             },
             notification: {
                 timeout: 3000
@@ -1131,7 +1194,68 @@
                 if (this.counters.todos === 0) {
                     this.loadTodos();
                 }
+
+                this.totalScrollHeight = this.getScrollSizeTop()
             }
+
+            /**
+             * Subscribe and Emit test
+             */
+
+            addNewListener() {
+                if (this.hasEvent('document', 'testEmit')) {
+                    this.showNotification(`⛔️ Already subscribed!`);
+                    return;
+                }
+                this.on('testEmit', 'onTestEmit');
+
+                this.log(`☎️ Subscribed to: testEmit → onTestEmit()`, `☎️ Subscribed`);
+            }
+            emitData() {
+                this.log(`💢 emitData(): testEmit → ${JSON.stringify({emitting: true, id: 'onTestEmit'})}`);
+                this.emit('testEmit', {emitting: true, timestamp: Date.now(), id: 'onTestEmit'});
+            }
+            onTestEmit(event, target) {
+                this.log(`💥 Handler onTestEmit() called, timestamp ${event.detail.timestamp} `, 'Emit received');
+            }
+
+            // Chaining example - adds multiple listeners and emits in one go
+            demonstrateChaining() {
+                this.log(`🔗 Starting chaining demo...`);
+
+                // The magic chain - multiple operations in one statement
+                this.on('data-ready', 'handleData')
+                    .on('user-login', 'handleLogin')
+                    .subscribe('app-ready', 'handleAppReady')  // alias for on()
+                    .on('init-complete', 'handleInitComplete') // Add handler for init-complete
+
+                    .emit('data-ready',    { loggedin: true, timestamp: Date.now() })
+                    .emit('user-login',    { loggedin: true, timestamp: Date.now() })
+                    .emit('init-complete', { loaded: true,   timestamp: Date.now() });
+
+                this.log(`🔗 Chain complete! All listeners added and init-complete emitted`, '4 listeners added');
+            }
+
+            // Handler methods for the chaining demo
+            handleData(event, target) {
+                this.log(`📊 handleData called with: ${JSON.stringify(event.detail)}`, 'Data Handler');
+            }
+
+            handleLogin(event, target) {
+                this.log(`👤 handleLogin called with: ${JSON.stringify(event.detail)}`, 'Login Handler');
+            }
+
+            handleAppReady(event, target) {
+                this.log(`🚀 handleAppReady called with: ${JSON.stringify(event.detail)}`, 'App Ready Handler');
+            }
+
+            handleInitComplete(event, target) {
+                this.log(`🎉 handleInitComplete called with: ${JSON.stringify(event.detail)}`, 'Init Complete Handler');
+            }
+
+            /**
+             * End: Subscribe and Emit test
+             */
 
             handleWindowLoad(event) {
                 this.log(`👋 Window load, remove (once: true)`);
@@ -1238,10 +1362,12 @@
                 if (!this.waitingScroll) {
                     this.waitingScroll = true;
 
+                    // Throttled log
                     setTimeout(() => {
                         this.waitingScroll = false;
-                        this.log(`🌐 Window scroll: ${Math.round(scrollY)}px (throttled ${config.throttle})`);
-                    }, 250);
+                        const getlatestScrollY = window.scrollY || window.pageYOffset;
+                        this.log(`🌐 Window scroll: ${Math.round(getlatestScrollY)} / ${this.totalScrollHeight}px (throttled ${config.throttle} | 300 for log)`);
+                    }, 300);
                 }
             }
 
@@ -1899,6 +2025,12 @@
                 console.log(event)
 
                 this.log(`🔥 Custom Event: ${event.type} - Detail: ${JSON.stringify(event.detail)}`);
+            }
+
+            getScrollSizeTop() {
+                return Math.max(0, (
+                    document.scrollingElement || document.documentElement
+                ).scrollHeight - window.innerHeight);
             }
         }
 

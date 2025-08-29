@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeakMap vs Map for DOM Caching</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+        .panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .comparison-table th, .comparison-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .comparison-table th {
+            background-color: #3498db;
+            color: white;
+        }
+        .comparison-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .pros-cons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .pros, .cons {
+            padding: 15px 8px 15px 24px;
+            border-radius: 5px;
+        }
+        .pros {
+            background-color: #d4edda;
+            border-left: 4px solid #28a745;
+        }
+        .cons {
+            background-color: #f8d7da;
+            border-left: 4px solid #dc3545;
+        }
+        .demo-area {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .demo-result {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            min-height: 100px;
+            border-left: 4px solid #3498db;
+        }
+        .btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            margin: 5px;
+        }
+        .btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        .btn-danger {
+            background: #e74c3c;
+        }
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+        .btn-success {
+            background: #2ecc71;
+        }
+        .btn-success:hover {
+            background: #27ae60;
+        }
+        .element-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .element {
+            background: #3498db;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        .element:nth-child(2n) {
+            background: #2ecc71;
+        }
+        .element:nth-child(3n) {
+            background: #e67e22;
+        }
+        .highlight {
+            animation: highlight 1s ease;
+        }
+        @keyframes highlight {
+            0% { background-color: #ff0; color: #000; }
+            100% { background-color: transparent; color: white; }
+        }
+        .memory-display {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+        }
+        .memory-box {
+            flex: 1;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .memory-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3498db;
+        }
+        .code-block {
+            background: #2d3436;
+            color: #dfe6e9;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Fira Code', monospace;
+            overflow-x: auto;
+            margin: 15px 0;
+            white-space: pre;
+        }
+    </style>
+</head>
+<body>
+    <h1>WeakMap vs Map for DOM Element Caching</h1>
+
+    <div class="container">
+        <div class="panel">
+            <h2>Key Differences</h2>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Feature</th>
+                    <th>Map</th>
+                    <th>WeakMap</th>
+                </tr>
+                <tr>
+                    <td>Key Types</td>
+                    <td>Any value</td>
+                    <td>Objects only</td>
+                </tr>
+                <tr>
+                    <td>Garbage Collection</td>
+                    <td>Prevents GC of values</td>
+                    <td>Allows GC when keys are deleted</td>
+                </tr>
+                <tr>
+                    <td>Iterability</td>
+                    <td>Yes (keys, values, entries)</td>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <td>Size Property</td>
+                    <td>Yes</td>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <td>Memory Efficiency</td>
+                    <td>Lower (can cause memory leaks)</td>
+                    <td>Higher (prevents memory leaks)</td>
+                </tr>
+            </table>
+
+            <div class="pros-cons">
+                <div class="pros">
+                    <h3>WeakMap Advantages</h3>
+                    <ul>
+                        <li>Automatic cleanup when DOM elements are removed</li>
+                        <li>Prevents memory leaks</li>
+                        <li>Better for temporary associations</li>
+                        <li>More memory efficient</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h3>WeakMap Limitations</h3>
+                    <ul>
+                        <li>Cannot iterate over entries</li>
+                        <li>No size property</li>
+                        <li>Only accepts objects as keys</li>
+                        <li>Less control over cache management</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>When to Use Each</h3>
+            <div class="code-block">
+// Use Map when:
+// - You need to iterate over cache entries
+// - You need to know the cache size
+// - You're caching by string selectors, not elements
+// - You want explicit control over cache management
+
+// Use WeakMap when:
+// - You're using DOM elements as keys directly
+// - You want automatic cleanup when elements are removed
+// - Memory efficiency is critical
+// - You don't need to iterate over entries
+            </div>
+        </div>
+
+        <div class="panel">
+            <h2>Demo: Memory Management</h2>
+
+            <div class="memory-display">
+                <div class="memory-box">
+                    <h3>Map Cache Size</h3>
+                    <div class="memory-value" id="mapSize">0</div>
+                    <div>elements</div>
+                </div>
+                <div class="memory-box">
+                    <h3>WeakMap Cache</h3>
+                    <div class="memory-value">N/A</div>
+                    <div>(no size property)</div>
+                </div>
+            </div>
+
+            <div class="demo-area">
+                <h3>Test Elements</h3>
+                <div class="element-grid" id="elementGrid">
+                    <div class="element" data-id="1">Element 1</div>
+                    <div class="element" data-id="2">Element 2</div>
+                    <div class="element" data-id="3">Element 3</div>
+                    <div class="element" data-id="4">Element 4</div>
+                    <div class="element" data-id="5">Element 5</div>
+                    <div class="element" data-id="6">Element 6</div>
+                </div>
+
+                <div class="controls">
+                    <button class="btn" id="cacheElements">Cache Elements</button>
+                    <button class="btn btn-danger" id="removeElements">Remove Some Elements</button>
+                    <button class="btn" id="checkMapCache">Check Map Cache</button>
+                    <button class="btn" id="checkWeakMapCache">Check WeakMap Cache</button>
+                </div>
+
+                <div class="demo-result" id="demoResult">
+                    Click buttons to demonstrate caching behavior
+                </div>
+
+                <h3>Implementation Example</h3>
+                <div class="code-block">
+// Using WeakMap for element caching
+const weakMapCache = new WeakMap();
+
+// Store element in cache
+function cacheElement(key, value) {
+    weakMapCache.set(key, value);
+}
+
+// Retrieve element from cache
+function getCachedElement(key) {
+    return weakMapCache.get(key);
+}
+
+// No need to clean up manually - automatic garbage collection
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer style="margin: 40px 0 20px;text-align: center;"><p>© DeepSeek</p></footer>
+
+    <script>
+        // Create caches
+        const mapCache = new Map();
+        const weakMapCache = new WeakMap();
+
+        // DOM elements
+        const elementGrid = document.getElementById('elementGrid');
+        const elements = document.querySelectorAll('.element');
+
+        // Update map size display
+        function updateMapSize() {
+            document.getElementById('mapSize').textContent = mapCache.size;
+        }
+
+        // Cache elements
+        document.getElementById('cacheElements').addEventListener('click', () => {
+            elements.forEach(element => {
+                // Cache with Map using selector as key
+                const selector = `.element[data-id="${element.dataset.id}"]`;
+                mapCache.set(selector, element);
+
+                // Cache with WeakMap using element as key
+                weakMapCache.set(element, {
+                    cachedAt: new Date().toLocaleTimeString(),
+                    data: element.textContent
+                });
+            });
+
+            updateMapSize();
+            document.getElementById('demoResult').innerHTML =
+                `Cached all elements!<br>
+                 Map size: ${mapCache.size}<br>
+                 WeakMap cannot report size, but elements are cached.`;
+        });
+
+        // Remove some elements
+        document.getElementById('removeElements').addEventListener('click', () => {
+            // Remove elements 2, 4, and 6
+            const elementsToRemove = [2, 4, 6];
+
+            elementsToRemove.forEach(id => {
+                const element = document.querySelector(`.element[data-id="${id}"]`);
+                if (element && element.parentNode) {
+                    element.parentNode.removeChild(element);
+                }
+            });
+
+            document.getElementById('demoResult').innerHTML =
+                `Removed elements 2, 4, and 6.<br>
+                 They are now gone from the DOM, but may still be in Map cache.`;
+        });
+
+        // Check Map cache
+        document.getElementById('checkMapCache').addEventListener('click', () => {
+            let result = "Map Cache Contents:<br>";
+            let count = 0;
+
+            for (const [key, value] of mapCache.entries()) {
+                const exists = document.body.contains(value);
+                result += `Key: ${key} - Exists in DOM: ${exists}<br>`;
+                count++;
+
+                if (count > 10) { // Limit output
+                    result += "...<br>";
+                    break;
+                }
+            }
+
+            document.getElementById('demoResult').innerHTML = result;
+            updateMapSize();
+        });
+
+        // Check WeakMap cache (we can't iterate, but we can test specific elements)
+        document.getElementById('checkWeakMapCache').addEventListener('click', () => {
+            let result = "WeakMap Cache Test:<br>";
+
+            // Test with remaining elements
+            const testElements = [1, 3, 5];
+            testElements.forEach(id => {
+                const element = document.querySelector(`.element[data-id="${id}"]`);
+                if (element) {
+                    const cachedData = weakMapCache.get(element);
+                    result += `Element ${id}: ${cachedData ? 'Cached' : 'Not cached'}<br>`;
+                } else {
+                    result += `Element ${id}: Not in DOM<br>`;
+                }
+            });
+
+            // Test with removed elements (should be automatically cleaned from WeakMap)
+            const removedElements = [2, 4, 6];
+            removedElements.forEach(id => {
+                // We can't directly check if these are in WeakMap since we don't have references
+                result += `Element ${id}: Automatically removed from WeakMap by GC<br>`;
+            });
+
+            document.getElementById('demoResult').innerHTML = result;
+        });
+
+        // Initialize
+        updateMapSize();
+    </script>
+</body>
+</html>

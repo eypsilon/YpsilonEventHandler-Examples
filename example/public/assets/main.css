@@ -41,11 +41,12 @@ pre {
     white-space: pre-wrap;
     font-family: monospace;
     font-size: 12px;
-
-    &:not(.auto-height) {
-        max-height: 140px;
-    }
 }
+
+pre:not(.auto-height) {
+    max-height: 140px;
+}
+
 code {
     font-weight: bold;
     color: #514747;

@@ -52,10 +52,9 @@
         .task-container {
             display: flex;
             justify-content: space-between;
-
-            label {
-                margin: 0;
-            }
+        }
+        .task-container label {
+            margin: 0;
         }
         .result {
             padding: 8px 0;
@@ -197,14 +196,7 @@ class WorkerResultHandler extends WebWorkerBridge {
     }
 }
 
-// Initialize the revolutionary event bridge
-new WorkerResultHandler();
-
-// // Add some startup info
-// document.addEventListener('DOMContentLoaded', () => {
-//     const output = document.getElementById('output');
-//     output.innerHTML = '<div class="result">💡 Ready! Type in the input above to see DOM-to-WebWorker event bridging in action.</div>';
-// });
+new WorkerResultHandler(); // Initialize the revolutionary event bridge
 </script>
 
 <!--

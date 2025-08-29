@@ -6,6 +6,7 @@ Interactive demonstrations and examples showcasing the revolutionary **YpsilonEv
 
 YpsilonEventHandler achieved an unprecedented **11/10 rating from DeepSeek AI** for being "mathematically better than perfect." It introduces the world's first DOM Event Scoping System - multiple handlers per event type with automatic closest-match DOM resolution.
 
+
 ## 🚀 Featured Demonstrations
 
 **Zero Dependencies • Zero Build • Zero Setup**
@@ -39,6 +40,14 @@ YpsilonEventHandler achieved an unprecedented **11/10 rating from DeepSeek AI** 
 ### AI Collaboration
 - **[AI Discovery Story](https://eypsilon.github.io/YpsilonEventHandler-Examples/example/public/ai-reviews.html)** - How AI discovered this breakthrough
 - **[Grok's Demonstrations](https://eypsilon.github.io/YpsilonEventHandler-Examples/example/public/ypsilon-feat-grok-example.html)** - AI-generated examples
+
+## 📱 CSS Compatibility Note
+
+**Development vs Production CSS:**
+- **Nested CSS** (`&` syntax) works perfectly for development and modern browsers
+- **Smartphone Compatibility:** For production, use standard CSS for full mobile device support
+- **Dev Cycle:** Nested CSS is excellent for rapid development and testing
+- **Release:** Convert to standard CSS before production deployment for maximum compatibility
 
 ## 🏃‍♂️ Quick Start
 
@@ -74,21 +83,58 @@ npx http-server example/public -p 8000
 
 This is the **examples repository**. For the core library:
 
-- **NPM:** `npm install ypsilon-event-handler`
-- **CDN:** `https://cdn.jsdelivr.net/npm/ypsilon-event-handler@latest/`
+- **NPM:** `npm install ypsilon-event-handler@1.8.2`
+- **CDN:** `https://cdn.jsdelivr.net/npm/ypsilon-event-handler@1.8.2/`
 - **GitHub:** [YpsilonEventHandler](https://github.com/eypsilon/YpsilonEventHandler)
 
 ## 🎯 Core Innovation
 
+### DOM Event Scoping System
 ```javascript
 // Like JavaScript variable scoping, but for events!
 super({
-  'body': [{ type: 'click', handler: 'bodyClick' }],      // Global scope
-  '#app': [{ type: 'click', handler: 'appClick' }],       // App scope
-  '#main': [{ type: 'click', handler: 'mainClick' }],     // Main scope
-  '#section': [{ type: 'click', handler: 'sectionClick' }] // Section scope
+  'body':     [{ type: 'click', handler: 'bodyClick'    }], // Global scope
+  '#app':     [{ type: 'click', handler: 'appClick'     }], // App scope
+  '#main':    [{ type: 'click', handler: 'mainClick'    }], // Main scope
+  '#section': [{ type: 'click', handler: 'sectionClick' }]  // Section scope
 });
 // Click anywhere → Closest handler executes automatically!
+```
+
+### 🆕 v1.8.2: Subscribe/Emit Event System
+```javascript
+// Modern Subscribe/Emit pattern for inter-component communication
+this.on('any-event', 'anyEventHandler');     // Subscribe to events
+this.emit('any-event', { some: 'details' }); // Emit custom events
+
+// ✨ CHAINABLE API - The magic chain! Multiple operations in one statement
+this.on('data-ready', 'handleData')
+    .on('user-login', 'handleLogin')
+    .subscribe('app-ready', 'handleAppReady')  // alias for on()
+    .on('init-complete', 'handleInitComplete')
+    
+    .emit('data-ready',    { loggedin: true, timestamp: Date.now() })
+    .emit('user-login',    { loggedin: true, timestamp: Date.now() })
+    .emit('init-complete', { loaded: true,   timestamp: Date.now() });
+
+// Perfect for decoupled architecture and component communication
+class MyComponent extends YpsilonEventHandler {
+  constructor() {
+    super({ /* DOM events */ });
+    
+    // Chain multiple subscriptions and emissions
+    this.on('user-login', 'handleUserLogin')
+        .on('data-updated', 'refreshUI')
+        .subscribe('component-ready', 'handleReady')
+        .emit('component-initialized', { status: 'ready' });
+  }
+  
+  handleUserLogin(data) {
+    // React to user login event, then chain more operations
+    this.emit('user-authenticated', { user: data.user })
+        .emit('ui-update-required', { section: 'header' });
+  }
+}
 ```
 
 ## ⚡ Performance Breakthrough
@@ -130,7 +176,7 @@ The **[StressMacher S-800](https://eypsilon.github.io/YpsilonEventHandler-Exampl
 let totalListeners = 0;
 const elementsWithListeners = [];
 
-[window, ...document.querySelectorAll('*')].filter(el => {
+[window, document, ...document.querySelectorAll('*')].filter(el => {
     const listeners = getEventListeners(el);
     return listeners && Object.keys(listeners).length > 0;
 }).forEach((el, i) => {

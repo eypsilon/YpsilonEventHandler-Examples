@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi-Handler System Demo - Revolutionary Event Delegation ~ local-dev-many-title</title>
+    <title>Multi-Handler System Demo - Revolutionary Event Delegation</title>
     <link rel="icon" type="image/x-icon" href="./favicon.ico">
     <link rel="stylesheet" type="text/css" href="./assets/main.css">
     <style>
@@ -14,6 +14,7 @@
             background: #e8e8e8;
             border: 3px solid #c406b4;
         }
+
         html::before {
             content: 'HTML ~ No Handler';
             position: absolute;
@@ -45,11 +46,14 @@
             font-size: 12px;
         }
 
-        h1, h2 {
+        h1,
+        h2 {
             margin-top: 0;
         }
 
-        li { line-height: 1.5 }
+        li {
+            line-height: 1.5;
+        }
 
         svg {
             padding: 8px;
@@ -142,44 +146,51 @@
             margin: 0;
             transition: all 0.3s ease;
             white-space: nowrap;
-
-            small {
-                font-weight: bold;
-            }
         }
 
-        body,
-        #app,
-        #main,
-        #section {
-            button:focus,
-            button:hover,
-            button:active {
-                background: #E64A19;
-            }
+        button small {
+            font-weight: bold;
         }
+
+        body button:focus,
+        #app button:focus,
+        #main button:focus,
+        #section button:focus,
+        body button:hover,
+        #app button:hover,
+        #main button:hover,
+        #section button:hover,
+        body button:active,
+        #app button:active,
+        #main button:active,
+        #section button:active {
+            background: #E64A19;
+        }
+
         .button-container {
             padding: 8px 0;
             display: flex;
             flex-flow: wrap;
             align-items: center;
             gap: 12px;
+        }
 
-            button,
-            input,
-            span {
-                display: block;
-            }
-            input,
-            span {
-                padding: 8px 14px;
-            }
-            span {
-                cursor: pointer;
-                color: #62696e;
-                background: #fff;
-                box-shadow: 0 0 4px 1px rgba(131, 128, 128, 0.4);
-            }
+        .button-container button,
+        .button-container input,
+        .button-container span {
+            display: block;
+        }
+
+        .button-container input,
+        .button-container span {
+            padding: 8px 14px;
+        }
+
+        .button-container span {
+            cursor: pointer;
+            color: #62696e;
+            background: #fff;
+            box-shadow: 0 0 4px 1px rgba(131, 128, 128, 0.4);
         }
 
         .clear-log {
@@ -209,22 +220,24 @@
             overflow-y: scroll;
             border: 2px solid #00ff00;
             z-index: 9999;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             background: #1d1c1cd5;
-            transition: all .15s 1s ease-in-out;
+            transition: all 0.15s 1s ease-in-out;
+        }
 
-            &:focus,
-            &:hover {
-                max-width: 80%;
-                height: 440px;
-                background: #1d1c1cf7;
-                overscroll-behavior: contain;
+        .log:focus,
+        .log:hover {
+            max-width: 80%;
+            height: 440px;
+            background: #1d1c1cf7;
+            overscroll-behavior: contain;
+        }
 
-                span.method-note,
-                span.log-data-last-col {
-                    max-width: unset;
-                }
-            }
+        .log:focus span.method-note,
+        .log:hover span.method-note,
+        .log:focus span.log-data-last-col,
+        .log:hover span.log-data-last-col {
+            max-width: unset;
         }
 
         .log-entry {
@@ -234,42 +247,62 @@
             align-items: center;
             min-height: 20px;
             line-height: 1.4;
-
-            &:not(:last-of-type) {
-                border-bottom: 1px solid rgba(0, 255, 170, 0.1);
-            }
-            span {
-                padding: 0 6px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
-            span.method-note,
-            span.log-data-last-col {
-                max-width: 230px;
-                min-width: unset;
-            }
-            .log-date {
-                padding: 0;
-                min-width: 92px;
-                font-weight: bold;
-            }
-            .handler-type {
-                min-width: fit-content;
-            }
-            .method-note {
-                color: white;
-            }
-            .last-col {
-                color: #ccc;
-            }
         }
 
-        .handler-body    { color: #4CAF50; }
-        .handler-app     { color: #2196F3; }
-        .handler-main    { color: #FF9800; }
-        .handler-section { color: #9C27B0; }
-        .button-action   { color: #FF5722; }
+        .log-entry:not(:last-of-type) {
+            border-bottom: 1px solid rgba(0, 255, 170, 0.1);
+        }
+
+        .log-entry span {
+            padding: 0 6px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .log-entry span.method-note,
+        .log-entry span.log-data-last-col {
+            max-width: 230px;
+            min-width: unset;
+        }
+
+        .log-entry .log-date {
+            padding: 0;
+            min-width: 92px;
+            font-weight: bold;
+        }
+
+        .log-entry .handler-type {
+            min-width: fit-content;
+        }
+
+        .log-entry .method-note {
+            color: white;
+        }
+
+        .log-entry .last-col {
+            color: #ccc;
+        }
+
+        .handler-body {
+            color: #4CAF50;
+        }
+
+        .handler-app {
+            color: #2196F3;
+        }
+
+        .handler-main {
+            color: #FF9800;
+        }
+
+        .handler-section {
+            color: #9C27B0;
+        }
+
+        .button-action {
+            color: #FF5722;
+        }
 
         .title {
             text-align: center;
@@ -303,36 +336,41 @@
 
         .quote {
             margin: 0;
-            padding: .75em;
+            padding: 0.75em;
             flex: 1 29%;
             background: linear-gradient(135deg, #df7c4a25 0%, #b281e240 100%);
         }
+
         .quote blockquote {
             margin: 0;
-            padding: 1em; position: relative;
+            padding: 1em;
+            position: relative;
             display: block;
             background-color: #fff;
             line-height: 1.4;
         }
+
         .quote blockquote p {
             margin: 0;
-
-            &:after, &:before {
-                content: '"';
-            }
         }
+
+        .quote blockquote p:after,
+        .quote blockquote p:before {
+            content: '"';
+        }
+
         .quote blockquote cite {
-            margin-top: .3rem;
+            margin-top: 0.3rem;
             display: block;
             font-style: italic;
-            font-size: .9em;
+            font-size: 0.9em;
             color: #444;
             text-align: right;
+        }
 
-            &:before,
-            &:after {
-                content: " — ";
-            }
+        .quote blockquote cite:before,
+        .quote blockquote cite:after {
+            content: " — ";
         }
 
         pre {
@@ -340,29 +378,35 @@
             font-size: 15px;
         }
 
-        .throttle-and-debounce {
-            > div {
-                flex-direction: row-reverse;
-                justify-content: space-between;
-                align-items: center;
-            }
-            input {
-                width: 300px;
-            }
+        .throttle-and-debounce>div {
+            flex-direction: row-reverse;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .throttle-and-debounce input {
+            width: 300px;
         }
 
         /* Mobile Responsiveness */
         @media (max-width: 600px) {
-            html { padding: 22px 4px; }
-            body { padding: 24px 4px; }
+            html {
+                padding: 22px 4px;
+            }
+
+            body {
+                padding: 24px 4px;
+            }
+
             .explanation {
                 padding-left: 0;
                 padding-right: 6px;
-
-                ul {
-                    padding-left: 30px;
-                }
             }
+
+            .explanation ul {
+                padding-left: 30px;
+            }
+
             .log {
                 padding: 10px 2%;
                 width: 96%;
@@ -373,10 +417,9 @@
                 height: 190px;
                 background: #1d1c1cf1;
             }
-            .log-entry {
-                .log-date {
-                    min-width: 74px;
-                }
+
+            .log-entry .log-date {
+                min-width: 74px;
             }
 
             .clear-log {
@@ -385,32 +428,40 @@
                 padding: 8px 16px;
                 font-size: 12px;
             }
-            #app, #main, #section {
+
+            #app,
+            #main,
+            #section {
                 padding: 20px 10px 2px;
             }
+
             #flexing {
                 display: none;
             }
-            .throttle-and-debounce {
-                > div {
-                    flex-direction: column;
-                    justify-content: start;
-                    align-items: start;
-                }
-                div {
-                    width: auto;
-                }
-                h4 {
-                    padding-bottom: 1.2rem;
-                    flex: 1 100%;
-                }
-                input {
-                    width: 100%;
-                }
+
+            .throttle-and-debounce>div {
+                flex-direction: column;
+                justify-content: start;
+                align-items: start;
             }
+
+            .throttle-and-debounce div {
+                width: auto;
+            }
+
+            .throttle-and-debounce h4 {
+                padding-bottom: 1.2rem;
+                flex: 1 100%;
+            }
+
+            .throttle-and-debounce input {
+                width: 100%;
+            }
+
             .random-reviews {
                 padding: 20px 5px;
             }
+
             .quote {
                 flex: 1 100%;
             }
@@ -480,13 +531,13 @@
             style="display:flex; margin-bottom: 25px;">
             <h4 style="color: #1976d2; margin: 0;">⚡ Throttle & Debounce Demo</h4>
             <div>
-                <label for="searchInput" style="display: block;margin: 0 0 6px;font-weight: bold; color: #1976d2;">🔍 Search <small>(debounced: 600ms)</small></label>
+                <label for="searchInput" style="display: block;margin: 0 0 6px;font-weight: bold; color: #1976d2;">🔍 Search <small>(debounced: 750ms)</small></label>
                 <input type="text" id="searchInput" placeholder="Type to see debounced search..."
                     style="padding: 8px; margin-top: 5px; border: 1px solid #1976d2; border-radius: 4px;">
             </div>
         </div>
         <div class="scroll-zone" style="background: white; border: 1px solid #1976d2; height: 200px; overflow-y: auto; padding: 10px; border-radius: 4px;">
-            <div style="font-weight: bold; color: #1976d2; margin: 6px 0;">📊 Throttled Scroll Zone <small>(throttled: 350ms)</small>:</div>
+            <div style="font-weight: bold; color: #1976d2; margin: 6px 0;">📊 Throttled Scroll Zone <small>(throttled: 500ms)</small>:</div>
             <div style="height: 800px; background: linear-gradient(to bottom, #e3f2fd, #bbdefb, #7dbff5, #44abff, #2b75b1);">
                 <p style="padding: 20px; color: #1976d2;">Scroll this area to see throttled scroll events!</p>
                 <p style="padding: 20px;">Traditional approach: 60+ scroll events per second = performance killer</p>
@@ -504,7 +555,7 @@
         <pre style="min-height:unset;"><b style="color:#b4afaf;user-select:none;margin-right:8px;">⚠️ For Chrome, type first <span class="flip-emoji">⚠️</span></b><code>allow pasting</code></pre>
 
         <pre class="auto-height" contenteditable="true">[
-  window, ...document.querySelectorAll('*')
+  window, document, ...document.querySelectorAll('*')
 ].filter(el => {
     const listeners = getEventListeners(el);
     return listeners && Object.keys(listeners).length > 0;
@@ -522,7 +573,7 @@
     <div class="log" id="eventLog" role="log" aria-live="polite" aria-label="Event interaction log"></div>
     <button class="clear-log" onclick="clearLog()" aria-label="Clear event log">Clear Log</button>
 
-    <script src="https://cdn.jsdelivr.net/npm/ypsilon-event-handler@v1.8.1/ypsilon-event-handler.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ypsilon-event-handler@v1.8.2/ypsilon-event-handler.min.js"></script>
     <script>
         class AdvancedHandler extends YpsilonEventHandler {
             constructor() {
@@ -547,7 +598,7 @@
                         { type: 'input', handler: 'sectionInput' }
                     ],
 
-                    '.scroll-zone':  [{ type: 'scroll', handler: 'handleThrottledScroll', throttle: 350 }],
+                    '.scroll-zone':  [{ type: 'scroll', handler: 'handleThrottledScroll', throttle: 500 }],
                     '#searchInput':  [{ type: 'input',  handler: 'searchInput' }],
                 }, {}, {
                     // Configurable actionable target patterns
@@ -637,12 +688,14 @@
                 // Check for data-action attribute
                 const action = target.dataset.action;
                 if (action && typeof this[action] === 'function') {
+                    target.blur();
                     this[action](target, event);
                 }
 
                 // NEW: Check for data-cmd attribute (configurable actionable pattern)
                 const cmd = target.dataset.cmd;
                 if (cmd && typeof this[cmd] === 'function') {
+                    target.blur();
                     this[cmd](target, event);
                 }
             }
@@ -730,12 +783,11 @@
                 // Apply debouncing with deduplication for search input
                 const debouncedHandler = this._debouncedDedupe('searchInput', (event, target) => {
                     const query = target.value.trim();
-                    this.logEvent('🔍 Search Input', `"${this.escapeHtml(query) || '(empty)'}" (d 600ms)`, target, '#1976d2');
-                }, 600);
+                    this.logEvent('🔍 Search Input', `"${this.escapeHtml(query) || '(empty)'}" (d 750ms)`, target, '#1976d2');
+                }, 750);
 
                 debouncedHandler(event, target);
             }
-
 
             /**
              * AttributeHandler

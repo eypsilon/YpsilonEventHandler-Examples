@@ -36,11 +36,10 @@
             margin: 20px 0;
             border-radius: 5px;
             min-height: 94px;
-
-            &.logs {
-                padding: 4px;
-                min-height: unset;
-            }
+        }
+        .output.logs {
+            padding: 4px;
+            min-height: unset;
         }
         .section { margin: 30px 0; padding: 20px; background: #fff; border: 1px solid #eee; }
         .code { background: #f5f5f5; padding: 10px; border-radius: 3px; font-family: monospace; }
@@ -111,7 +110,7 @@ super({ 'body': ['click', 'input'] }, {<br>
         <div class="output logs" id="action-log" style="max-height: 200px; overflow-y: auto;"></div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/ypsilon-event-handler@1.8.1/ypsilon-event-handler.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ypsilon-event-handler@1.8.2/ypsilon-event-handler.min.js"></script>
     <script>
         class DataActionAliasTest extends YpsilonEventHandler {
             constructor() {
